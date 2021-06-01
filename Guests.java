@@ -1,8 +1,5 @@
-import java.util.ArrayList;
-
 public abstract class Guests{
-    public int number;
-    public ArrayList<String> names;
+    public String name;
+    public int totalnumber;
     public int numKids;
-    public int numAdults;
 }
