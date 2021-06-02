@@ -1,10 +1,10 @@
-import java.util.Set;
+import java.util.List;
 
 public abstract class Room{
     private boolean availabe;
     private int roomId;
     private Guests occupants;
-    private Set<String[]> purchaseList;
+    private List<String[]> purchaseList;
     //add purchesed items
     
     public Room(int roomId) {
@@ -33,16 +33,31 @@ public abstract class Room{
         this.occupants = occupants;
     }
 
-    public Set<String[]> getPurchaseList() {
+    public List<String[]> getPurchaseList() {
         return purchaseList;
     }
 
     public void buy(String name, int amount)
     {
+        boolean flag=false;
         if(checkMenu(name)) //if product is in menu
         {
-            String[] in = {name,String.valueOf(amount),String.valueOf(RoomService.getPrice(name))};
-            purchaseList.add(in);
+            for(int i=0; i< purchaseList.size(); i++)
+            {
+                //check if there is already a product with this name
+                //if there is just change the amount
+                if(purchaseList.get(i)[0]==name)
+                {
+                    int newAmount=Integer.parseInt(purchaseList.get(i)[1])+amount;
+                    purchaseList.get(i)[1]=String.valueOf(newAmount);
+                    flag=true;
+                }
+            }
+            if(!flag)
+            {
+                String[] in = {name,String.valueOf(amount),String.valueOf(RoomService.getPrice(name))};
+                purchaseList.add(in);
+            }
         }
     }
 
