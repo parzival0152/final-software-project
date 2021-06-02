@@ -1,11 +1,9 @@
-import java.util.ArrayList;
 import java.util.Set;
 
 public abstract class Room{
     private boolean availabe;
     private int roomId;
     private Guests occupants;
-    protected RoomService rs;
     private Set<String[]> purchaseList;
     //add purchesed items
     
@@ -43,7 +41,7 @@ public abstract class Room{
     {
         if(checkMenu(name)) //if product is in menu
         {
-            String[] in = {name,String.valueOf(amount),String.valueOf(rs.getPrice(name))};
+            String[] in = {name,String.valueOf(amount),String.valueOf(RoomService.getPrice(name))};
             purchaseList.add(in);
         }
     }

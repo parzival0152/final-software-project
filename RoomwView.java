@@ -6,7 +6,7 @@ public class RoomwView extends Room{
 
     public boolean checkMenu(String name)
     {
-        if(!rs.ifExist(name,2))
+        if(!RoomService.ifExist(name,2))
         {
             System.out.println("Item not in menu");
             return false;
