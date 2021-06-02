@@ -19,4 +19,9 @@ public abstract class Room{
     public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
+
+    public void buy(String name, int amount)
+    {
+        
+    }
 }
