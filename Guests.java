@@ -3,6 +3,12 @@ public abstract class Guests{
     public int totalnumber;
     public int numKids;
 
+    public Guests(String name, int totalnumber, int numKids) {
+        this.name = name;
+        this.totalnumber = totalnumber;
+        this.numKids = numKids;
+    }
+
     public abstract double getMult();
 
     public String getName() {
