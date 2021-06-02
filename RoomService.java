@@ -52,18 +52,6 @@ public class RoomService{
         return -1;
     }
 
-    public static boolean exists(String name, int level)
-    {
-        for(int i=0; i<items.size(); i++)
-        {
-            if (items.get(i).getName()==name && items.get(i).getLevel()>=level && items.get(i).getAmount()!=0)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static double getPrice(String name)
     {
         for(int i=0; i<items.size(); i++)
@@ -74,6 +62,18 @@ public class RoomService{
             }
         }
         return -1;
+    }
+
+    public static boolean ifExist(String name, int level)
+    {
+        for(int i=0; i<items.size(); i++)
+        {
+            if (items.get(i).getName()==name && items.get(i).getLevel()>=level && items.get(i).getAmount()!=0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isDup(String name)
