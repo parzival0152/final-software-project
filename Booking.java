@@ -4,8 +4,8 @@ public class Booking {
     private String booking_Guest;
     private ArrayList<Integer> rooms;
     private int num_Guests;
-    private int arrival_date;
-    private int leaving_date;
+    private BetterDate arrival_date;
+    private BetterDate leaving_date;
 
     
     public String getBooking_Guest() {
@@ -32,25 +32,25 @@ public class Booking {
         this.num_Guests = num_Guests;
     }
 
-    public int getArrival_date() {
+    public BetterDate getArrival_date() {
         return arrival_date;
     }
 
-    public void setArrival_date(int arrival_date) {
+    public void setArrival_date(BetterDate arrival_date) {
         this.arrival_date = arrival_date;
     }
 
-    public int getLeaving_date() {
+    public BetterDate getLeaving_date() {
         return leaving_date;
     }
 
-    public void setLeaving_date(int leaving_date) {
+    public void setLeaving_date(BetterDate leaving_date) {
         this.leaving_date = leaving_date;
     }
 
     
     
-    public Booking(String booking_Guest, ArrayList<Integer> rooms, int num_Guests, int arrival_date,int leaving_date) {
+    public Booking(String booking_Guest, ArrayList<Integer> rooms, int num_Guests, BetterDate arrival_date,BetterDate leaving_date) {
         this.booking_Guest = booking_Guest;
         this.rooms = rooms;
         this.num_Guests = num_Guests;
