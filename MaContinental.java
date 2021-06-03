@@ -61,9 +61,6 @@ public class MaContinental {
           room.setAvailabe(true);
           room.emptyPurchaseList();
        }
-       
-        //going over the rooms calculating printing the result
-        //delete the data
      }
 
      public void checkIn()
