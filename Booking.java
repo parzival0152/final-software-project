@@ -47,7 +47,15 @@ public class Booking {
     public void setLeaving_date(BetterDate leaving_date) {
         this.leaving_date = leaving_date;
     }
-
+    
+    public int returnNumberDays()
+    {
+       int num_days;
+       double arrival=arrival_date.getMonth()+arrival_date.getDay()/30;
+       double leave=leaving_date.getMonth()+leaving_date.getDay()/30;
+       num_days=(int)(leave-arrival)*30;
+       return num_days;
+    }
     
     
     public Booking(String booking_Guest, ArrayList<Integer> rooms, int num_Guests, BetterDate arrival_date,BetterDate leaving_date) {
