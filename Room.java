@@ -61,6 +61,11 @@ public abstract class Room{
         }
     }
 
+    public void emptyPurchaseList()
+    {
+        this.purchaseList.clear();
+    }
+
     public abstract boolean checkMenu(String name);
 
 }
