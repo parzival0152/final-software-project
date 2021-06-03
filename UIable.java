@@ -40,4 +40,15 @@ interface UIable {
             }
         }
     }
+
+    public static void showString (String message)
+    {
+       JOptionPane.showMessageDialog(null, message, "", JOptionPane.PLAIN_MESSAGE);
+
+
+    }
+
+
 }
+
+
