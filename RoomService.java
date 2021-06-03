@@ -5,7 +5,7 @@ import java.util.Comparator;
 public class RoomService{
     private static ArrayList<Product> items = new ArrayList<Product>();
 
-    RoomService()
+    public RoomService()
     {
         addProduct("Water", 10, 30, 1);
         addProduct("Chocolate", 15, 30, 1);
