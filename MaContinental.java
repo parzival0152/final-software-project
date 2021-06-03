@@ -10,15 +10,14 @@ public class MaContinental {
     {
 
         //5 floors 4 room each
-        for(int i=0; i<30; i++)
+        for(int i=0; i<20; i++)
         {
             if (i>4&&(i%4==0||i%4==3)&&i<17)
               roomAr[i]=new RoomwView(i);
-           else if (i>=17)
+            else if (i>=17)
               roomAr[i]=new SuiteRoom(i);
             else 
-               roomAr[i]=new NormalRoom(i);
-
+              roomAr[i]=new NormalRoom(i);
         }
 
         room_service=new RoomService();

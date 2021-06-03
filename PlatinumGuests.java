@@ -3,6 +3,7 @@ public class PlatinumGuests extends Guests{
 
     public PlatinumGuests(String name, int totalnumber, int numKids) {
         super(name, totalnumber, numKids);
+        this.bonus = true;
     }
 
     public double getMult() {
