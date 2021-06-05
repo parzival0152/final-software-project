@@ -4,14 +4,15 @@ public class Product {
     private int amount;
     private int level;
 
+    // Get and set functions
     public String getName() {
         return name;
     }
-    
+    //no name setter as item name shouldn't change after construction
+
     public double getPrice() {
         return price;
     }
-
     public void setPrice(double price) {
         this.price = price;
     }
@@ -19,15 +20,13 @@ public class Product {
     public int getAmount() {
         return amount;
     }
-
     public void setAmount(int amount) {
         this.amount = amount;
     }
-    
+
     public int getLevel() {
         return level;
     }
-
     public void setLevel(int level) {
         this.level = level;
     }

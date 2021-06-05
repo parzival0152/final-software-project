@@ -59,6 +59,11 @@ public class Calendar {
             return false;
         return true;
     }
+
+    public int getStay(int roomId, Guests guest) //return the number of days the guest has booked the room
+    {
+        return 5;
+    }
     
 
     

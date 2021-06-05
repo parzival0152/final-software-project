@@ -7,11 +7,10 @@ public class Booking {
     private BetterDate arrival_date;
     private BetterDate leaving_date;
 
-    
+    // Get and set functions
     public String getBooking_Guest() {
         return booking_Guest;
     }
-
     public void setBooking_Guest(String booking_Guest) {
         this.booking_Guest = booking_Guest;
     }
@@ -19,7 +18,6 @@ public class Booking {
     public ArrayList<Integer> getRooms() {
         return rooms;
     }
-
     public void setRooms(ArrayList<Integer> rooms) {
         this.rooms = rooms;
     }
@@ -27,7 +25,6 @@ public class Booking {
     public int getNum_Guests() {
         return num_Guests;
     }
-
     public void setNum_Guests(int num_Guests) {
         this.num_Guests = num_Guests;
     }
@@ -35,7 +32,6 @@ public class Booking {
     public BetterDate getArrival_date() {
         return arrival_date;
     }
-
     public void setArrival_date(BetterDate arrival_date) {
         this.arrival_date = arrival_date;
     }
@@ -43,12 +39,12 @@ public class Booking {
     public BetterDate getLeaving_date() {
         return leaving_date;
     }
-
     public void setLeaving_date(BetterDate leaving_date) {
         this.leaving_date = leaving_date;
     }
     
-    public int returnNumberDays()
+    // returns the number of days the booking is for
+    public int returnNumberDays() 
     {
        int num_days;
        double arrival=arrival_date.getMonth()+arrival_date.getDay()/30;
@@ -57,7 +53,7 @@ public class Booking {
        return num_days;
     }
     
-    
+    //constructor for new booking
     public Booking(String booking_Guest, ArrayList<Integer> rooms, int num_Guests, BetterDate arrival_date,BetterDate leaving_date) {
         this.booking_Guest = booking_Guest;
         this.rooms = rooms;

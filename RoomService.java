@@ -16,7 +16,7 @@ public class RoomService{
         addProduct("Caviar", 50, 5, 3);
     }
 
-    //functions
+    // add new product to items list
     public void addProduct(String name, double price, int amount, int level)
     {
         if(!isDup(name))
@@ -26,6 +26,7 @@ public class RoomService{
         }
     }
 
+    //remove a product from the items list
     public void removeProduct(String name)
     {
         for(int i=0; i<items.size(); i++)
@@ -39,19 +40,20 @@ public class RoomService{
 
     }
 
+    // return the amount of a certain item in stock
     public static int getAmount(String name)
     {
         for(int i=0; i<items.size(); i++)
         {
             if (items.get(i).getName()==name)
             {
-                int tmp = items.get(i).getAmount();
-                return tmp;
+                return items.get(i).getAmount();
             }
         }
         return -1;
     }
 
+    // return the price of an item
     public static double getPrice(String name)
     {
         for(int i=0; i<items.size(); i++)
@@ -64,6 +66,7 @@ public class RoomService{
         return -1;
     }
 
+    // check if an item exists in stock
     public static boolean ifExist(String name, int level)
     {
         for(int i=0; i<items.size(); i++)
@@ -76,6 +79,7 @@ public class RoomService{
         return false;
     }
 
+    //c check for dupes in the items list
     public boolean isDup(String name)
     {
         for(int i=0; i<items.size(); i++)
@@ -96,12 +100,10 @@ public class RoomService{
     public void sortAmount()
     {
         Collections.sort(items, new AmountComperator());
-
     }
     public void sortPrice()
     {
         Collections.sort(items, new PriceComperator());
-
     }
 
     //comperators
@@ -139,6 +141,4 @@ public class RoomService{
                 return -1;
         }
     }
-
-
 }

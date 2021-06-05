@@ -5,13 +5,13 @@ public abstract class Room{
     private int roomId;
     private Guests occupants;
     private List<String[]> purchaseList;
-    //add purchesed items
     
     public Room(int roomId) {
         this.roomId = roomId;
         setAvailabe(true);
     }
 
+    // Get and set functions
     public boolean getAvailabe() {
         return availabe;
     }
@@ -37,23 +37,23 @@ public abstract class Room{
         return purchaseList;
     }
 
+    // adds an item to the purchase list
     public void buy(String name, int amount)
     {
         boolean flag=false;
-        if(checkMenu(name)) //if product is in menu
+        if(checkMenu(name)) // if product is in menu
         {
             for(int i=0; i< purchaseList.size(); i++)
             {
-                //check if there is already a product with this name
-                //if there is just change the amount
+                // check if the product has been bought by the room before
+                // if it was, change the amount
                 if(purchaseList.get(i)[0]==name)
                 {
-                    int newAmount=Integer.parseInt(purchaseList.get(i)[1])+amount;
-                    purchaseList.get(i)[1]=String.valueOf(newAmount);
+                    purchaseList.get(i)[1] = String.valueOf(Integer.parseInt(purchaseList.get(i)[1])+amount);
                     flag=true;
                 }
             }
-            if(!flag)
+            if(!flag) // if the item is new add it to the list
             {
                 String[] in = {name,String.valueOf(amount),String.valueOf(RoomService.getPrice(name))};
                 purchaseList.add(in);
