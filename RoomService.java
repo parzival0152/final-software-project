@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class RoomService{
+public class RoomService implements UIable{
     private static ArrayList<Product> items = new ArrayList<Product>();
 
     public RoomService()
@@ -91,6 +91,20 @@ public class RoomService{
         }
         return false;
     }
+    public void reStock(String name_product,int amount)
+    {
+
+        for(int i=0; i<items.size(); i++)
+        {
+            if (items.get(i).getName()==name_product)
+            {
+                items.get(i).setAmount(amount);
+            }
+        }
+
+
+    }
+
 
     //sorting
     public void sortName()

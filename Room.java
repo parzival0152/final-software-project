@@ -33,6 +33,8 @@ public abstract class Room{
         this.occupants = occupants;
     }
 
+
+
     public List<String[]> getPurchaseList() {
         return purchaseList;
     }

@@ -17,6 +17,18 @@ public class Calendar {
 
     }
 
+    //public Booking findBooking(String booking_Guest)
+     //{
+
+
+
+
+
+     //}
+
+
+
+
     public ArrayList<Integer> findRooms(BetterDate start, BetterDate finish, int room_type)
     {
         ArrayList<Integer> roomArr= new ArrayList<Integer>();
