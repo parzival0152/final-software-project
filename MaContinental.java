@@ -66,13 +66,7 @@ public class MaContinental {
      public void checkIn(String booking_Guest)
      {
         Booking check_in=booking_Calendar.findBooking( booking_Guest);
-        for(int i=0; i<check_in.getRooms().size(); i++)
-        {
-            if (items.get(i).getName()==name)
-            {
-                return items.get(i).getPrice();
-            }
-        }
+        
 
 
 

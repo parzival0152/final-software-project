@@ -13,15 +13,20 @@ public class Calendar {
         for(int i=0; i<20; i++)
         {
             if (i>4&&(i%4==0||i%4==3)&&i<17)
+            //view
                 roomsType[1].add(i);
             else if (i>=17)
+            //suit
                 roomsType[2].add(i);
             else 
+            //regular
                 roomsType[0].add(i);
         }
 
     }
-    public void addBooking(String name, BetterDate start, BetterDate finish, int num_guest, int room_type, int room_num, int guests_num)
+
+    //we get name,dates,numver of guest and how many rooms from any type
+    public void addBooking(String name, BetterDate start, BetterDate finish, int num_guest, int room_type1, int room_type2, int room_type3, int room_num)
     {
         ArrayList<Integer> roomArr= new ArrayList<Integer>();
         ArrayList<Integer> selectRoom= new ArrayList<Integer>();
@@ -31,17 +36,38 @@ public class Calendar {
         roomArr= findRooms(start, finish);
         
 
-        for(int i=0; i<roomsType[room_type].size();i++)
+        for(int i=0; i<roomsType[0].size();i++)
         {
             //if one of the rooms are not in roomArr, add to selectRoom
-            if(!roomArr.contains(roomsType[room_type].get(i)))
+            if(!roomArr.contains(roomsType[0].get(i))&&room_type1>0)
             {
-                selectRoom.add(roomsType[room_type].get(i));
+                selectRoom.add(((roomsType[0].get(i)/4)+1)+(roomsType[0].get(i)%4));
                 counter++;
-                if(counter==room_num)
-                    break;
+                room_type1--;
             }
         }
+        for(int i=0; i<roomsType[1].size();i++)
+        {
+            //if one of the rooms are not in roomArr, add to selectRoom
+            if(!roomArr.contains(roomsType[1].get(i))&&room_type2>0)
+            {
+                selectRoom.add(((roomsType[0].get(i)/4)+1)+(roomsType[0].get(i)%4));
+                counter++;
+                room_type2--;
+            }
+        }
+
+        for(int i=0; i<roomsType[2].size();i++)
+        {
+            //if one of the rooms are not in roomArr, add to selectRoom
+            if(!roomArr.contains(roomsType[2].get(i))&&room_type2>0)
+            {
+                selectRoom.add(((roomsType[0].get(i)/4)+1)+(roomsType[0].get(i)%4));
+                counter++;
+                room_type3--;
+            }
+        }
+
 
         if(counter==room_num)
         {
@@ -93,11 +119,24 @@ public class Calendar {
     {
 
     }
-
+     //you need to check the room is available on those dates,delete and creat new booking
     public void changeDate(String name, BetterDate start, BetterDate finish)
     {
-        bookMap.get(name).setArrival_date(start);
-        bookMap.get(name).setLeaving_date(finish);
+         int room_type1=0,room_type2=0,room_type3=0,temp;
+         for(int i=1; i <= bookMap.get(name).getRooms().size(); i++)
+        {   temp=bookMap.get(name).getRooms().get(i);
+           if(temp>=500)
+           room_type3++;
+           if(temp>=200&&temp<500&&(temp%4==0||temp%4==3))
+           room_type2++;
+           else
+           room_type1++;
+
+        }
+         
+
+        addBooking(bookMap.get(name).getBooking_Guest(), start,
+        finish, bookMap.get(name).getNum_Guests(),  room_type1,  room_type2,  room_type3, bookMap.get(name).getRooms().size());
     }
 
     public void chengeGuestNum(String name, int guests_num)
@@ -105,7 +144,13 @@ public class Calendar {
         bookMap.get(name).setNum_Guests(guests_num);
     }
     
+    public Booking findBooking(String name)
+    {
 
+
+        return bookMap.get(name);
+
+    }
     
 
     class DateComperator implements Comparator<BetterDate>{
