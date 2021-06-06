@@ -8,11 +8,12 @@ public class Product {
     public String getName() {
         return name;
     }
-    //no name setter as item name shouldn't change after construction
+    // no name setter as item name shouldn't change after construction
 
     public double getPrice() {
         return price;
     }
+
     public void setPrice(double price) {
         this.price = price;
     }
@@ -20,6 +21,7 @@ public class Product {
     public int getAmount() {
         return amount;
     }
+
     public void setAmount(int amount) {
         this.amount = amount;
     }
@@ -27,10 +29,11 @@ public class Product {
     public int getLevel() {
         return level;
     }
+
     public void setLevel(int level) {
         this.level = level;
     }
-    
+
     public Product(String name, double price, int amount, int level) {
         this.name = name;
         this.price = price;

@@ -1,4 +1,4 @@
-public class GoldGuests extends Guests{
+public class GoldGuests extends Guests {
     private boolean bonus;
 
     public GoldGuests(String name, int totalnumber, int numKids) {

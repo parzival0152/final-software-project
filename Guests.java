@@ -1,4 +1,4 @@
-public abstract class Guests{
+public abstract class Guests {
     public String name;
     public int totalnumber;
     public int numKids;
@@ -15,6 +15,7 @@ public abstract class Guests{
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -22,6 +23,7 @@ public abstract class Guests{
     public int getTotalnumber() {
         return totalnumber;
     }
+
     public void setTotalnumber(int totalnumber) {
         this.totalnumber = totalnumber;
     }
@@ -29,6 +31,7 @@ public abstract class Guests{
     public int getNumKids() {
         return numKids;
     }
+
     public void setNumKids(int numKids) {
         this.numKids = numKids;
     }

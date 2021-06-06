@@ -1,13 +1,11 @@
-public class SuiteRoom extends Room{
-    
+public class SuiteRoom extends Room {
+
     public SuiteRoom(int roomId) {
         super(roomId);
     }
 
-    public boolean checkMenu(String name)
-    {
-        if(!RoomService.ifExist(name,3))
-        {
+    public boolean checkMenu(String name) {
+        if (!RoomService.ifExist(name, 3)) {
             System.out.println("Item not in menu");
             return false;
         }
