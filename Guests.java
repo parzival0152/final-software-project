@@ -1,7 +1,7 @@
 public abstract class Guests {
-    public String name;
-    public int totalnumber;
-    public int numKids;
+    private String name;
+    private int totalnumber;
+    private int numKids;
 
     public Guests(String name, int totalnumber, int numKids) {
         this.name = name;
