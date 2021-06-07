@@ -1,18 +1,17 @@
 import java.util.ArrayList;
 
 public class Booking {
-    private String booking_Guest;
+    private Guests booking_Guest;
     private ArrayList<Integer> rooms;
-    private int num_Guests;
     private BetterDate arrival_date;
     private BetterDate leaving_date;
 
     // Get and set functions
-    public String getBooking_Guest() {
+    public Guests getBooking_Guest() {
         return booking_Guest;
     }
 
-    public void setBooking_Guest(String booking_Guest) {
+    public void setBooking_Guest(Guests booking_Guest) {
         this.booking_Guest = booking_Guest;
     }
 
@@ -25,11 +24,10 @@ public class Booking {
     }
 
     public int getNum_Guests() {
-        return num_Guests;
+        return booking_Guest.getTotalnumber();
     }
-
     public void setNum_Guests(int num_Guests) {
-        this.num_Guests = num_Guests;
+        booking_Guest.setTotalnumber(num_Guests);
     }
 
     public BetterDate getArrival_date() {
@@ -58,11 +56,10 @@ public class Booking {
     }
 
     // constructor for new booking
-    public Booking(String booking_Guest, ArrayList<Integer> rooms, int num_Guests, BetterDate arrival_date,
+    public Booking(Guests booking_Guest, ArrayList<Integer> rooms, BetterDate arrival_date,
             BetterDate leaving_date) {
         this.booking_Guest = booking_Guest;
         this.rooms = rooms;
-        this.num_Guests = num_Guests;
         this.arrival_date = arrival_date;
         this.leaving_date = leaving_date;
     }

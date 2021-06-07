@@ -1,11 +1,13 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class MaContinental {
+public class MaContinental implements UIable {
 	private Room[][] roomAr = new Room[5][4];
 	private RoomService room_service;
-	private Calendar booking_calendar;
+	private Calendar booking_Calendar;
 
 	public MaContinental() {
+
 		// 5 floors 4 room each
 		// room numbers start from 100. hundred indicates floor num.
 		for (int i = 1; i <= 5; i++) {
@@ -20,7 +22,7 @@ public class MaContinental {
 		}
 
 		room_service = new RoomService();
-		booking_calendar = new Calendar();
+		booking_Calendar = new Calendar();
 	}
 
 	// makes a check string for every room in list. will eventually print.
@@ -30,32 +32,51 @@ public class MaContinental {
 		String check = "";
 		// go over every room's purchase list and add the prices of the items.
 		for (int num : rooms_num) {
-			check = check.concat("Room " + Integer.toString(num) + ":\n"); // printing check for every room.
+			check.concat("Room " + String.valueOf(num) + ":\n"); // printing check for every room.
 			int row = num / 100;
 			int column = num % 100;
 			Room room = roomAr[row][column];
 			for (String[] product : room.getPurchaseList()) {
 				value = Double.valueOf(product[1]) * Double.valueOf(product[2]);
-				check = check.concat(product[0] + " x" + product[1] + " $" + Double.toString(value) + "\n");
+				check.concat(product[0] + " x" + product[1] + " $" + String.valueOf(value) + "\n");
 				sum += value;
 			}
-			int stayTime = booking_calendar.getStay(room.getRoomId(), room.getOccupants());
+			int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
 			if (room instanceof SuiteRoom)
 				sum += 300 * stayTime;
 			else if (room instanceof RoomwView)
 				sum += 180 * stayTime;
 			else
 				sum += 150 * stayTime;
-			check = check.concat("Room total = " + Double.toString(sum) + "\n\n");
+			check.concat("Room total = " + String.valueOf(sum) + "\n\n");
 			// clearing room for next guest
 			room.setAvailabe(true);
 			room.emptyPurchaseList();
 		}
 	}
 
-	public void checkIn(String booking_Guest) {
-		Booking check_in = booking_calendar.findBooking(booking_Guest);
+	// changes room variables to match guest.
+	public void checkIn(String name) {
+		Booking booking;
+		// checks if booking by the guest exists
+		booking = booking_Calendar.findBooking(name);
+		if (booking == null) {
+			UIable.showString("Booking not found.");
+			return;
+		}
+		// if it does change room variables accordingly
+		Iterator<Integer> roomNum = booking.getRooms().iterator();
+		int number;
+		while (roomNum.hasNext()) {
+			number = roomNum.next();
+			roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
+			roomAr[number / 100][number % 100].setAvailabe(false);
+		}
+	}
 
+	public void roomService()
+	{
+		room_service.run();
 	}
 
 }
