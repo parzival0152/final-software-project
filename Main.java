@@ -1,6 +1,6 @@
 public class Main {
 	public static void main(String[] args) {
-		RoomwView testRoom = new RoomwView(100);
+		RoomwView testRoom = new RoomwView(69);
 		testRoom.showView();
 	}
 }
