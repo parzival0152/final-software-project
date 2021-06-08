@@ -5,7 +5,9 @@ import java.util.Comparator;
 public class RoomService implements UIable {
     private static ArrayList<Product> items = new ArrayList<Product>();
 
-    public RoomService() {
+    MaContinental managment;
+    public RoomService(MaContinental managment1) {
+        managment=managment1;
         addProduct("Water", 10, 30, 1);
         addProduct("Chocolate", 15, 30, 1);
         addProduct("Chips", 15, 30, 1);
@@ -16,6 +18,40 @@ public class RoomService implements UIable {
     }
 
     public void run() {
+
+       
+           
+            boolean quit = false;
+            while (!quit) {
+                int option=UIable.askOption("add product", "remove product"," product details", "order", "add to stock","Exit");
+                switch (option) {
+                    case 1:
+                        
+                        break;
+                    case 2:
+                        
+                        break;
+                    case 3:
+                       
+                        break;
+                    case 4:
+                        
+                        break;
+                   
+                    case 5:
+                        quit = true;
+                        break;
+                    default:
+                        break;
+                }
+              
+            }
+        
+
+
+
+
+
 		
     }
 

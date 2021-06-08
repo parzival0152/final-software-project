@@ -21,7 +21,7 @@ public class MaContinental implements UIable {
 			}
 		}
 
-		room_service = new RoomService();
+		this.room_service = new RoomService(this);
 		booking_Calendar = new Calendar();
 	}
 
@@ -60,7 +60,7 @@ public class MaContinental implements UIable {
                     //Room service
                     room_service.run();
                     break;
-                case 7:
+                case 5:
                     //exit
                     quit = true;
                     break;
