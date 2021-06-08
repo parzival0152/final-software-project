@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import javax.lang.model.util.ElementScanner14;
+
 public class RoomService implements UIable {
     private static ArrayList<Product> items = new ArrayList<Product>();
 
@@ -44,7 +46,7 @@ public class RoomService implements UIable {
                         }
                         while(amount<0)
                         {
-                            price=UIable.askNum("Enter amount:");
+                            amount=UIable.askNum("Enter amount:");
                         }
                         while(level<0)
                         {
@@ -65,13 +67,29 @@ public class RoomService implements UIable {
                         break;
                     case 3:
                     name=UIable.askString("Enter product name:");
-                    
-                       
+                    if(ifExist_general(name)!=-1)
+                       {
+                        UIable.showString(name+":\nprice:"+Double.toString(getAmount(name))+"\namount:"+Integer.toString(getAmount(name)));
+
+                       }
+                    else
+                       UIable.showString("product not found");
                         break;
                     case 4:
                         
                         break;
                     case 5:
+                    name=UIable.askString("Enter product name:");
+                    if(ifExist_general(name)!=-1)
+                       {
+                        
+                            amount=UIable.askNum("Enter amount:");
+                            reStock( name,  amount);
+                        
+                       
+                       }
+                    else
+                       UIable.showString("product not found");
                         
                         break;
                     case 6:
@@ -155,6 +173,19 @@ public class RoomService implements UIable {
         return false;
     }
 
+     // check if an item exists in stock
+     public static int ifExist_general(String name) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).getName().equals(name)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+
+
+
     // c check for dupes in the items list
     public boolean isDup(String name) {
         for (int i = 0; i < items.size(); i++) {
@@ -169,7 +200,7 @@ public class RoomService implements UIable {
 
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getName().equals(name_product)) {
-                items.get(i).setAmount(amount);
+                items.get(i).setAmount( items.get(i).getAmount()+amount);
             }
         }
 
