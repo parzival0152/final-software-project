@@ -83,13 +83,13 @@ public class MaContinental implements UIable {
 		String check = "";
 		// go over every room's purchase list and add the prices of the items.
 		for (int num : rooms_num) {
-			check.concat("Room " + String.valueOf(num) + ":\n"); // printing check for every room.
+			check = check.concat("Room " + Integer.toString(num) + ":\n"); // printing check for every room.
 			int row = num / 100;
 			int column = num % 100;
 			Room room = roomAr[row][column];
 			for (String[] product : room.getPurchaseList()) {
-				value = Double.valueOf(product[1]) * Double.valueOf(product[2]);
-				check.concat(product[0] + " x" + product[1] + " $" + String.valueOf(value) + "\n");
+				value = Double.parseDouble(product[1]) * Double.parseDouble(product[2]);
+				check = check.concat(product[0] + " x" + product[1] + " $" + Double.toString(value) + "\n");
 				sum += value;
 			}
 			int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
@@ -99,7 +99,7 @@ public class MaContinental implements UIable {
 				sum += 180 * stayTime;
 			else
 				sum += 150 * stayTime;
-			check.concat("Room total = " + String.valueOf(sum) + "\n\n");
+			check = check.concat("Room total = " + Double.toString(sum) + "\n\n");
 			// clearing room for next guest
 			room.setAvailabe(true);
 			room.emptyPurchaseList();

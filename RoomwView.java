@@ -1,4 +1,6 @@
-public class RoomwView extends Room {
+
+
+public class RoomwView extends Room implements UIable {
 
     public RoomwView(int roomId) {
         super(roomId);
@@ -10,6 +12,12 @@ public class RoomwView extends Room {
             return false;
         }
         return true;
-
     }
+
+    public void showView()
+    {
+        String path = "/Views/" + Integer.toString(this.getRoomId()) + ".jpg";
+        UIable.displayImage(path);
+    }
+    
 }
