@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class SuiteRoom extends Room {
-    private ArrayList<String> miniFridge;
+    private ArrayList<String> miniFridge = new ArrayList<String>();
     private String restockList;
     private String[] startingDrinks = {"vodka","gin","rum","liquer","whisky"};
 
