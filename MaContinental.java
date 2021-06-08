@@ -25,6 +25,57 @@ public class MaContinental implements UIable {
 		booking_Calendar = new Calendar();
 	}
 
+    public void run() {
+		String name;
+		ArrayList<Integer> roomsList;
+		int roomID=0;
+        boolean quit = false;
+        while (!quit) {
+            int option = UIable.askOption("check in", "check out", "calendar", "Room service","Exit");
+            switch (option) {
+                case 1:
+                name=UIable.askString("please enter guest name");
+				checkIn(name);
+                    break;
+                case 2:
+                    while(roomID<100||roomID>500)
+					{
+                         roomID=UIable.askNum("please enter on of the rooms ID");
+					}
+                    
+			      
+					if(roomAr[ roomID / 100][ roomID % 100].getAvailabe()==false)
+					  {
+                          name=roomAr[ roomID / 100][ roomID % 100]. getOccupants().getName();
+						  roomsList= booking_Calendar.findBooking(name).getRooms();
+                          checkOut(roomsList);
+					  }
+
+                    break;
+                case 3:
+                    //calendar
+                    booking_Calendar.run();
+                    break;
+                case 4:
+                    //Room service
+                    room_service.run();
+                    break;
+                case 7:
+                    //exit
+                    quit = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+   
+
+
+
+
+
 	// makes a check string for every room in list. will eventually print.
 	// also sets room to available and clears the purchase list.
 	public void checkOut(ArrayList<Integer> rooms_num) {

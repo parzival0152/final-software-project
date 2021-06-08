@@ -15,6 +15,20 @@ public class RoomService implements UIable {
         addProduct("Caviar", 50, 5, 3);
     }
 
+    public void run() {
+		
+    }
+
+   
+
+
+
+
+
+
+
+
+
     // add new product to items list
     public void addProduct(String name, double price, int amount, int level) {
         if (!isDup(name)) {
