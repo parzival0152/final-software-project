@@ -22,7 +22,7 @@ interface UIable {
                     "Error: not an option\nPlease choose one of the following options:\n" + message + "\n"));
         }
         // do while there are choices
-        return choice - 1;
+        return choice;
     }
 
     public static int askOption(ArrayList<String> options){
@@ -41,7 +41,7 @@ interface UIable {
                     "Error: not an option\nPlease choose one of the following options:\n" + message + "\n"));
         }
         // do while there are choices
-        return choice - 1;
+        return choice;
     }
 
     public static String askString(String prompt) {

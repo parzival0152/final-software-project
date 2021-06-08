@@ -2,16 +2,17 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MaContinental implements UIable {
-	private Room[][] roomAr = new Room[5][4];
+	private Room[][] roomAr;
 	private RoomService room_service;
 	private Calendar booking_Calendar;
 
 	public MaContinental() {
 
+		roomAr = new Room[5][4];
 		// 5 floors 4 room each
 		// room numbers start from 100. hundred indicates floor num.
 		for (int i = 1; i <= 5; i++) {
-			for (int j = 0; j < 3; j++) {
+			for (int j = 0; j <= 3; j++) {
 				if ((j == 0 || j == 3) && i > 1 && i < 5)
 					roomAr[i - 1][j] = new RoomwView(100 * i + j);
 				else if (i == 5)
@@ -34,8 +35,8 @@ public class MaContinental implements UIable {
             int option = UIable.askOption("check in", "check out", "calendar", "Room service","Exit");
             switch (option) {
                 case 1:
-                name=UIable.askString("please enter guest name");
-				checkIn(name);
+                	name=UIable.askString("please enter guest name");
+					checkIn(name);
                     break;
                 case 2:
                     while(roomID<100||roomID>500)

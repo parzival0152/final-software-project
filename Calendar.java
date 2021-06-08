@@ -1,20 +1,23 @@
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Map;
+import java.util.HashMap;
 
 public class Calendar implements UIable{
 
     Object[] dateArr;
-    Map<String, Booking> bookMap;
+    HashMap<String, Booking> bookMap;
     ArrayList<Integer> allRooms;
 
     public Calendar() {
         allRooms=new ArrayList<Integer>();
+        bookMap=new HashMap<String, Booking>();
+    
         for (int i = 0; i < 5; i++)
         {
             for(int j = 0; j < 4; j++)
                 allRooms.add((i+1)*100+j);
         } 
+        
     }
 
     public void run()
@@ -67,12 +70,12 @@ public class Calendar implements UIable{
         for(int i=0; i<available.size(); i++)
         {
             tmp=Integer.toString(available.get(i));
-            if(available.get(i)>400)
+            if(available.get(i)>=500)
                 tmp+=" - suite room";
-            else if(available.get(i)%100==1 || (available.get(i)-3)%100==1)
-                tmp+=" - regular room";
-            else
+            else if((available.get(i)%100==0 || available.get(i)%100==3 )&& available.get(i)>=200)
                 tmp+=" - room with view";
+            else
+                tmp+=" - regular room";
             availableRooms.add(tmp);
         }
         return availableRooms;
@@ -109,7 +112,7 @@ public class Calendar implements UIable{
         ArrayList<Integer> roomArr = new ArrayList<Integer>();
         ArrayList<Integer> available = new ArrayList<Integer>();
 
-        for (Map.Entry<String, Booking> entry : bookMap.entrySet()) {
+        for (HashMap.Entry<String, Booking> entry : bookMap.entrySet()) {
             // go over all bookings in specific starting date
 
             BetterDate start2 = entry.getValue().getArrival_date();
