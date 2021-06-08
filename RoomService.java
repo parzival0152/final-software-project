@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import javax.lang.model.util.ElementScanner14;
-
 public class RoomService implements UIable {
     private static ArrayList<Product> items = new ArrayList<Product>();
 

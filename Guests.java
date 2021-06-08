@@ -1,4 +1,4 @@
-public abstract class Guests {
+public class Guests {
     private String name;
     private int totalnumber;
     private int numKids;
@@ -10,8 +10,6 @@ public abstract class Guests {
         this.numKids = numKids;
         this.type = type;
     }
-
-    public abstract double getMult();
 
     // Get and set functions
     public String getName() {

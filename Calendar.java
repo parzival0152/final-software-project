@@ -6,69 +6,36 @@ public class Calendar {
 
     Object[] dateArr;
     Map<String, Booking> bookMap;
-    ArrayList<Integer> roomsType[];
+    ArrayList<Integer> allRooms;
 
     public Calendar() {
-        for (int i = 0; i < 20; i++) {
-            if (i > 4 && (i % 4 == 0 || i % 4 == 3) && i < 17)
-                // view
-                roomsType[1].add(i);
-            else if (i >= 17)
-                // suit
-                roomsType[2].add(i);
-            else
-                // regular
-                roomsType[0].add(i);
-        }
-
+        for (int i = 0; i < 5; i++)
+        {
+            for(int j = 0; j < 4; j++)
+                allRooms.add((i+1)*100+j);
+        } 
     }
 
-    // we get name,dates,numver of guest and how many rooms from any type
-    public void addBooking(String name, BetterDate start, BetterDate finish, int num_guest, int room_type1,
-            int room_type2, int room_type3, int room_num) {
-        ArrayList<Integer> roomArr = new ArrayList<Integer>();
+    // we get name,dates,number of guest and how many rooms from any type
+    public void addBooking(String name, BetterDate start, BetterDate finish, int totalnumber, int numKids, int guestType) {
         ArrayList<Integer> selectRoom = new ArrayList<Integer>();
-        int counter = 0;
+        ArrayList<Integer> available = new ArrayList<Integer>();
+        Guests g = new Guests(name, totalnumber, numKids, guestType);
 
         // this is the list of the rooms that are not available
-        roomArr = findRooms(start, finish);
+        available = findRooms(start, finish);
 
-        for (int i = 0; i < roomsType[0].size(); i++) {
-            // if one of the rooms are not in roomArr, add to selectRoom
-            if (!roomArr.contains(roomsType[0].get(i)) && room_type1 > 0) {
-                selectRoom.add(((roomsType[0].get(i) / 4) + 1) + (roomsType[0].get(i) % 4));
-                counter++;
-                room_type1--;
-            }
-        }
-        for (int i = 0; i < roomsType[1].size(); i++) {
-            // if one of the rooms are not in roomArr, add to selectRoom
-            if (!roomArr.contains(roomsType[1].get(i)) && room_type2 > 0) {
-                selectRoom.add(((roomsType[0].get(i) / 4) + 1) + (roomsType[0].get(i) % 4));
-                counter++;
-                room_type2--;
-            }
-        }
+        //here we ask the user which rooms he wants and put it in selectRoom
+        //TBI
 
-        for (int i = 0; i < roomsType[2].size(); i++) {
-            // if one of the rooms are not in roomArr, add to selectRoom
-            if (!roomArr.contains(roomsType[2].get(i)) && room_type2 > 0) {
-                selectRoom.add(((roomsType[0].get(i) / 4) + 1) + (roomsType[0].get(i) % 4));
-                counter++;
-                room_type3--;
-            }
-        }
-
-        if (counter == room_num) {
-            // create booking
-            Booking new1 = new Booking(name, selectRoom, num_guest, start, finish);
-            bookMap.put(name, new1);
-        }
-
+        //create booking
+        Booking b = new Booking(g, selectRoom, start, finish);
+        bookMap.put(name, b);
     }
 
     public ArrayList<Integer> findRooms(BetterDate start, BetterDate finish) {
         ArrayList<Integer> roomArr = new ArrayList<Integer>();
+        ArrayList<Integer> available = new ArrayList<Integer>();
 
         for (Map.Entry<String, Booking> entry : bookMap.entrySet()) {
             // go over all bookings in specific starting date
@@ -91,7 +58,13 @@ public class Calendar {
             }
         }
 
-        return roomArr;
+        //available contains all the rooms that are available
+        for (int i = 0; i < allRooms.size() ; i++)
+        {
+            if(!roomArr.contains(allRooms.get(i)))
+                available.add(allRooms.get(i));
+        }
+        return available;
     }
 
     public void deleteBooking(String name) {
@@ -109,21 +82,55 @@ public class Calendar {
     // you need to check the room is available on those dates,delete and creat new
     // booking
     public void changeDate(String name, BetterDate start, BetterDate finish) {
-        int room_type1 = 0, room_type2 = 0, room_type3 = 0, temp;
-        for (int i = 1; i <= bookMap.get(name).getRooms().size(); i++) {
-            temp = bookMap.get(name).getRooms().get(i);
-            if (temp >= 500) {
-                room_type3++;
+        
+        ArrayList<Integer> available = new ArrayList<Integer>();
+        ArrayList<Integer> roomArr = new ArrayList<Integer>();
+        ArrayList<Integer> selectRoom = new ArrayList<Integer>();
+
+        // this is the list of the rooms that are available
+        available = findRooms(start, finish);
+        //this is the list of the rooms the booking has
+        roomArr=bookMap.get(name).getRooms();
+
+        boolean flag=true;
+        for(int i=0; i<roomArr.size(); i++)
+        {
+            //if one of the rooms isn't available in the new date, change flag to false
+            if(!available.contains(roomArr.get(i)))
+            {
+                flag=false;
             }
-            if (temp >= 200 && temp < 500 && (temp % 4 == 0 || temp % 4 == 3)) {
-                room_type2++;
-            } else {
-                room_type1++;
+        }
+
+        //if all the rooms are available just change the date without changing anything else
+        if(flag)
+        {
+            bookMap.get(name).setArrival_date(start);
+            bookMap.get(name).setLeaving_date(finish);
+        }
+        else
+        {
+            for(int i=0; i<bookMap.get(name).getRooms().size(); i++)
+            {
+                if(!available.contains(roomArr.get(i)))
+                {   
+                    //tell guest that the room is unavailable and need to pick another one
+                    //send available list
+                    //select is what the room the user chose
+                    int select=0;
+                    selectRoom.add(roomArr.get(select));
+                    roomArr.remove(select);
+                }
+                //keep the room
+                else
+                    selectRoom.add(roomArr.get(i));
+
             }
 
         }
-        addBooking(bookMap.get(name).getBooking_Guest(), start, finish, bookMap.get(name).getNum_Guests(), room_type1,
-                room_type2, room_type3, bookMap.get(name).getRooms().size());
+        Booking b = new Booking(bookMap.get(name).getBooking_Guest(), selectRoom, start, finish);
+        deleteBooking(name);
+        bookMap.put(name, b);
     }
 
     public void chengeGuestNum(String name, int guests_num) {
