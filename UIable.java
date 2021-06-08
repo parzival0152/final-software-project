@@ -1,3 +1,4 @@
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 //class helper prints out menu
@@ -45,4 +46,12 @@ interface UIable {
 
     }
 
+    public static void displayImage(String path){
+        ImageIcon view = new ImageIcon(UIable.class.getResource(path));
+        JOptionPane.showMessageDialog(
+                        null,
+                        null,
+                        "Your view out the window", JOptionPane.INFORMATION_MESSAGE,
+                        view);
+    }
 }
