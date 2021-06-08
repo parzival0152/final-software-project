@@ -19,26 +19,66 @@ public class RoomService implements UIable {
 
     public void run() {
 
-       
+        String name;
+        double price=-1;
+         int amount=-1;
+         int level=-1;
            
             boolean quit = false;
             while (!quit) {
-                int option=UIable.askOption("add product", "remove product"," product details", "order", "add to stock","Exit");
+                int option=UIable.askOption(
+                  "add product",
+                "remove product",
+                " product details",
+                 "order room service",
+                  "add to stock",
+                  "sort by price",
+                  "Exit");
+                  
                 switch (option) {
                     case 1:
-                        
+                        name=UIable.askString("Enter product name:");
+                        while(price<0)
+                        {
+                            price=UIable.askNum("Enter price:");
+                        }
+                        while(amount<0)
+                        {
+                            price=UIable.askNum("Enter amount:");
+                        }
+                        while(level<0)
+                        {
+                           level=UIable.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
+
+                        }
+                        addProduct( name,  price,  amount,  level);
+                        price=-1;
+                        amount=-1;
+                        level=-1;
+        
+
                         break;
                     case 2:
-                        
+                    name=UIable.askString("Enter product name:");
+                    removeProduct(name);
+
                         break;
                     case 3:
+                    name=UIable.askString("Enter product name:");
+                    
                        
                         break;
                     case 4:
                         
                         break;
-                   
                     case 5:
+                        
+                        break;
+                    case 6:
+                        
+                        break;
+                   
+                    case 7:
                         quit = true;
                         break;
                     default:
