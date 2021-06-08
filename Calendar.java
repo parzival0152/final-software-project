@@ -2,13 +2,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 
-public class Calendar {
+public class Calendar implements UIable{
 
     Object[] dateArr;
     Map<String, Booking> bookMap;
     ArrayList<Integer> allRooms;
 
     public Calendar() {
+        allRooms=new ArrayList<Integer>();
         for (int i = 0; i < 5; i++)
         {
             for(int j = 0; j < 4; j++)
@@ -16,18 +17,89 @@ public class Calendar {
         } 
     }
 
+    public void run()
+    {
+        String name, stay, done;
+        int totNum, kidNum, guestType, roomNum;
+        boolean quit = false;
+        while (!quit) {
+            int option = UIable.askOption("Add Booking", "Delete Booking", "Edit Booking","Exit");
+            switch (option) {
+                case 1:
+                    name=UIable.askString("please enter guest name");
+                    stay= UIable.askString("enter date of check in dd/mm");
+                    done= UIable.askString("enter date of check out dd/mm");
+                    totNum=UIable.askNum("enter number of people staying");
+                    kidNum=UIable.askNum("enter number of children staying");
+                    roomNum=UIable.askNum("enter number of rooms you want");
+                    UIable.showString("Please choose what type of guest you are.");
+                    guestType=UIable.askOption("Regular Guest", "Gold Guest", "Platinum Guest");
+
+                    BetterDate start= new BetterDate();
+                    start.turnDate(stay);
+                    BetterDate finish= new BetterDate();
+                    finish.turnDate(done);
+                    addBooking(name, start, finish, totNum, kidNum, guestType, roomNum);
+                    break;
+                case 2:
+                    name=UIable.askString("please enter guest name");
+                    deleteBooking(name);
+                    break;
+                case 3:
+                    name=UIable.askString("please enter guest name");
+                    editBooking(name);
+                    break;
+                case 4:
+                    quit=true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
+    }
+
+    public ArrayList<String> getAvailable(ArrayList<Integer> available)
+    {
+        ArrayList<String> availableRooms = new ArrayList<String>();
+        String tmp;
+        for(int i=0; i<available.size(); i++)
+        {
+            tmp=Integer.toString(available.get(i));
+            if(available.get(i)>400)
+                tmp+=" - suite room";
+            else if(available.get(i)%100==1 || (available.get(i)-3)%100==1)
+                tmp+=" - regular room";
+            else
+                tmp+=" - room with view";
+            availableRooms.add(tmp);
+        }
+        return availableRooms;
+
+    }
+
     // we get name,dates,number of guest and how many rooms from any type
-    public void addBooking(String name, BetterDate start, BetterDate finish, int totalnumber, int numKids, int guestType) {
+    public void addBooking(String name, BetterDate start, BetterDate finish, int totalnumber, int numKids, int guestType, int roomNum) {
         ArrayList<Integer> selectRoom = new ArrayList<Integer>();
         ArrayList<Integer> available = new ArrayList<Integer>();
+
         Guests g = new Guests(name, totalnumber, numKids, guestType);
 
         // this is the list of the rooms that are not available
         available = findRooms(start, finish);
 
-        //here we ask the user which rooms he wants and put it in selectRoom
-        //TBI
+        int option;
 
+        //here we ask the user which rooms he wants and put it in selectRoom
+        UIable.showString("Please choose what room you want to stay in.");
+        for(int i=0; i< roomNum; i++)
+        {
+            option=UIable.askOption(getAvailable(available));
+            selectRoom.add(available.get(option-1));
+            available.remove(option-1);
+        }
+        
         //create booking
         Booking b = new Booking(g, selectRoom, start, finish);
         bookMap.put(name, b);
@@ -114,12 +186,13 @@ public class Calendar {
             {
                 if(!available.contains(roomArr.get(i)))
                 {   
+                    int select;
                     //tell guest that the room is unavailable and need to pick another one
+                    UIable.showString("Room " + roomArr.get(i) +" is unavailable. Please choose one of the following rooms.");
                     //send available list
-                    //select is what the room the user chose
-                    int select=0;
-                    selectRoom.add(roomArr.get(select));
-                    roomArr.remove(select);
+                    select = UIable.askOption(getAvailable(available));;
+                    selectRoom.add(available.get(select-1));
+                    available.remove(select-1);
                 }
                 //keep the room
                 else

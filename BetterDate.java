@@ -14,6 +14,38 @@ public class BetterDate extends Date {
         this.setDate(temp.getDate());
     }
 
+    public BetterDate turnDate(String dateString)
+    {
+        int arr[]= new int[2];
+        int day, month, count=0;
+        if(dateString.contains(","))
+            for (String s : dateString.split(",")) {
+                arr[count]=(Integer.parseInt(s));
+                count++;
+            }
+        else if(dateString.contains("/"))
+            for (String s : dateString.split("/")) {
+                arr[count]=(Integer.parseInt(s));
+                count++;
+            }
+        else if(dateString.contains(" "))
+            for (String s : dateString.split(" ")) {
+                arr[count]=(Integer.parseInt(s));
+                count++;
+            }
+        else if(dateString.contains("."))
+            for (String s : dateString.split(".")) {
+                arr[count]=(Integer.parseInt(s));
+                count++;
+            }
+        day=arr[0];
+        month=arr[1];
+
+        BetterDate tmp = new BetterDate(month, day);
+        return tmp;
+        
+    }
+
     @Override
     public String toString() {
         return String.valueOf(getDate());
