@@ -4,17 +4,19 @@ public class BetterDate extends Date {
 
     public BetterDate() {
         super();
-        Date temp = new Date(2021, 05, 0, 0, 0);
-        this.setDate(temp.getDate());
+        this.setYear(2021);
+        this.setDay(0);
+        this.setMonth(0);
     }
 
     public BetterDate(int month, int day) {
         super();
-        Date temp = new Date(2021, month, day);
-        this.setDate(temp.getDate());
+        this.setYear(2021);
+        this.setDay(day);
+        this.setMonth(month);
     }
 
-    public BetterDate turnDate(String dateString)
+    public void turnDate(String dateString)
     {
         int arr[]= new int[2];
         int day, month, count=0;
@@ -34,21 +36,29 @@ public class BetterDate extends Date {
                 count++;
             }
         else if(dateString.contains("."))
-            for (String s : dateString.split(".")) {
+        {
+            for (String s : dateString.split("\\.")) {
                 arr[count]=(Integer.parseInt(s));
                 count++;
             }
+        }
         day=arr[0];
         month=arr[1];
 
-        BetterDate tmp = new BetterDate(month, day);
-        return tmp;
-        
+        this.setDay(day);
+        this.setMonth(month); 
+    }
+
+    @Override
+    public int compareTo(Date anotherDate) {
+        int thisTime = this.getMonth()*30 +this.getDay();
+        int anotherTime = anotherDate.getMonth()*30 +anotherDate.getDay();
+        return (thisTime<anotherTime ? -1 : (thisTime==anotherTime ? 0 : 1));
     }
 
     @Override
     public String toString() {
-        return String.valueOf(getDate());
+        return (this.getDay()+"/"+this.getMonth());
     }
 
     @Override

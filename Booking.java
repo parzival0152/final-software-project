@@ -30,6 +30,10 @@ public class Booking {
         booking_Guest.setTotalnumber(num_Guests);
     }
 
+    public void setNum_Kids(int num_kids) {
+        booking_Guest.setNumKids(num_kids);
+    }
+
     public BetterDate getArrival_date() {
         return arrival_date;
     }
