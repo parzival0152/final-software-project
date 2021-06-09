@@ -34,6 +34,13 @@ public class Product {
         this.level = level;
     }
 
+    @Override
+    public String toString()
+    {
+        return("Product name - " + this.getName() + "\nProduct Price - " + Double.toString(this.getPrice()) + "\nIn stock - " + 
+        Integer.toString(this.getAmount()));
+    }
+
     public Product(String name, double price, int amount, int level) {
         this.name = name;
         this.price = price;

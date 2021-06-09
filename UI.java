@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 //class helper prints out menu
-interface UIable {
+public class UI {
 
     public static int askOption(String... options) {
         int choice = -1;
@@ -70,9 +70,9 @@ interface UIable {
     public static void displayImage(String path) {
         ImageIcon view;
         try {
-            view = new ImageIcon(UIable.class.getResource(path));
+            view = new ImageIcon(UI.class.getResource(path));
         } catch (Exception e) {
-            view = new ImageIcon(UIable.class.getResource("/Views/default.jpg"));
+            view = new ImageIcon(UI.class.getResource("/Views/default.jpg"));
         }
         JOptionPane.showMessageDialog(null, null, "Your view out the window", JOptionPane.INFORMATION_MESSAGE, view);
     }

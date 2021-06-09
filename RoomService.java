@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
-public class RoomService implements UIable {
+public class RoomService implements Printable {
     private static ArrayList<Product> items = new ArrayList<Product>();
 
     MaContinental managment;
@@ -26,29 +27,30 @@ public class RoomService implements UIable {
            
             boolean quit = false;
             while (!quit) {
-                int option=UIable.askOption(
+                int option=UI.askOption(
                   "add product",
                 "remove product",
                 " product details",
                  "order room service",
                   "add to stock",
                   "sort by price",
+                  "show stock",
                   "Exit");
                   
                 switch (option) {
                     case 1:
-                        name=UIable.askString("Enter product name:");
+                        name=UI.askString("Enter product name:");
                         while(price<0)
                         {
-                            price=UIable.askNum("Enter price:");
+                            price=UI.askNum("Enter price:");
                         }
                         while(amount<0)
                         {
-                            amount=UIable.askNum("Enter amount:");
+                            amount=UI.askNum("Enter amount:");
                         }
                         while(level<0)
                         {
-                           level=UIable.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
+                           level=UI.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
 
                         }
                         addProduct( name,  price,  amount,  level);
@@ -59,42 +61,46 @@ public class RoomService implements UIable {
 
                         break;
                     case 2:
-                    name=UIable.askString("Enter product name:");
+                    name=UI.askString("Enter product name:");
                     removeProduct(name);
 
                         break;
                     case 3:
-                    name=UIable.askString("Enter product name:");
+                    name=UI.askString("Enter product name:");
                     if(ifExist_general(name)!=-1)
                        {
-                        UIable.showString(name+":\nprice:"+Double.toString(getAmount(name))+"\namount:"+Integer.toString(getAmount(name)));
+                        UI.showString(name+":\nprice:"+Double.toString(getAmount(name))+"\namount:"+Integer.toString(getAmount(name)));
 
                        }
                     else
-                       UIable.showString("product not found");
+                       UI.showString("product not found");
                         break;
                     case 4:
                         
                         break;
                     case 5:
-                    name=UIable.askString("Enter product name:");
+                    name=UI.askString("Enter product name:");
                     if(ifExist_general(name)!=-1)
                        {
                         
-                            amount=UIable.askNum("Enter amount:");
+                            amount=UI.askNum("Enter amount:");
                             reStock( name,  amount);
                         
                        
                        }
                     else
-                       UIable.showString("product not found");
+                       UI.showString("product not found");
                         
                         break;
                     case 6:
-                        
+                        sortPrice();
+                        break;
+
+                    case 7:
+                        showData();
                         break;
                    
-                    case 7:
+                    case 8:
                         quit = true;
                         break;
                     default:
@@ -215,6 +221,20 @@ public class RoomService implements UIable {
 
     public void sortPrice() {
         Collections.sort(items, new PriceComperator());
+    }
+
+    @Override
+    public void showData()
+    {
+        Iterator<Product> itemIt = items.iterator();
+        Product item;
+        String message = "Products:\n";
+        while(itemIt.hasNext())
+        {
+            item = itemIt.next();
+            message = message.concat(item.toString() + "\n\n");
+        }
+        UI.showString(message);
     }
 
     // comperators

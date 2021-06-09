@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MaContinental implements UIable {
+public class MaContinental implements Printable {
 	private Room[][] roomAr;
 	private RoomService room_service;
 	private Calendar booking_Calendar;
@@ -32,26 +32,25 @@ public class MaContinental implements UIable {
 		int roomID=0;
         boolean quit = false;
         while (!quit) {
-            int option = UIable.askOption("check in", "check out", "calendar", "Room service","Exit");
+            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Exit");
             switch (option) {
                 case 1:
-                	name=UIable.askString("please enter guest name");
+                	name=UI.askString("please enter guest name");
 					checkIn(name);
                     break;
                 case 2:
-                    while(roomID<100||roomID>500)
-					{
-                         roomID=UIable.askNum("please enter on of the rooms ID");
-					}
-                    
-			      
+                    while(roomID%100 > 3 || roomID > 503 || roomID < 100)
+                        roomID=UI.askNum("please enter on of the rooms ID");
+
 					if(roomAr[ roomID / 100][ roomID % 100].getAvailabe()==false)
 					  {
                           name=roomAr[ roomID / 100][ roomID % 100]. getOccupants().getName();
 						  roomsList= booking_Calendar.findBooking(name).getRooms();
                           checkOut(roomsList);
 					  }
-
+					  else
+					  	UI.showString("Room was not booked.");
+					roomID = 0;
                     break;
                 case 3:
                     //calendar
@@ -61,7 +60,11 @@ public class MaContinental implements UIable {
                     //Room service
                     room_service.run();
                     break;
-                case 5:
+				case 5:
+					//Room status
+					showData();
+				break;
+                case 6:
                     //exit
                     quit = true;
                     break;
@@ -113,7 +116,7 @@ public class MaContinental implements UIable {
 		// checks if booking by the guest exists
 		booking = booking_Calendar.findBooking(name);
 		if (booking == null) {
-			UIable.showString("Booking not found.");
+			UI.showString("Booking not found.");
 			return;
 		}
 		// if it does change room variables accordingly
@@ -129,6 +132,23 @@ public class MaContinental implements UIable {
 	public void roomService()
 	{
 		room_service.run();
+	}
+
+	@Override
+	public void showData() {
+		//prints which rooms are available and which aren't
+		String message = "Room Statuses:\n";
+		for(Room[] roomArr : roomAr)
+		{
+			for(Room room:roomArr)
+			{
+				if(room.getAvailabe() == false)
+					message = message.concat(Integer.toString(room.getRoomId())+" - "+room.getOccupants().getName()+"\n");
+				else
+					message = message.concat(Integer.toString(room.getRoomId())+" - Empty\n");
+			}
+		}
+		UI.showString(message);
 	}
 
 }
