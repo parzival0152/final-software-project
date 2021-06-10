@@ -4,9 +4,8 @@ import java.util.HashMap;
 
 public class Calendar{
 
-    Object[] dateArr;
-    HashMap<String, Booking> bookMap;
-    ArrayList<Integer> allRooms;
+    private HashMap<String, Booking> bookMap;
+    private ArrayList<Integer> allRooms;
 
     public Calendar() {
         allRooms=new ArrayList<Integer>();
