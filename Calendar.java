@@ -195,10 +195,22 @@ public class Calendar{
         ArrayList<Integer> roomArr = new ArrayList<Integer>();
         ArrayList<Integer> selectRoom = new ArrayList<Integer>();
 
-        // this is the list of the rooms that are available
-        available = findRooms(start, finish);
         //this is the list of the rooms the booking has
         roomArr=bookMap.get(name).getRooms();
+
+        //getting all the information needed before deleting booking
+        Guests g=bookMap.get(name).getBooking_Guest();
+        BetterDate start_og=bookMap.get(name).getArrival_date();
+        BetterDate finish_og=bookMap.get(name).getLeaving_date();
+        //delete booking so oocupied rooms will be available
+        deleteBooking(name);
+        //create new booking with empty selectRoom
+        Booking b = new Booking(g, selectRoom, start_og, finish_og);
+        
+
+        // this is the list of the rooms that are available
+        available = findRooms(start, finish);
+
 
         boolean flag=true;
         for(int i=0; i<roomArr.size(); i++)
@@ -213,18 +225,19 @@ public class Calendar{
         //if all the rooms are available just change the date without changing anything else
         if(flag)
         {
-            bookMap.get(name).setArrival_date(start);
-            bookMap.get(name).setLeaving_date(finish);
+            b.setRooms(roomArr);
+            b.setArrival_date(start);
+            b.setLeaving_date(finish);
         }
         else
         {
-            for(int i=0; i<bookMap.get(name).getRooms().size(); i++)
+            for(int i=0; i<roomArr.size(); i++)
             {
                 if(!available.contains(roomArr.get(i)))
                 {   
                     int select;
                     //tell guest that the room is unavailable and need to pick another one
-                    UI.showString("Room " + roomArr.get(i) +" is unavailable. Please choose one of the following rooms.");
+                    UI.showString("Room " + roomArr.get(i) +" is unavailable in new date. Please choose one of the following rooms.");
                     //send available list
                     select = UI.askOption(getAvailable(available));;
                     selectRoom.add(available.get(select-1));
@@ -237,8 +250,9 @@ public class Calendar{
             }
 
         }
-        Booking b = new Booking(bookMap.get(name).getBooking_Guest(), selectRoom, start, finish);
-        deleteBooking(name);
+        b.setRooms(selectRoom);
+        b.setArrival_date(start);
+        b.setLeaving_date(finish);
         bookMap.put(name, b);
     }
 
@@ -252,11 +266,21 @@ public class Calendar{
         ArrayList<Integer> selectRoom = new ArrayList<Integer>();
         ArrayList<Integer> available = new ArrayList<Integer>();
 
+        //getting all the information needed before deleting booking
+        Guests g=bookMap.get(name).getBooking_Guest();
+        BetterDate start=bookMap.get(name).getArrival_date();
+        BetterDate finish=bookMap.get(name).getLeaving_date();
+        //delete booking so oocupied rooms will be available
+        deleteBooking(name);
+        //create new booking with empty selectRoom
+        Booking b = new Booking(g, selectRoom, start, finish);
+
+
         // this is the list of the rooms that are not available
         available = findRooms(bookMap.get(name).getArrival_date(), bookMap.get(name).getLeaving_date());
 
-        int option;
 
+        int option;
         //here we ask the user which rooms he wants and put it in selectRoom
         UI.showString("Please choose what room you want to stay in.");
         for(int i=0; i< bookMap.get(name).getRooms().size(); i++)
@@ -265,7 +289,8 @@ public class Calendar{
             selectRoom.add(available.get(option-1));
             available.remove(option-1);
         }
-        bookMap.get(name).setRooms(selectRoom);
+
+        b.setRooms(selectRoom);
     }
 
     public Booking findBooking(String name) {
