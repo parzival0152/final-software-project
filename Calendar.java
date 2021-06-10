@@ -299,17 +299,4 @@ public class Calendar{
 
     }
 
-    class DateComperator implements Comparator<BetterDate> {
-
-        @Override
-        public int compare(BetterDate o1, BetterDate o2) {
-            if (o1.getMonth() > o2.getMonth() || (o1.getMonth() == o2.getMonth() && o1.getDay() > o2.getDay()))
-                return 1;
-            else if (o1.getMonth() == o2.getMonth() && o1.getDay() == o2.getDay())
-                return 0;
-            else
-                return -1;
-        }
-    }
-
 }
