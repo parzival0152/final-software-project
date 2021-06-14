@@ -128,19 +128,64 @@ public class MaContinental implements Printable {
 		int number;
 		while (roomNum.hasNext()) {
 			number = roomNum.next();
-			roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
-			roomAr[number / 100][number % 100].setAvailabe(false);
+			if(roomAr[number / 100][number % 100].getAvailabe()){
+				roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
+				roomAr[number / 100][number % 100].setAvailabe(false);
+			}
+			else
+			{
+				UI.showString("Sorry, room " + Integer.toString(number) + "is currently occupied. If you had any, you have been checked into your other rooms");
+			}
 		}
 	}
 
 	public void roomOptions()
 	{
-		return;
+
+		int chosenRoom,action;
+		String message;
+		ArrayList<String> availableRooms = new ArrayList<>();
+		for(Room[] roomArr : roomAr)
+		{
+			for(Room room:roomArr)
+			{
+				if(room.getAvailabe() && !(room instanceof NormalRoom))
+					availableRooms.add(Integer.toString(room.getRoomId()));
+			}
+		}
+		chosenRoom = UI.askOption(availableRooms);
+		
+		if(chosenRoom/100 == 5)
+		{
+			SuiteRoom suite = (SuiteRoom)roomAr[4][chosenRoom%100];
+			action = UI.askOption("Drink","Restock fridge","Print fridge");
+			switch (action)
+			{
+				case 0:
+				
+			}
+		}
 	}
 
 	public void roomService()
 	{
 		room_service.run();
+	}
+
+	// Returns arrayList<Integer> of available room numbers
+	public ArrayList<Integer> availableRooms()
+	{
+		ArrayList<Integer> available = new ArrayList<>();
+
+		for(Room[] roomArr : roomAr)
+		{
+			for(Room room:roomArr)
+			{
+				if(room.getAvailabe())
+					available.add(room.getRoomId());
+			}
+		}
+		return availableRooms();
 	}
 
 	@Override
