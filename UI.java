@@ -22,9 +22,19 @@ public class UI {
         //             "Error: not an option\nPlease choose one of the following options:\n" + message + "\n"));
         // }
         // // do while there are choices
-        return JOptionPane.showOptionDialog(null, "Choose an option",
-    "MA Continental the hotel for you",
-        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0])+1;
+        if(options.length < 5)
+        {
+            return JOptionPane.showOptionDialog(null, "Pick an option",
+            "MA Continental the hotel for you",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0])+1;
+        }
+        else
+        {
+            return (Integer)JOptionPane.showInputDialog(null, "Pick an option",
+            "The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null, 
+            options, // Array of choices
+            options[1]); // Initial choice
+        }
     }
 
     public static int askOption(ArrayList<String> loptions){

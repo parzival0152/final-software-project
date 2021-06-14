@@ -32,7 +32,7 @@ public class MaContinental implements Printable {
 		int roomID=0;
         boolean quit = false;
         while (!quit) {
-            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Exit");
+            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Room Options","Exit");
             switch (option) {
                 case 1:
                 	name=UI.askString("please enter guest name");
@@ -53,7 +53,7 @@ public class MaContinental implements Printable {
 					roomID = 0;
                     break;
                 case 3:
-                    //calendar
+                    //Calendar
                     booking_Calendar.run();
                     break;
                 case 4:
@@ -63,9 +63,13 @@ public class MaContinental implements Printable {
 				case 5:
 					//Room status
 					showData();
-				break;
-                case 6:
-                    //exit
+					break;
+				case 6:
+					//Room options
+					roomOptions();
+					break;
+                case 7:
+                    //Exit
                     quit = true;
                     break;
                 default:
@@ -127,6 +131,11 @@ public class MaContinental implements Printable {
 			roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
 			roomAr[number / 100][number % 100].setAvailabe(false);
 		}
+	}
+
+	public void roomOptions()
+	{
+		return;
 	}
 
 	public void roomService()
