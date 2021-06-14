@@ -146,6 +146,8 @@ public class MaContinental implements Printable {
 					message = message.concat(Integer.toString(room.getRoomId())+" - "+room.getOccupants().getName()+"\n");
 				else
 					message = message.concat(Integer.toString(room.getRoomId())+" - Empty\n");
+				if(room.getRoomId()%100 == 3)
+					message = message.concat("\n");
 			}
 		}
 		UI.showString(message);
