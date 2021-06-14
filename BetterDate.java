@@ -20,27 +20,10 @@ public class BetterDate extends Date {
     {
         int arr[]= new int[2];
         int day, month, count=0;
-        if(dateString.contains(","))
-            for (String s : dateString.split(",")) {
-                arr[count]=(Integer.parseInt(s));
-                count++;
-            }
-        else if(dateString.contains("/"))
-            for (String s : dateString.split("/")) {
-                arr[count]=(Integer.parseInt(s));
-                count++;
-            }
-        else if(dateString.contains(" "))
-            for (String s : dateString.split(" ")) {
-                arr[count]=(Integer.parseInt(s));
-                count++;
-            }
-        else if(dateString.contains("."))
-        {
-            for (String s : dateString.split("\\.")) {
-                arr[count]=(Integer.parseInt(s));
-                count++;
-            }
+
+        for (String s : dateString.split("/")) {
+            arr[count]=(Integer.parseInt(s));
+             count++;
         }
         day=arr[0];
         month=arr[1];
@@ -78,6 +61,21 @@ public class BetterDate extends Date {
     @Override
     public void setMonth(int month) {
         super.setMonth(month);
+    }
+
+    public boolean set_Month(int month) {
+        if(month<1||month>31)
+            return false;
+        super.setMonth(month);
+        return true;
+        
+    }
+
+    public boolean set_Day(int day) {
+        if(day<1||day>31)
+            return false;
+        super.setDate(day);
+        return true;
     }
 
 }

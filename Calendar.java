@@ -21,7 +21,7 @@ public class Calendar{
 
     public void run()
     {
-        String name, stay, done;
+        String name, stay="", done="";
         int totNum, kidNum, guestType, roomNum;
         boolean quit = false;
         while (!quit) {
@@ -29,26 +29,74 @@ public class Calendar{
             switch (option) {
                 case 1:
                     name=UI.askString("please enter guest name");
-                    stay= UI.askString("enter date of check in dd/mm");
-                    done= UI.askString("enter date of check out dd/mm");
+
+                    stay=enterDate("enter date of check in dd/mm");
+                    BetterDate start= new BetterDate();
+                    start.turnDate(stay);
+
+                    done=enterDate("enter date of check out dd/mm");
+                    BetterDate finish= new BetterDate();
+                    finish.turnDate(done);
+
+                    //check if check out date comes before check in date
+                    if(!(finish.compareTo(start)>0))
+                    {
+                        boolean flag=false;
+                        while(!flag)
+                        {
+                            UI.showString("Your check out date can't be before or at the same day as check in date.");
+                            stay=enterDate("enter date of check in dd/mm");
+                            start= new BetterDate();
+                            start.turnDate(stay);
+        
+                            done=enterDate("enter date of check out dd/mm");
+                            finish= new BetterDate();
+                            finish.turnDate(done);
+                            if(finish.compareTo(start)>0)
+                                flag=true;
+                        }
+                        
+                    }
+
                     totNum=UI.askNum("enter number of people staying");
+                    while(totNum<1)
+                    {
+                        UI.showString("Please enter a number bigger than zero.");
+                        totNum=UI.askNum("enter number of people staying");
+                    }
                     kidNum=UI.askNum("enter number of children staying");
+                    while(kidNum<0)
+                    {
+                        UI.showString("Please enter zero or a number bigger than zero.");
+                        kidNum=UI.askNum("enter number of children staying");
+                    }
                     roomNum=UI.askNum("enter number of rooms you want");
+                    while(roomNum<1)
+                    {
+                        UI.showString("Please enter a number bigger than zero.");
+                        roomNum=UI.askNum("enter number of rooms you want");
+                    }
                     UI.showString("Please choose what type of guest you are.");
                     guestType=UI.askOption("Regular Guest", "Gold Guest", "Platinum Guest");
 
-                    BetterDate start= new BetterDate();
-                    start.turnDate(stay);
-                    BetterDate finish= new BetterDate();
-                    finish.turnDate(done);
                     addBooking(name, start, finish, totNum, kidNum, guestType, roomNum);
                     break;
                 case 2:
                     name=UI.askString("please enter guest name");
+                    if(!bookMap.containsKey(name))
+                    {
+                        UI.showString("This name doesn't exist in our system.");
+                        break;
+                    }
                     deleteBooking(name);
                     break;
                 case 3:
                     name=UI.askString("please enter guest name");
+                    if(!bookMap.containsKey(name))
+                    {
+                        UI.showString("This name doesn't exist in our system.");
+                        break;
+                    }
                     editBooking(name);
                     break;
                 case 4:
@@ -153,11 +201,33 @@ public class Calendar{
             int option = UI.askOption("Change date", "change number of people staying" ,"Change Rooms", "Exit");
             switch (option) {
                 case 1:
-                    stay= UI.askString("enter new date of check in dd/mm");
-                    done= UI.askString("enter new date of check out dd/mm");
+                    stay=enterDate("enter date of check in dd/mm");
+                    BetterDate start= new BetterDate();
+                    start.turnDate(stay);
 
-                    BetterDate start = new BetterDate();
-                    BetterDate finish = new BetterDate();
+                    done=enterDate("enter date of check out dd/mm");
+                    BetterDate finish= new BetterDate();
+                    finish.turnDate(done);
+
+                    //check if check out date comes before check in date
+                    if(!(finish.compareTo(start)>0))
+                    {
+                        boolean flag=false;
+                        while(!flag)
+                        {
+                            UI.showString("Your check out date can't be before or at the same day as check in date.");
+                            stay=enterDate("enter date of check in dd/mm");
+                            start= new BetterDate();
+                            start.turnDate(stay);
+        
+                            done=enterDate("enter date of check out dd/mm");
+                            finish= new BetterDate();
+                            finish.turnDate(done);
+                            if(finish.compareTo(start)>0)
+                                flag=true;
+                        }
+                    }
+                    
                     start.turnDate(stay);
                     finish.turnDate(done);
 
@@ -165,8 +235,20 @@ public class Calendar{
 
                     break;
                 case 2:
-                    totNum=UI.askNum("please enter number of guests");
+                    totNum=UI.askNum("enter number of people staying");
+                    while(totNum<1)
+                    {
+                        UI.showString("Please enter a number bigger than zero.");
+                        totNum=UI.askNum("enter number of people staying");
+                    }
+                    
                     kidNum=UI.askNum("please enter number of children");
+                    while(kidNum<0)
+                    {
+                        UI.showString("Please enter zero or a number bigger than zero.");
+                        kidNum=UI.askNum("enter number of children staying");
+                    }
+
                     changeGuestNum(name, totNum, kidNum);
                     deleteBooking(name);
                     break;
@@ -187,8 +269,6 @@ public class Calendar{
         return bookMap.get(b.getName()).returnNumberDays();
     }
 
-    // you need to check the room is available on those dates,delete and creat new
-    // booking
     public void changeDate(String name, BetterDate start, BetterDate finish) {
         
         ArrayList<Integer> available = new ArrayList<Integer>();
@@ -299,4 +379,30 @@ public class Calendar{
 
     }
 
+    public String enterDate(String message)
+    {
+        boolean flag=false;
+        String buffer="";
+        while(!flag)
+        {
+            buffer= UI.askString(message);
+            if(buffer.contains("/"))
+            {
+                int arr[]= new int[2];
+                int count=0;
+        
+                for (String s : buffer.split("/")) {
+                    arr[count]=(Integer.parseInt(s));
+                     count++;
+                }
+                if(!((arr[0]<1||arr[0]>31)||(arr[1]<1||arr[1]>12)))
+                    flag=true;
+                else
+                    UI.showString("please enter a day 1-31 and a month 1-12");
+            }
+            else
+                UI.showString("your date format is incorrect, please enter dd/mm");
+        }
+        return buffer;
+    }
 }
