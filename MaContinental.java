@@ -32,7 +32,7 @@ public class MaContinental implements Printable {
 		int roomID=0;
         boolean quit = false;
         while (!quit) {
-            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Room Options","Exit");
+            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Room options","Exit");
             switch (option) {
                 case 1:
                 	name=UI.askString("please enter guest name");
@@ -143,7 +143,6 @@ public class MaContinental implements Printable {
 	{
 
 		int chosenRoom,action;
-		String message;
 		ArrayList<String> availableRooms = new ArrayList<>();
 		for(Room[] roomArr : roomAr)
 		{
@@ -153,17 +152,38 @@ public class MaContinental implements Printable {
 					availableRooms.add(Integer.toString(room.getRoomId()));
 			}
 		}
-		chosenRoom = UI.askOption(availableRooms);
+		chosenRoom = Integer.parseInt(availableRooms.get(UI.askOption(availableRooms)));
 		
 		if(chosenRoom/100 == 5)
 		{
+			Boolean exit = false;
 			SuiteRoom suite = (SuiteRoom)roomAr[4][chosenRoom%100];
-			action = UI.askOption("Drink","Restock fridge","Print fridge");
-			switch (action)
+			while(!exit)
 			{
-				case 0:
-				
+				action = UI.askOption("Drink","Restock fridge","Print fridge","Exit");
+				switch (action)
+				{
+					case 1:
+						ArrayList<String> fridge = suite.getFridge();
+						int drink = UI.askOption(fridge);
+						suite.drink(fridge.get(drink-1));
+						break;
+					case 2:
+						suite.restockFridge();
+						break;
+					case 3:
+						suite.printFridge();
+						break;
+					default:
+						exit = true;
+						break;
+				}
 			}
+		}
+		else
+		{
+			RoomwView view = (RoomwView)roomAr[chosenRoom/100][chosenRoom%100];
+			view.showView();
 		}
 	}
 
@@ -194,8 +214,6 @@ public class MaContinental implements Printable {
            check= roomAr[row][column].buy(name_product,amount);
 
            return check;
-         
-
 	  }
 
 

@@ -1,38 +1,43 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SuiteRoom extends Room {
     private ArrayList<String> miniFridge = new ArrayList<String>();
-    private String restockList;
-    private String[] startingDrinks = {"vodka","gin","rum","liquer","whisky"};
+    private String[] startingDrinks = {"Irish cream","vodka","gin","rum","liquer","whisky"};
 
     public SuiteRoom(int roomId) {
         super(roomId);
-        this.restockList = "Irish Cream";
-        for(String drink:startingDrinks)
-            this.restockList.concat(","+drink);
         restockFridge();
+    }
+
+    public ArrayList<String> getFridge()
+    {
+        return this.miniFridge;
     }
 
     public void drink(String drink)
     {
-        miniFridge.remove(drink);
+        this.miniFridge.remove(drink);
     }
 
-    private void restockFridge()
+    public void restockFridge()
     {
-        String[] split = restockList.split(",");
-        for(String drink: split)
+        for(String drink: startingDrinks)
         {
-            miniFridge.add(drink);
+            if(!miniFridge.contains(drink))
+                this.miniFridge.add(drink);
         }
+        Collections.sort(miniFridge);
     }
 
     public void printFridge()
     {
+        String message = "";
         for(String drink:miniFridge)
         {
-            System.out.println(drink);
+            message = message.concat(drink+"\n");
         }
+        UI.showString(message);
     }
 
     public boolean checkMenu(String name) {
