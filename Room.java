@@ -41,7 +41,7 @@ public abstract class Room {
     }
 
     // adds an item to the purchase list
-    public void buy(String name, int amount) {
+    public boolean buy(String name, int amount) {
         boolean flag = false;
         if (checkMenu(name)) // if product is in menu
         {
@@ -58,7 +58,9 @@ public abstract class Room {
                 String[] in = { name, String.valueOf(amount), String.valueOf(RoomService.getPrice(name)) };
                 purchaseList.add(in);
             }
+            return true;
         }
+        return false;
     }
 
     public void emptyPurchaseList() {
