@@ -32,7 +32,7 @@ public class MaContinental implements Printable {
 		int roomID=0;
         boolean quit = false;
         while (!quit) {
-            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Exit");
+            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Room Options","Exit");
             switch (option) {
                 case 1:
                 	name=UI.askString("please enter guest name");
@@ -53,7 +53,7 @@ public class MaContinental implements Printable {
 					roomID = 0;
                     break;
                 case 3:
-                    //calendar
+                    //Calendar
                     booking_Calendar.run();
                     break;
                 case 4:
@@ -63,9 +63,13 @@ public class MaContinental implements Printable {
 				case 5:
 					//Room status
 					showData();
-				break;
-                case 6:
-                    //exit
+					break;
+				case 6:
+					//Room options
+					roomOptions();
+					break;
+                case 7:
+                    //Exit
                     quit = true;
                     break;
                 default:
@@ -124,14 +128,64 @@ public class MaContinental implements Printable {
 		int number;
 		while (roomNum.hasNext()) {
 			number = roomNum.next();
-			roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
-			roomAr[number / 100][number % 100].setAvailabe(false);
+			if(roomAr[number / 100][number % 100].getAvailabe()){
+				roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
+				roomAr[number / 100][number % 100].setAvailabe(false);
+			}
+			else
+			{
+				UI.showString("Sorry, room " + Integer.toString(number) + "is currently occupied. If you had any, you have been checked into your other rooms");
+			}
+		}
+	}
+
+	public void roomOptions()
+	{
+
+		int chosenRoom,action;
+		String message;
+		ArrayList<String> availableRooms = new ArrayList<>();
+		for(Room[] roomArr : roomAr)
+		{
+			for(Room room:roomArr)
+			{
+				if(room.getAvailabe() && !(room instanceof NormalRoom))
+					availableRooms.add(Integer.toString(room.getRoomId()));
+			}
+		}
+		chosenRoom = UI.askOption(availableRooms);
+		
+		if(chosenRoom/100 == 5)
+		{
+			SuiteRoom suite = (SuiteRoom)roomAr[4][chosenRoom%100];
+			action = UI.askOption("Drink","Restock fridge","Print fridge");
+			switch (action)
+			{
+				case 0:
+				
+			}
 		}
 	}
 
 	public void roomService()
 	{
 		room_service.run();
+	}
+
+	// Returns arrayList<Integer> of available room numbers
+	public ArrayList<Integer> availableRooms()
+	{
+		ArrayList<Integer> available = new ArrayList<>();
+
+		for(Room[] roomArr : roomAr)
+		{
+			for(Room room:roomArr)
+			{
+				if(room.getAvailabe())
+					available.add(room.getRoomId());
+			}
+		}
+		return availableRooms();
 	}
 
 	@Override

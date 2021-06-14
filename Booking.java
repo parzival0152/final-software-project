@@ -30,6 +30,9 @@ public class Booking {
         booking_Guest.setTotalnumber(num_Guests);
     }
 
+    public int getNum_Kids() {
+        return booking_Guest.getNumKids();
+    }
     public void setNum_Kids(int num_kids) {
         booking_Guest.setNumKids(num_kids);
     }

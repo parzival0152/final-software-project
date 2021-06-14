@@ -1,8 +1,8 @@
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.HashMap;
 
-public class Calendar{
+public class Calendar implements Printable{
 
     private HashMap<String, Booking> bookMap;
     private ArrayList<Integer> allRooms;
@@ -25,7 +25,7 @@ public class Calendar{
         int totNum, kidNum, guestType, roomNum;
         boolean quit = false;
         while (!quit) {
-            int option = UI.askOption("Add Booking", "Delete Booking", "Edit Booking","Exit");
+            int option = UI.askOption("Add Booking", "Delete Booking", "Edit Booking", "Show all booking", "Exit");
             switch (option) {
                 case 1:
                     name=UI.askString("please enter guest name");
@@ -71,9 +71,9 @@ public class Calendar{
                         kidNum=UI.askNum("enter number of children staying");
                     }
                     roomNum=UI.askNum("enter number of rooms you want");
-                    while(roomNum<1)
+                    while(roomNum<1 || roomNum>allRooms.size())
                     {
-                        UI.showString("Please enter a number bigger than zero.");
+                        UI.showString("Please enter a number bigger than zero and smaller than "+(allRooms.size()+1)+" .");
                         roomNum=UI.askNum("enter number of rooms you want");
                     }
                     UI.showString("Please choose what type of guest you are.");
@@ -100,6 +100,9 @@ public class Calendar{
                     editBooking(name);
                     break;
                 case 4:
+                    showData();
+                    break;
+                case 5:
                     quit=true;
                     break;
                 default:
@@ -139,20 +142,26 @@ public class Calendar{
         // this is the list of the rooms that are not available
         available = findRooms(start, finish);
 
-        int option;
-
-        //here we ask the user which rooms he wants and put it in selectRoom
-        UI.showString("Please choose what room you want to stay in.");
-        for(int i=0; i< roomNum; i++)
+        if(available.size()<roomNum)
         {
-            option=UI.askOption(getAvailable(available));
-            selectRoom.add(available.get(option-1));
-            available.remove(option-1);
+            UI.showString("There are not enough rooms available.");
         }
-        
-        //create booking
-        Booking b = new Booking(g, selectRoom, start, finish);
-        bookMap.put(name, b);
+        else
+        {
+            int option;
+            //here we ask the user which rooms he wants and put it in selectRoom
+            UI.showString("Please choose what room you want to stay in.");
+            for(int i=0; i< roomNum; i++)
+            {
+                option=UI.askOption(getAvailable(available));
+                selectRoom.add(available.get(option-1));
+                available.remove(option-1);
+            }
+            Collections.sort(selectRoom);
+            //create booking
+            Booking b = new Booking(g, selectRoom, start, finish);
+            bookMap.put(name, b);
+        }
     }
 
     public ArrayList<Integer> findRooms(BetterDate start, BetterDate finish) {
@@ -404,5 +413,25 @@ public class Calendar{
                 UI.showString("your date format is incorrect, please enter dd/mm");
         }
         return buffer;
+    }
+
+    @Override
+    public void showData() {
+        String allBookings="";
+
+        for (HashMap.Entry<String, Booking> entry : bookMap.entrySet()) {
+            allBookings+= entry.getKey()+":"
+            +"\n    Arrival date: " + entry.getValue().getArrival_date()
+            +"\n    Leaving date: " + entry.getValue().getLeaving_date()
+            +"\n    Number of guests: " + entry.getValue().getNum_Guests()
+            +"\n    Number of children: " + entry.getValue().getNum_Kids()
+            +"\n    Rooms: " + entry.getValue().getRooms()+"\n\n";
+        }
+
+        if(bookMap.isEmpty())
+            UI.showString("There are no bookings.");
+        else
+            UI.showString(allBookings);
+    
     }
 }
