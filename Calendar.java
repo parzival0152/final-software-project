@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Calendar implements Printable{
@@ -156,7 +157,7 @@ public class Calendar implements Printable{
                 selectRoom.add(available.get(option-1));
                 available.remove(option-1);
             }
-            
+            Collections.sort(selectRoom);
             //create booking
             Booking b = new Booking(g, selectRoom, start, finish);
             bookMap.put(name, b);
