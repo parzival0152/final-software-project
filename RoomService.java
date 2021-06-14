@@ -3,8 +3,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class RoomService implements Printable {
+public class RoomService implements  Printable {
     private static ArrayList<Product> items = new ArrayList<Product>();
+    private static ArrayList<String> items_string = new ArrayList<String>();
+    private static ArrayList<Integer> rooms = new ArrayList<Integer>();
+    
+
 
     MaContinental managment;
     public RoomService(MaContinental managment1) {
@@ -16,6 +20,13 @@ public class RoomService implements Printable {
         addProduct("Wine", 55, 10, 2);
         addProduct("Champagne", 70, 10, 3);
         addProduct("Caviar", 50, 5, 3);
+        items_string.add("Water");
+        items_string.add("Chocolate");
+        items_string.add("Chips");
+        items_string.add("Fruit Basket");
+        items_string.add("Wine");
+        items_string.add("Champagne");
+        items_string.add("Caviar");
     }
 
     public void run() {
@@ -24,11 +35,13 @@ public class RoomService implements Printable {
         double price=-1;
          int amount=-1;
          int level=-1;
+         int check,row,column;
+
            
             boolean quit = false;
             while (!quit) {
                 int option=UI.askOption(
-                  "add product",
+                "add product",
                 "remove product",
                 " product details",
                  "order room service",
@@ -53,7 +66,9 @@ public class RoomService implements Printable {
                            level=UI.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
 
                         }
-                        addProduct( name,  price,  amount,  level);
+                        check=addProduct( name,  price,  amount,  level);
+                        if (check==1)
+                        items_string.add(name);
                         price=-1;
                         amount=-1;
                         level=-1;
@@ -62,21 +77,37 @@ public class RoomService implements Printable {
                         break;
                     case 2:
                     name=UI.askString("Enter product name:");
-                    removeProduct(name);
+                    check=removeProduct(name);
+                    if(check!=-1)
+                      items_string.remove(check);
 
                         break;
                     case 3:
                     name=UI.askString("Enter product name:");
-                    if(ifExist_general(name)!=-1)
-                       {
-                        UI.showString(name+":\nprice:"+Double.toString(getAmount(name))+"\namount:"+Integer.toString(getAmount(name)));
-
-                       }
+                    int index=ifExist_general(name);
+                    if(index!=-1)
+                    {
+                        items.get(index).toString();
+                    }
                     else
                        UI.showString("product not found");
                         break;
                     case 4:
-                        
+                    
+                     option=UI.askOption(items_string);
+                     amount=UI.askNum("Enter amount:");
+                     if(items.get(option-1).getAmount()<amount)
+                    {
+                     UI.showString("not enough in stock");
+                    break;
+                    }
+                    rooms=managment.availableRooms();
+                    option=UI.askOption(managment.availableRooms());
+                    row=rooms.get(option-1)/100;
+                    column=rooms.get(option-1)%100;
+                  
+
+
                         break;
                     case 5:
                     name=UI.askString("Enter product name:");
@@ -85,7 +116,7 @@ public class RoomService implements Printable {
                         
                             amount=UI.askNum("Enter amount:");
                             reStock( name,  amount);
-                        
+                            amount=-1;
                        
                        }
                     else
@@ -128,22 +159,25 @@ public class RoomService implements Printable {
 
 
     // add new product to items list
-    public void addProduct(String name, double price, int amount, int level) {
+    public int addProduct(String name, double price, int amount, int level) {
         if (!isDup(name)) {
             Product p = new Product(name, price, amount, level);
             items.add(p);
+            return 1;
         }
+        return 0;
     }
 
     // remove a product from the items list
-    public void removeProduct(String name) {
+    public int removeProduct(String name) {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getName().equals(name)) {
                 items.remove(i);
+                return i;
                 break;
             }
         }
-
+        return -1;
     }
 
     // return the amount of a certain item in stock
@@ -188,6 +222,8 @@ public class RoomService implements Printable {
     }
 
 
+
+    public void orderProduct()
 
 
     // c check for dupes in the items list
