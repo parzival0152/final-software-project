@@ -5,7 +5,7 @@ import java.util.HashMap;
 public class Calendar implements Printable{
 
     private HashMap<String, Booking> bookMap;
-    private ArrayList<Integer> allRooms;
+    private static ArrayList<Integer> allRooms;
 
     public Calendar() {
         allRooms=new ArrayList<Integer>();
