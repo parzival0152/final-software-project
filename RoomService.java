@@ -3,10 +3,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
+
+
 public class RoomService implements  Printable {
     private static ArrayList<Product> items = new ArrayList<Product>();
     private static ArrayList<String> items_string = new ArrayList<String>();
-    private static ArrayList<Integer> rooms = new ArrayList<Integer>();
+    private static ArrayList<String> rooms = new ArrayList<String>();
     
 
 
@@ -36,6 +38,7 @@ public class RoomService implements  Printable {
          int amount=-1;
          int level=-1;
          int check,row,column;
+         boolean flag;
 
            
             boolean quit = false;
@@ -93,7 +96,13 @@ public class RoomService implements  Printable {
                        UI.showString("product not found");
                         break;
                     case 4:
-                    
+                    name=UI.askString("Enter product name:");
+                    index=ifExist_general(name);
+                    if(index==-1)
+                    {
+                       UI.showString("product not found");
+                        break;
+                    }
                      option=UI.askOption(items_string);
                      amount=UI.askNum("Enter amount:");
                      if(items.get(option-1).getAmount()<amount)
@@ -103,11 +112,18 @@ public class RoomService implements  Printable {
                     }
                     rooms=managment.availableRooms();
                     option=UI.askOption(managment.availableRooms());
-                    row=rooms.get(option-1)/100;
-                    column=rooms.get(option-1)%100;
-                  
+                    row=Integer.parseInt(rooms.get(option-1))/100;
+                    column=Integer.parseInt(rooms.get(option-1))%100;
+                    flag=managment.buyProduct(name, amount, row, column);
+                    amount=-1;
+                    if(flag==true)
+                       {
+                          UI.showString("buy end successfully");
+                          items.get(option-1).setAmount(items.get(option-1).getAmount()-amount);
 
-
+                       }
+                    else
+                    UI.showString("buy failed,the guest does'nt has access to this menue");
                         break;
                     case 5:
                     name=UI.askString("Enter product name:");
@@ -174,7 +190,7 @@ public class RoomService implements  Printable {
             if (items.get(i).getName().equals(name)) {
                 items.remove(i);
                 return i;
-                break;
+                
             }
         }
         return -1;
@@ -223,7 +239,7 @@ public class RoomService implements  Printable {
 
 
 
-    public void orderProduct()
+    
 
 
     // c check for dupes in the items list

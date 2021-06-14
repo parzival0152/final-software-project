@@ -173,20 +173,34 @@ public class MaContinental implements Printable {
 	}
 
 	// Returns arrayList<Integer> of available room numbers
-	public ArrayList<Integer> availableRooms()
+	public ArrayList<String> availableRooms()
 	{
-		ArrayList<Integer> available = new ArrayList<>();
+		ArrayList<String> available = new ArrayList<>();
 
 		for(Room[] roomArr : roomAr)
 		{
 			for(Room room:roomArr)
 			{
 				if(room.getAvailabe())
-					available.add(room.getRoomId());
+					available.add(Integer.toString(room.getRoomId()));
 			}
 		}
 		return availableRooms();
 	}
+
+    public boolean buyProduct(String name_product,int amount,int row,int column)
+      {
+		   boolean check;
+           check= roomAr[row][column].buy(name_product,amount);
+
+           return check;
+         
+
+	  }
+
+
+
+
 
 	@Override
 	public void showData() {
