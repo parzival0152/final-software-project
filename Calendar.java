@@ -203,66 +203,18 @@ public class Calendar implements Printable{
     }
 
     public void editBooking(String name) {
-        String stay, done;
-        int totNum, kidNum;
         boolean quit = false;
         while (!quit) {
             int option = UI.askOption("Change date", "change number of people staying" ,"Change Rooms", "Exit");
             switch (option) {
                 case 1:
-                    stay=enterDate("enter date of check in dd/mm");
-                    BetterDate start= new BetterDate();
-                    start.turnDate(stay);
-
-                    done=enterDate("enter date of check out dd/mm");
-                    BetterDate finish= new BetterDate();
-                    finish.turnDate(done);
-
-                    //check if check out date comes before check in date
-                    if(!(finish.compareTo(start)>0))
-                    {
-                        boolean flag=false;
-                        while(!flag)
-                        {
-                            UI.showString("Your check out date can't be before or at the same day as check in date.");
-                            stay=enterDate("enter date of check in dd/mm");
-                            start= new BetterDate();
-                            start.turnDate(stay);
-        
-                            done=enterDate("enter date of check out dd/mm");
-                            finish= new BetterDate();
-                            finish.turnDate(done);
-                            if(finish.compareTo(start)>0)
-                                flag=true;
-                        }
-                    }
-                    
-                    start.turnDate(stay);
-                    finish.turnDate(done);
-
-                    changeDate(name, start, finish);
-
+                    changeDate(name);
                     break;
                 case 2:
-                    totNum=UI.askNum("enter number of people staying");
-                    while(totNum<1)
-                    {
-                        UI.showString("Please enter a number bigger than zero.");
-                        totNum=UI.askNum("enter number of people staying");
-                    }
-                    
-                    kidNum=UI.askNum("please enter number of children");
-                    while(kidNum<0)
-                    {
-                        UI.showString("Please enter zero or a number bigger than zero.");
-                        kidNum=UI.askNum("enter number of children staying");
-                    }
-
-                    changeGuestNum(name, totNum, kidNum);
-                    deleteBooking(name);
+                    changeGuestNum(name);
                     break;
                 case 3:
-                    changeRooms(name);
+                    changeRoomNum(name);
                     break;
                 case 4:
                     quit=true;
@@ -278,8 +230,44 @@ public class Calendar implements Printable{
         return bookMap.get(b.getName()).returnNumberDays();
     }
 
-    public void changeDate(String name, BetterDate start, BetterDate finish) {
+    public void changeDate(String name) {
+
+        UI.showString("Your current check in date is: "+ bookMap.get(name).getArrival_date()
+        +".\nYour current check out date is: " + bookMap.get(name).getLeaving_date()+".");
+
+        //getting check in and check out date
+        String stay = enterDate("enter new date of check in dd/mm");
+        BetterDate start= new BetterDate();
+        start.turnDate(stay);
+
+        String done = enterDate("enter new date of check out dd/mm");
+        BetterDate finish= new BetterDate();
+        finish.turnDate(done);
+
+        //check if check out date comes before check in date
+        if(!(finish.compareTo(start)>0))
+        {
+            boolean flag=false;
+            while(!flag)
+            {
+                UI.showString("Your check out date can't be before or at the same day as check in date.");
+                stay=enterDate("enter date of check in dd/mm");
+                start= new BetterDate();
+                start.turnDate(stay);
+
+                done=enterDate("enter date of check out dd/mm");
+                finish= new BetterDate();
+                finish.turnDate(done);
+                if(finish.compareTo(start)>0)
+                    flag=true;
+            }
+        }
         
+        //turning to better date
+        start.turnDate(stay);
+        finish.turnDate(done);
+        
+
         ArrayList<Integer> available = new ArrayList<Integer>();
         ArrayList<Integer> roomArr = new ArrayList<Integer>();
         ArrayList<Integer> selectRoom = new ArrayList<Integer>();
@@ -345,41 +333,98 @@ public class Calendar implements Printable{
         bookMap.put(name, b);
     }
 
-    public void changeGuestNum(String name, int guests_num, int kid_num) {
-        bookMap.get(name).setNum_Guests(guests_num);
-        bookMap.get(name).setNum_Kids(kid_num);
+    public void changeGuestNum(String name) {
+        
+        UI.showString("Your current number of guests is: "+ bookMap.get(name).getNum_Guests()
+        +".\nYour current number of children is: " + bookMap.get(name).getNum_Kids()+".");
+
+        int totNum = UI.askNum("enter number of people staying");
+        while(totNum<1)
+        {
+            UI.showString("Please enter a number bigger than zero.");
+            totNum=UI.askNum("enter number of people staying");
+        }
+        
+        int kidNum=UI.askNum("please enter number of children");
+        while(kidNum<0)
+        {
+            UI.showString("Please enter zero or a number bigger than zero.");
+            kidNum=UI.askNum("enter number of children staying");
+        }
+        bookMap.get(name).setNum_Guests(totNum);
+        bookMap.get(name).setNum_Kids(kidNum);
     }
 
-    public void changeRooms(String name)
+    public void changeRooms(String name,int roomNum)
     {
         ArrayList<Integer> selectRoom = new ArrayList<Integer>();
         ArrayList<Integer> available = new ArrayList<Integer>();
 
-        //getting all the information needed before deleting booking
-        Guests g=bookMap.get(name).getBooking_Guest();
+        //getting dates
         BetterDate start=bookMap.get(name).getArrival_date();
         BetterDate finish=bookMap.get(name).getLeaving_date();
-        //delete booking so oocupied rooms will be available
-        deleteBooking(name);
-        //create new booking with empty selectRoom
-        Booking b = new Booking(g, selectRoom, start, finish);
+
+        //change rooms to current empty selectRoom
+        bookMap.get(name).setRooms(selectRoom);
 
 
         // this is the list of the rooms that are not available
-        available = findRooms(bookMap.get(name).getArrival_date(), bookMap.get(name).getLeaving_date());
+        available = findRooms(start, finish);
 
 
         int option;
         //here we ask the user which rooms he wants and put it in selectRoom
         UI.showString("Please choose what room you want to stay in.");
-        for(int i=0; i< bookMap.get(name).getRooms().size(); i++)
+        for(int i=0; i< roomNum; i++)
         {
             option=UI.askOption(getAvailable(available));
             selectRoom.add(available.get(option-1));
             available.remove(option-1);
         }
 
-        b.setRooms(selectRoom);
+        bookMap.get(name).setRooms(selectRoom);
+    }
+
+    public void changeRoomNum(String name)
+    {
+        UI.showString("Your current number of rooms are: "+ bookMap.get(name).getRooms().size()
+        +".\nYour selected rooms are: " + bookMap.get(name).getRooms()+".");
+        ArrayList<Integer> available = new ArrayList<Integer>();
+        
+        int room;
+        boolean quit = false;
+        while (!quit) {
+            available = findRooms(bookMap.get(name).getArrival_date(), bookMap.get(name).getLeaving_date());
+            int option = UI.askOption("Add room", "Remove room" ,"Change number of rooms", "Exit");
+            switch (option) {
+                case 1:
+                    UI.showString("Please choose what room you want to add.");
+                    room=UI.askOption(getAvailable(available));
+                    bookMap.get(name).getRooms().add(available.get(room-1));
+                    break;
+                case 2:
+                    UI.showString("Please choose what room you want to remove.");
+                    room=UI.askOption(getAvailable(bookMap.get(name).getRooms()));
+                    bookMap.get(name).getRooms().remove(room-1);
+                    break;
+                case 3:
+                    int roomNum=UI.askNum("Enter the number of rooms you want:");
+                    //check if number of selected rooms minus the number of rooms already owned is too much
+                    if(available.size()<roomNum-bookMap.get(name).getRooms().size())
+                    {
+                        UI.showString("There are not enough rooms available.");
+                        break;
+                    }
+                    changeRooms(name, roomNum);
+                    break;
+                case 4:
+                    quit=true;
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
     public Booking findBooking(String name) {
