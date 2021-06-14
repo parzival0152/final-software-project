@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 //class helper prints out menu
 public class UI {
 
+    // creates drop down menu with string options. returns position (starting at 1) op picked choice
     public static int askOption(String... options) {
         // int choice = -1;
         // String message = "";
@@ -30,18 +31,37 @@ public class UI {
         }
         else
         {
-            return (Integer)JOptionPane.showInputDialog(null, "Pick an option",
-            "The Choice of a Lifetime", JOptionPane.QUESTION_MESSAGE, null, 
+            String pick = (String)JOptionPane.showInputDialog(null, "Pick an option",
+            "MA Continental the hotel for you",
+            JOptionPane.QUESTION_MESSAGE, null, 
             options, // Array of choices
             options[1]); // Initial choice
+
+            for (int i = 0; i < options.length; i++) 
+            {
+                if(pick.equals(options[i]))
+                    return i+1;
+            }
+            return -1;   
         }
     }
 
+    // creates drop down menu with string arraylist options. returns position (starting at 1) op picked choice
     public static int askOption(ArrayList<String> loptions){
+        
         Object[] options = loptions.toArray();
-        return JOptionPane.showOptionDialog(null, "Choose an option",
-    "MA Continental the hotel for you",
-        JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0])+1;
+        String pick = (String)JOptionPane.showInputDialog(null, "Pick an option",
+            "MA Continental the hotel for you",
+            JOptionPane.QUESTION_MESSAGE, null, 
+            options, // Array of choices
+            options[1]); // Initial choice
+
+        for (int i = 0; i < options.length; i++) 
+        {
+            if(pick.equals(options[i]))
+                return i+1;
+        }
+        return -1;  
     }
 
     public static String askString(String prompt) {
@@ -64,7 +84,6 @@ public class UI {
 
     public static void showString(String message) {
         JOptionPane.showMessageDialog(null, message, "", JOptionPane.PLAIN_MESSAGE);
-
     }
 
     public static void displayImage(String path) {
