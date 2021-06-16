@@ -56,8 +56,15 @@ public class RoomService implements  Printable {
                 switch (option) {
                     case 1:
                         name=UI.askString("Enter product name:");
-                        if(name==null)
-                        break;
+                        try{
+                            if (name==null)
+                                throw new NullPointerException("demo");
+                        }
+                        catch(NullPointerException e)
+                        {
+                            break;        
+                        }
+                       
                         while(price<0)
                         {
                             price=UI.askNum("Enter price:");
