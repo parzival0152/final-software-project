@@ -29,6 +29,14 @@ public class Calendar implements Printable{
             switch (option) {
                 case 1:
                     name=UI.askString("Please enter guest name");
+                    try{
+                        if (name=="")
+                            throw new NullPointerException("");
+                    }
+                    catch(NullPointerException e)
+                    {
+                        break;        
+                    }
 
                     stay=enterDate("Enter date of check in dd/mm");
                     BetterDate start= new BetterDate();
@@ -83,10 +91,21 @@ public class Calendar implements Printable{
                     break;
                 case 2:
                     name=UI.askString("please enter guest name");
-                    if(!bookMap.containsKey(name))
+                    try{
+                        if (name==null)
+                            throw new NullPointerException("demo");
+                    }
+                    catch(NullPointerException e)
                     {
-                        UI.showString("This name doesn't exist in our system.");
-                        break;
+                        break;        
+                    }
+                    try{
+                        if(!bookMap.containsKey(name))
+                            throw new NullPointerException("This name doesn't exist in our system.");
+                    }
+                    catch(NullPointerException e)
+                    {
+                        break;        
                     }
                     deleteBooking(name);
                     break;
@@ -152,8 +171,8 @@ public class Calendar implements Printable{
             for(int i=0; i< roomNum; i++)
             {
                 option=UI.askOption(getAvailable(available));
-                selectRoom.add(available.get(option));
-                available.remove(option);
+                selectRoom.add(available.get(option-1));
+                available.remove(option-1);
             }
             Collections.sort(selectRoom);
             //create booking
@@ -444,7 +463,13 @@ public class Calendar implements Printable{
         
                 for (String s : buffer.split("/")) {
                     arr[count]=(Integer.parseInt(s));
-                     count++;
+                    count++;
+                    if(count==2)
+                    {
+                        buffer=arr[0]+"/"+arr[1];
+                        break;
+                    }
+                        
                 }
                 if(!((arr[0]<1||arr[0]>31)||(arr[1]<1||arr[1]>12)))
                     flag=true;
@@ -453,6 +478,7 @@ public class Calendar implements Printable{
             }
             else
                 UI.showString("Your date format is incorrect, please enter dd/mm");
+
         }
         return buffer;
     }
