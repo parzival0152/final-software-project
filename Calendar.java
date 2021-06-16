@@ -28,13 +28,13 @@ public class Calendar implements Printable{
             int option = UI.askOption("Add Booking", "Delete Booking", "Edit Booking", "Show all booking", "Exit");
             switch (option) {
                 case 1:
-                    name=UI.askString("please enter guest name");
+                    name=UI.askString("Please enter guest name");
 
-                    stay=enterDate("enter date of check in dd/mm");
+                    stay=enterDate("Enter date of check in dd/mm");
                     BetterDate start= new BetterDate();
                     start.turnDate(stay);
 
-                    done=enterDate("enter date of check out dd/mm");
+                    done=enterDate("Enter date of check out dd/mm");
                     BetterDate finish= new BetterDate();
                     finish.turnDate(done);
 
@@ -45,11 +45,11 @@ public class Calendar implements Printable{
                         while(!flag)
                         {
                             UI.showString("Your check out date can't be before or at the same day as check in date.");
-                            stay=enterDate("enter date of check in dd/mm");
+                            stay=enterDate("Enter date of check in dd/mm.");
                             start= new BetterDate();
                             start.turnDate(stay);
         
-                            done=enterDate("enter date of check out dd/mm");
+                            done=enterDate("Enter date of check out dd/mm.");
                             finish= new BetterDate();
                             finish.turnDate(done);
                             if(finish.compareTo(start)>0)
@@ -58,19 +58,19 @@ public class Calendar implements Printable{
                         
                     }
 
-                    totNum=UI.askNum("enter number of people staying");
+                    totNum=UI.askNum("Enter number of people staying.");
                     while(totNum<1)
                     {
                         UI.showString("Please enter a number bigger than zero.");
-                        totNum=UI.askNum("enter number of people staying");
+                        totNum=UI.askNum("Enter number of people staying.");
                     }
-                    kidNum=UI.askNum("enter number of children staying");
+                    kidNum=UI.askNum("Enter number of children staying.");
                     while(kidNum<0)
                     {
                         UI.showString("Please enter zero or a number bigger than zero.");
-                        kidNum=UI.askNum("enter number of children staying");
+                        kidNum=UI.askNum("Enter number of children staying");
                     }
-                    roomNum=UI.askNum("enter number of rooms you want");
+                    roomNum=UI.askNum("Enter number of rooms you want");
                     while(roomNum<1 || roomNum>allRooms.size())
                     {
                         UI.showString("Please enter a number bigger than zero and smaller than "+(allRooms.size()+1)+" .");
@@ -91,7 +91,7 @@ public class Calendar implements Printable{
                     deleteBooking(name);
                     break;
                 case 3:
-                    name=UI.askString("please enter guest name");
+                    name=UI.askString("Please enter guest name.");
                     if(!bookMap.containsKey(name))
                     {
                         UI.showString("This name doesn't exist in our system.");
@@ -102,10 +102,8 @@ public class Calendar implements Printable{
                 case 4:
                     showData();
                     break;
-                case 5:
-                    quit=true;
-                    break;
                 default:
+                    quit=true;
                     break;
             }
         }
@@ -205,7 +203,7 @@ public class Calendar implements Printable{
     public void editBooking(String name) {
         boolean quit = false;
         while (!quit) {
-            int option = UI.askOption("Change date", "change number of people staying" ,"Change Rooms", "Exit");
+            int option = UI.askOption("Change date", "Change number of people staying" ,"Change Rooms", "Exit");
             switch (option) {
                 case 1:
                     changeDate(name);
@@ -236,11 +234,11 @@ public class Calendar implements Printable{
         +".\nYour current check out date is: " + bookMap.get(name).getLeaving_date()+".");
 
         //getting check in and check out date
-        String stay = enterDate("enter new date of check in dd/mm");
+        String stay = enterDate("Enter new date of check in dd/mm.");
         BetterDate start= new BetterDate();
         start.turnDate(stay);
 
-        String done = enterDate("enter new date of check out dd/mm");
+        String done = enterDate("Enter new date of check out dd/mm.");
         BetterDate finish= new BetterDate();
         finish.turnDate(done);
 
@@ -251,11 +249,11 @@ public class Calendar implements Printable{
             while(!flag)
             {
                 UI.showString("Your check out date can't be before or at the same day as check in date.");
-                stay=enterDate("enter date of check in dd/mm");
+                stay=enterDate("Enter date of check in dd/mm.");
                 start= new BetterDate();
                 start.turnDate(stay);
 
-                done=enterDate("enter date of check out dd/mm");
+                done=enterDate("Enter date of check out dd/mm.");
                 finish= new BetterDate();
                 finish.turnDate(done);
                 if(finish.compareTo(start)>0)
@@ -338,18 +336,18 @@ public class Calendar implements Printable{
         UI.showString("Your current number of guests is: "+ bookMap.get(name).getNum_Guests()
         +".\nYour current number of children is: " + bookMap.get(name).getNum_Kids()+".");
 
-        int totNum = UI.askNum("enter number of people staying");
+        int totNum = UI.askNum("Enter number of people staying.");
         while(totNum<1)
         {
             UI.showString("Please enter a number bigger than zero.");
-            totNum=UI.askNum("enter number of people staying");
+            totNum=UI.askNum("Enter number of people staying.");
         }
         
-        int kidNum=UI.askNum("please enter number of children");
+        int kidNum=UI.askNum("Please enter number of children.");
         while(kidNum<0)
         {
             UI.showString("Please enter zero or a number bigger than zero.");
-            kidNum=UI.askNum("enter number of children staying");
+            kidNum=UI.askNum("Enter number of children staying.");
         }
         bookMap.get(name).setNum_Guests(totNum);
         bookMap.get(name).setNum_Kids(kidNum);
@@ -455,7 +453,7 @@ public class Calendar implements Printable{
                     UI.showString("please enter a day 1-31 and a month 1-12");
             }
             else
-                UI.showString("your date format is incorrect, please enter dd/mm");
+                UI.showString("Your date format is incorrect, please enter dd/mm");
         }
         return buffer;
     }

@@ -44,14 +44,14 @@ public class RoomService implements  Printable {
             boolean quit = false;
             while (!quit) {
                 int option=UI.askOption(
-                "add product",
-                "remove product",
-                " product details",
-                 "order room service",
-                  "add to stock",
-                  "sort by price",
-                  "show stock",
-                  "Exit");
+                "Add product",
+                "Remove product",
+                "Product details",
+                "Order room service",
+                "Add to stock",
+                "Sort by price",
+                "Show stock",
+                "Exit");
                   
                 switch (option) {
                     case 1:
@@ -79,11 +79,12 @@ public class RoomService implements  Printable {
 
                         break;
                     case 2:
-                    name=UI.askString("Enter product name:");
-                    check=removeProduct(name);
-                    if(check!=-1)
-                      items_string.remove(check);
-
+                        name=UI.askString("Enter product name:");
+                        check=removeProduct(name);
+                        if(check!=-1)
+                            items_string.remove(check);
+                        else
+                            UI.showString("Product not found.");
                         break;
                     case 3:
                     name=UI.askString("Enter product name:");
@@ -93,21 +94,21 @@ public class RoomService implements  Printable {
                         items.get(index).toString();
                     }
                     else
-                       UI.showString("product not found");
+                       UI.showString("Product not found.");
                         break;
                     case 4:
                     name=UI.askString("Enter product name:");
                     index=ifExist_general(name);
                     if(index==-1)
                     {
-                       UI.showString("product not found");
+                       UI.showString("Product not found.");
                         break;
                     }
                      option=UI.askOption(items_string);
                      amount=UI.askNum("Enter amount:");
                      if(items.get(option-1).getAmount()<amount)
                     {
-                     UI.showString("not enough in stock");
+                     UI.showString("Not enough in stock.");
                     break;
                     }
                     rooms=managment.availableRooms();
@@ -118,12 +119,11 @@ public class RoomService implements  Printable {
                     amount=-1;
                     if(flag==true)
                        {
-                          UI.showString("buy end successfully");
+                          UI.showString("Purchase successful.");
                           items.get(option-1).setAmount(items.get(option-1).getAmount()-amount);
-
                        }
                     else
-                    UI.showString("buy failed,the guest does'nt has access to this menue");
+                    UI.showString("Purchase failed, guest doesn't have access to this menu.");
                         break;
                     case 5:
                     name=UI.askString("Enter product name:");
@@ -136,7 +136,7 @@ public class RoomService implements  Printable {
                        
                        }
                     else
-                       UI.showString("product not found");
+                       UI.showString("Product not found.");
                         
                         break;
                     case 6:
@@ -147,20 +147,12 @@ public class RoomService implements  Printable {
                         showData();
                         break;
                    
-                    case 8:
-                        quit = true;
-                        break;
                     default:
+                        quit = true;
                         break;
                 }
               
             }
-        
-
-
-
-
-
 		
     }
 

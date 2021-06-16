@@ -32,10 +32,10 @@ public class MaContinental implements Printable {
 		int roomID=0;
         boolean quit = false;
         while (!quit) {
-            int option = UI.askOption("check in", "check out", "calendar", "Room service","Room status","Room options","Exit");
+            int option = UI.askOption("Check in", "Check out", "Calendar", "Room service","Room status","Room options","Exit");
             switch (option) {
                 case 1:
-                	name=UI.askString("please enter guest name");
+                	name=UI.askString("Please enter guest name");
 					checkIn(name);
                     break;
                 case 2:
@@ -68,11 +68,9 @@ public class MaContinental implements Printable {
 					//Room options
 					roomOptions();
 					break;
-                case 7:
+				default:
                     //Exit
                     quit = true;
-                    break;
-                default:
                     break;
             }
         }
@@ -142,17 +140,24 @@ public class MaContinental implements Printable {
 	public void roomOptions()
 	{
 
-		int chosenRoom,action;
+		int chosenRoom = 0,action;
 		ArrayList<String> availableRooms = new ArrayList<>();
 		for(Room[] roomArr : roomAr)
 		{
 			for(Room room:roomArr)
 			{
-				if(room.getAvailabe() && !(room instanceof NormalRoom))
+				if(!room.getAvailabe() && !(room instanceof NormalRoom))
 					availableRooms.add(Integer.toString(room.getRoomId()));
 			}
 		}
-		chosenRoom = Integer.parseInt(availableRooms.get(UI.askOption(availableRooms)));
+		try{
+			chosenRoom = Integer.parseInt(availableRooms.get(UI.askOption(availableRooms)));
+		}
+		catch(Exception e)
+		{
+			UI.showString("No occupied rooms.");
+			return;
+		}
 		
 		if(chosenRoom/100 == 5)
 		{
