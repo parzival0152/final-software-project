@@ -76,7 +76,6 @@ public class RoomService implements  Printable {
                         while(level<0)
                         {
                            level=UI.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
-
                         }
                         check=addProduct( name,  price,  amount,  level);
                         if (check==1)
