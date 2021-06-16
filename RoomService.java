@@ -56,6 +56,8 @@ public class RoomService implements  Printable {
                 switch (option) {
                     case 1:
                         name=UI.askString("Enter product name:");
+                        if(name==null)
+                        break;
                         while(price<0)
                         {
                             price=UI.askNum("Enter price:");
