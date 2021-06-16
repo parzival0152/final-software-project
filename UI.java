@@ -71,6 +71,7 @@ public class UI {
     }
 
     public static int askNum(String prompt) {
+        
         boolean flag = false;
         while (true) {
             try {

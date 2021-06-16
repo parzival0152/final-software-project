@@ -55,16 +55,37 @@ public class RoomService implements  Printable {
                   
                 switch (option) {
                     case 1:
-                        name=UI.askString("Enter product name:");
+                       
                         try{
+                            name=UI.askString("Enter product name:");
                             if (name==null)
                                 throw new NullPointerException("demo");
+                                while(price<0)
+                                {
+                                    price=UI.askNum("Enter price:");
+                                }
+                                while(amount<0)
+                                {
+                                    amount=UI.askNum("Enter amount:");
+                                }
+                                while(level<0)
+                                {
+                                   level=UI.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
+        
+                                }
+                                check=addProduct( name,  price,  amount,  level);
+                                if (check==1)
+                                items_string.add(name);
+                                price=-1;
+                                amount=-1;
+                                level=-1;
                         }
                         catch(NullPointerException e)
                         {
                             break;        
                         }
                        
+<<<<<<< Updated upstream
                         while(price<0)
                         {
                             price=UI.askNum("Enter price:");
@@ -83,6 +104,9 @@ public class RoomService implements  Printable {
                         price=-1;
                         amount=-1;
                         level=-1;
+=======
+                        
+>>>>>>> Stashed changes
         
 
                         break;
