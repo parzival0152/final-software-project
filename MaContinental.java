@@ -187,7 +187,7 @@ public class MaContinental implements Printable {
 		}
 		else
 		{
-			RoomwView view = (RoomwView)roomAr[chosenRoom/100 -1][chosenRoom%100];
+			RoomwView view = (RoomwView)roomAr[chosenRoom/100][chosenRoom%100];
 			view.showView();
 		}
 	}
