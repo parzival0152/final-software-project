@@ -163,6 +163,7 @@ public class Calendar implements Printable{
     }
 
     public ArrayList<Integer> findRooms(BetterDate start, BetterDate finish) {
+        boolean flag1=false, flag2=false;
         ArrayList<Integer> roomArr = new ArrayList<Integer>();
         ArrayList<Integer> available = new ArrayList<Integer>();
 
@@ -172,19 +173,17 @@ public class Calendar implements Printable{
             BetterDate start2 = entry.getValue().getArrival_date();
             BetterDate finish2 = entry.getValue().getLeaving_date();
 
-            // if our desired date isn't completely before another
-            if (!(start.compareTo(start2) < 0 && finish.compareTo(start) <= 0)) {
-                // go over all the rooms in that booking
-                for (int j = 0; j < entry.getValue().getRooms().size(); j++)
-                    roomArr.add(entry.getValue().getRooms().get(j));
+            // if our desired date is completely before another
+            flag1=!(start.compareTo(start2) < 0 && finish.compareTo(start) <= 0);
+            // if our desired date is completely after another
+            flag2=!(start.compareTo(finish2) >= 0 && finish.compareTo(finish2) > 0);
 
-            }
-
-            // if our desired date isn't completely after another
-            if (!(start.compareTo(finish2) >= 0 && finish.compareTo(finish2) > 0)) {
+            if(flag1&&flag2)
+            {
                 for (int j = 0; j < entry.getValue().getRooms().size(); j++)
                     roomArr.add(entry.getValue().getRooms().get(j));
             }
+
         }
 
         //available contains all the rooms that are available
