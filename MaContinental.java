@@ -11,14 +11,14 @@ public class MaContinental implements Printable {
 		roomAr = new Room[5][4];
 		// 5 floors 4 room each
 		// room numbers start from 100. hundred indicates floor num.
-		for (int i = 1; i <= 5; i++) {
+		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j <= 3; j++) {
-				if ((j == 0 || j == 3) && i > 1 && i < 5)
-					roomAr[i - 1][j] = new RoomwView(100 * i + j);
-				else if (i == 5)
-					roomAr[i - 1][j] = new SuiteRoom(500 + j);
+				if ((j == 0 || j == 3) && i > 0 && i < 4)
+					roomAr[i][j] = new RoomwView(100 * (i+1) + j);
+				else if (i == 4)
+					roomAr[i][j] = new SuiteRoom(500 + j);
 				else
-					roomAr[i - 1][j] = new NormalRoom(100 * i + j);
+					roomAr[i][j] = new NormalRoom(100 * (i+1) + j);
 			}
 		}
 
@@ -40,11 +40,11 @@ public class MaContinental implements Printable {
                     break;
                 case 2:
                     while(roomID%100 > 3 || roomID > 503 || roomID < 100)
-                        roomID=UI.askNum("please enter on of the rooms ID");
+                        roomID=UI.askNum("please enter one of the rooms ID");
 
-					if(roomAr[ roomID / 100][ roomID % 100].getAvailabe()==false)
+					if(roomAr[ roomID / 100 - 1][ roomID % 100].getAvailabe()==false)
 					  {
-                          name=roomAr[ roomID / 100][ roomID % 100]. getOccupants().getName();
+                          name=roomAr[ roomID / 100 - 1][ roomID % 100]. getOccupants().getName();
 						  roomsList= booking_Calendar.findBooking(name).getRooms();
                           checkOut(roomsList);
 					  }
@@ -90,7 +90,7 @@ public class MaContinental implements Printable {
 		// go over every room's purchase list and add the prices of the items.
 		for (int num : rooms_num) {
 			check = check.concat("Room " + Integer.toString(num) + ":\n"); // printing check for every room.
-			int row = num / 100;
+			int row = num / 100 - 1;
 			int column = num % 100;
 			Room room = roomAr[row][column];
 			for (String[] product : room.getPurchaseList()) {
@@ -125,14 +125,14 @@ public class MaContinental implements Printable {
 		Iterator<Integer> roomNum = booking.getRooms().iterator();
 		int number;
 		while (roomNum.hasNext()) {
-			number = roomNum.next();
+			number = roomNum.next() - 100;
 			if(roomAr[number / 100][number % 100].getAvailabe()){
 				roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
 				roomAr[number / 100][number % 100].setAvailabe(false);
 			}
 			else
 			{
-				UI.showString("Sorry, room " + Integer.toString(number) + "is currently occupied. If you had any, you have been checked into your other rooms");
+				UI.showString("Sorry, room " + Integer.toString(number) + " is currently occupied. If you had any, you have been checked into your other rooms");
 			}
 		}
 	}
@@ -171,7 +171,7 @@ public class MaContinental implements Printable {
 					case 1:
 						ArrayList<String> fridge = suite.getFridge();
 						int drink = UI.askOption(fridge);
-						suite.drink(fridge.get(drink-1));
+						suite.drink(fridge.get(drink));
 						break;
 					case 2:
 						suite.restockFridge();

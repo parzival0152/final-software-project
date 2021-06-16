@@ -35,7 +35,7 @@ public class UI {
             "MA Continental the hotel for you",
             JOptionPane.QUESTION_MESSAGE, null, 
             options, // Array of choices
-            options[1]); // Initial choice
+            options[0]); // Initial choice
             if(pick == null)
                 return -1;
             for (int i = 0; i < options.length; i++) 
@@ -55,12 +55,13 @@ public class UI {
             "MA Continental the hotel for you",
             JOptionPane.QUESTION_MESSAGE, null, 
             options, // Array of choices
-            options[1]); // Initial choice
-
+            options[0]); // Initial choice
+        if(pick == null)
+            return -1;
         for (int i = 0; i < options.length; i++) 
         {
             if(pick.equals(options[i]))
-                return i+1;
+                return i;
         }
         return -1;  
     }
