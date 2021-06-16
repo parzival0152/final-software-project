@@ -171,8 +171,8 @@ public class Calendar implements Printable{
             for(int i=0; i< roomNum; i++)
             {
                 option=UI.askOption(getAvailable(available));
-                selectRoom.add(available.get(option-1));
-                available.remove(option-1);
+                selectRoom.add(available.get(option));
+                available.remove(option);
             }
             Collections.sort(selectRoom);
             //create booking
