@@ -33,10 +33,10 @@ public class RoomService implements  Printable {
 
     public void run() {
 
-        String name;
+        String name,message;
         double price=-1;
          int amount=-1;
-         int level=-1;
+         int level=-1,index;
          int check,row,column;
          boolean flag;
 
@@ -56,6 +56,15 @@ public class RoomService implements  Printable {
                 switch (option) {
                     case 1:
                         name=UI.askString("Enter product name:");
+                        try{
+                            if (name==null)
+                                throw new NullPointerException("demo");
+                        }
+                        catch(NullPointerException e)
+                        {
+                            break;        
+                        }
+                       
                         while(price<0)
                         {
                             price=UI.askNum("Enter price:");
@@ -87,14 +96,13 @@ public class RoomService implements  Printable {
                             UI.showString("Product not found.");
                         break;
                     case 3:
-                    name=UI.askString("Enter product name:");
-                    int index=ifExist_general(name);
-                    if(index!=-1)
+                    option=UI.askOption(items_string);
+                    if(option!=-1)
                     {
-                        items.get(index).toString();
+                        message=items.get(option-1).toString();
+                        UI.showString( message);
                     }
-                    else
-                       UI.showString("Product not found.");
+                    
                         break;
                     case 4:
                     name=UI.askString("Enter product name:");

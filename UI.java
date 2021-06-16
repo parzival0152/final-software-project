@@ -55,7 +55,7 @@ public class UI {
             "MA Continental the hotel for you",
             JOptionPane.QUESTION_MESSAGE, null, 
             options, // Array of choices
-            options[0]); // Initial choice
+            options[0]); 
         if(pick == null)
             return -1;
         for (int i = 0; i < options.length; i++) 
