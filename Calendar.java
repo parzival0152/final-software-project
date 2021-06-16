@@ -29,6 +29,11 @@ public class Calendar implements Printable{
             switch (option) {
                 case 1:
                     name=UI.askString("Please enter guest name");
+                    while(bookMap.containsKey(name))
+                    {
+                        UI.showString("This name already exists in our system.");
+                        name=UI.askString("Please enter guest name");
+                    }
                     try{
                         if (name=="")
                             throw new NullPointerException("");
@@ -93,7 +98,7 @@ public class Calendar implements Printable{
                     name=UI.askString("please enter guest name");
                     try{
                         if (name==null)
-                            throw new NullPointerException("demo");
+                            throw new NullPointerException("");
                     }
                     catch(NullPointerException e)
                     {
