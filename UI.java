@@ -56,7 +56,8 @@ public class UI {
             JOptionPane.QUESTION_MESSAGE, null, 
             options, // Array of choices
             options[1]); // Initial choice
-
+            if(pick == null)
+            return -1;
         for (int i = 0; i < options.length; i++) 
         {
             if(pick.equals(options[i]))
