@@ -124,23 +124,32 @@ public class RoomService implements  Printable {
                     case 4:
                     
                     option=UI.askOption(items_string);
-                    if(option!=-1)
+                    if(option==-1)
                     {
-                        
+                        break;
                     }
                     
-                     
-                     amount=UI.askNum("Enter amount:");
+                    try{
+                    while(amount<0)
+                    {
+                        message=UI.askNum("Enter amount:");
+                        if (message==null)
+                    throw new NullPointerException("demo");
+                    amount=Integer.parseInt(message);
+                        
+                    }
+                
                      if(items.get(option-1).getAmount()<amount)
                     {
                      UI.showString("Not enough in stock.");
+                     amount=-1;
                     break;
                     }
                     rooms=managment.availableRooms();
                     option=UI.askOption(managment.availableRooms());
                     row=Integer.parseInt(rooms.get(option-1))/100;
                     column=Integer.parseInt(rooms.get(option-1))%100;
-                    flag=managment.buyProduct(name, amount, row, column);
+                    flag=managment.buyProduct(items_string.get(option-1), amount, row, column);
                     amount=-1;
                     if(flag==true)
                        {
@@ -149,19 +158,44 @@ public class RoomService implements  Printable {
                        }
                     else
                     UI.showString("Purchase failed, guest doesn't have access to this menu.");
+                    }
+                    catch(NullPointerException e)
+                    {
+                        price=-1;
+                         amount=-1;
+                         level=-1;
+                        break;        
+                    }
                         break;
+
                     case 5:
-                    name=UI.askString("Enter product name:");
-                    if(ifExist_general(name)!=-1)
-                       {
-                        
-                            amount=UI.askNum("Enter amount:");
-                            reStock( name,  amount);
+                    try
+                    {
+
+                        option=UI.askOption(items_string);
+                        if(option!=-1)
+                        {
+                            message=UI.askNum("Enter amount:");
+                        if (message==null)
+                     throw new NullPointerException("demo");
+                            amount=Integer.parseInt(message);
+                            reStock( items_string.get(option-1),  amount);
                             amount=-1;
+                        }
+                    
+                    
                        
-                       }
-                    else
-                       UI.showString("Product not found.");
+                       
+                       
+                    }
+
+                      catch(NullPointerException e)
+                    {
+                        price=-1;
+                         amount=-1;
+                         level=-1;
+                        break;        
+                    }
                         
                         break;
                     case 6:
@@ -206,6 +240,7 @@ public class RoomService implements  Printable {
         for (int i = 0; i < items.size(); i++) {
             if (items.get(i).getName().equals(name)) {
                 items.remove(i);
+                items_string.remove(i);
                 return i;
                 
             }

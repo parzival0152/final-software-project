@@ -27,7 +27,7 @@ public class MaContinental implements Printable {
 	}
 
     public void run() {
-		String name;
+		String name,message;
 		ArrayList<Integer> roomsList;
 		int roomID=0;
         boolean quit = false;
@@ -39,8 +39,22 @@ public class MaContinental implements Printable {
 					checkIn(name);
                     break;
                 case 2:
+				try{
+				
                     while(roomID%100 > 3 || roomID > 503 || roomID < 100)
-                        roomID=UI.askNum("please enter one of the rooms ID");
+					{
+						
+						message=UI.askNum("please enter one of the rooms ID");
+                        if (message==null)
+                    throw new NullPointerException("demo");
+                    roomID=Integer.parseInt(message);
+					}
+				}
+					catch(NullPointerException e)
+                    {
+                        
+                        break;        
+                    }
 
 					if(roomAr[ roomID / 100 - 1][ roomID % 100].getAvailabe()==false)
 					  {
