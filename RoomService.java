@@ -107,7 +107,7 @@ public class RoomService implements  Printable {
                     option=UI.askOption(items_string);
                     if(option!=-1)
                     {
-                        removeProduct(items.get(option-1).getName());
+                        removeProduct(items.get(option).getName());
                     }
                         
                         
@@ -116,7 +116,7 @@ public class RoomService implements  Printable {
                     option=UI.askOption(items_string);
                     if(option!=-1)
                     {
-                        message=items.get(option-1).toString();
+                        message=items.get(option).toString();
                         UI.showString( message);
                     }
                     
@@ -139,7 +139,7 @@ public class RoomService implements  Printable {
                         
                     }
                 
-                     if(items.get(option-1).getAmount()<amount)
+                     if(items.get(option).getAmount()<amount)
                     {
                      UI.showString("Not enough in stock.");
                      amount=-1;
@@ -147,14 +147,14 @@ public class RoomService implements  Printable {
                     }
                     rooms=managment.availableRooms();
                     option=UI.askOption(managment.availableRooms());
-                    row=Integer.parseInt(rooms.get(option-1))/100;
-                    column=Integer.parseInt(rooms.get(option-1))%100;
+                    row=Integer.parseInt(rooms.get(option))/100;
+                    column=Integer.parseInt(rooms.get(option))%100;
                     flag=managment.buyProduct(items_string.get(option-1), amount, row, column);
                     amount=-1;
                     if(flag==true)
                        {
                           UI.showString("Purchase successful.");
-                          items.get(option-1).setAmount(items.get(option-1).getAmount()-amount);
+                          items.get(option-1).setAmount(items.get(option).getAmount()-amount);
                        }
                     else
                     UI.showString("Purchase failed, guest doesn't have access to this menu.");
@@ -179,7 +179,7 @@ public class RoomService implements  Printable {
                         if (message==null)
                      throw new NullPointerException("demo");
                             amount=Integer.parseInt(message);
-                            reStock( items_string.get(option-1),  amount);
+                            reStock( items_string.get(option),  amount);
                             amount=-1;
                         }
                     
