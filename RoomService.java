@@ -62,15 +62,26 @@ public class RoomService implements  Printable {
                                 throw new NullPointerException("demo");
                                 while(price<0)
                                 {
-                                    price=UI.askNum("Enter price:");
+                                    message=UI.askNum("Enter price:");
+                                    if (message==null)
+                                throw new NullPointerException("demo");
+                                    price=Double.parseDouble(message);
                                 }
                                 while(amount<0)
                                 {
-                                    amount=UI.askNum("Enter amount:");
+                                    message=UI.askNum("Enter amount:");
+                                    if (message==null)
+                                throw new NullPointerException("demo");
+                                amount=Integer.parseInt(message);
+                                    
                                 }
                                 while(level<0)
                                 {
-                                   level=UI.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
+                                    message=UI.askNum("Enter:\n 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
+                                    if (message==null)
+                                   throw new NullPointerException("demo");
+                                      level=Integer.parseInt(message);
+                                 
         
                                 }
                                 check=addProduct( name,  price,  amount,  level);
@@ -82,41 +93,24 @@ public class RoomService implements  Printable {
                         }
                         catch(NullPointerException e)
                         {
+                            price=-1;
+                             amount=-1;
+                             level=-1;
                             break;        
                         }
                        
-<<<<<<< Updated upstream
-                        while(price<0)
-                        {
-                            price=UI.askNum("Enter price:");
-                        }
-                        while(amount<0)
-                        {
-                            amount=UI.askNum("Enter amount:");
-                        }
-                        while(level<0)
-                        {
-                           level=UI.askNum("Enter 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
-                        }
-                        check=addProduct( name,  price,  amount,  level);
-                        if (check==1)
-                        items_string.add(name);
-                        price=-1;
-                        amount=-1;
-                        level=-1;
-=======
                         
->>>>>>> Stashed changes
         
 
                         break;
                     case 2:
-                        name=UI.askString("Enter product name:");
-                        check=removeProduct(name);
-                        if(check!=-1)
-                            items_string.remove(check);
-                        else
-                            UI.showString("Product not found.");
+                    option=UI.askOption(items_string);
+                    if(option!=-1)
+                    {
+                        removeProduct(items.get(option-1).getName());
+                    }
+                        
+                        
                         break;
                     case 3:
                     option=UI.askOption(items_string);
@@ -128,14 +122,14 @@ public class RoomService implements  Printable {
                     
                         break;
                     case 4:
-                    name=UI.askString("Enter product name:");
-                    index=ifExist_general(name);
-                    if(index==-1)
+                    
+                    option=UI.askOption(items_string);
+                    if(option!=-1)
                     {
-                       UI.showString("Product not found.");
-                        break;
+                        
                     }
-                     option=UI.askOption(items_string);
+                    
+                     
                      amount=UI.askNum("Enter amount:");
                      if(items.get(option-1).getAmount()<amount)
                     {

@@ -55,7 +55,7 @@ public class UI {
             "MA Continental the hotel for you",
             JOptionPane.QUESTION_MESSAGE, null, 
             options, // Array of choices
-            options[0]); // Initial choice
+            options[0]); 
         if(pick == null)
             return -1;
         for (int i = 0; i < options.length; i++) 
@@ -70,19 +70,11 @@ public class UI {
         return JOptionPane.showInputDialog(prompt + "\n");
     }
 
-    public static int askNum(String prompt) {
+    public static String askNum(String prompt) {
         
-        boolean flag = false;
-        while (true) {
-            try {
-                return Integer.parseInt(JOptionPane.showInputDialog(prompt + "\n"));
-            } catch (Exception e) {
-                if (!flag) {
-                    prompt = "Error: please enter a number\n" + prompt;
-                    flag = true;
-                }
-            }
-        }
+        
+        return JOptionPane.showInputDialog(prompt + "\n");
+           
     }
 
     public static void showString(String message) {
