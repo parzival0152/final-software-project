@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Room {
     private boolean availabe;
     private int roomId;
     private Guests occupants;
-    private List<String[]> purchaseList;
+    private List<String[]> purchaseList = new ArrayList<>();
 
     public Room(int roomId) {
         this.roomId = roomId;

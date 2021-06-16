@@ -44,9 +44,9 @@ public class MaContinental implements Printable {
 
 					if(roomAr[ roomID / 100 - 1][ roomID % 100].getAvailabe()==false)
 					  {
-                          name=roomAr[ roomID / 100 - 1][ roomID % 100]. getOccupants().getName();
-						  roomsList= booking_Calendar.findBooking(name).getRooms();
-                          checkOut(roomsList);
+						name=roomAr[roomID / 100 - 1][ roomID % 100].getOccupants().getName();
+						roomsList= booking_Calendar.findBooking(name).getRooms();
+						checkOut(roomsList);
 					  }
 					  else
 					  	UI.showString("Room was not booked.");
