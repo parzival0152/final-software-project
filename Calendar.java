@@ -22,6 +22,7 @@ public class Calendar implements Printable{
     public void run()
     {
         String name, stay="", done="";
+        String tmp;
         int totNum, kidNum, guestType, roomNum;
         boolean quit = false;
         while (!quit) {
@@ -71,23 +72,41 @@ public class Calendar implements Printable{
                         
                     }
 
-                    totNum=UI.askNum("Enter number of people staying.");
+                    tmp=UI.askNum("Enter number of people staying.");
+                    if(tmp==null)
+                        break;
+                    totNum=Integer.parseInt(tmp);
                     while(totNum<1)
                     {
                         UI.showString("Please enter a number bigger than zero.");
-                        totNum=UI.askNum("Enter number of people staying.");
+                        tmp=UI.askNum("Enter number of people staying.");
+                        if(tmp==null)
+                            break;
+                        totNum=Integer.parseInt(tmp);
                     }
-                    kidNum=UI.askNum("Enter number of children staying.");
+                    tmp=UI.askNum("Enter number of children staying.");
+                    if(tmp==null)
+                        break;
+                    kidNum=Integer.parseInt(tmp);
                     while(kidNum<0)
                     {
                         UI.showString("Please enter zero or a number bigger than zero.");
-                        kidNum=UI.askNum("Enter number of children staying");
+                        tmp=UI.askNum("Enter number of children staying.");
+                        if(tmp==null)
+                            break;
+                        kidNum=Integer.parseInt(tmp);
                     }
-                    roomNum=UI.askNum("Enter number of rooms you want");
+                    tmp=UI.askNum("Enter number of rooms you want");
+                    if(tmp==null)
+                        break;
+                    roomNum=Integer.parseInt(tmp);
                     while(roomNum<1 || roomNum>allRooms.size())
                     {
                         UI.showString("Please enter a number bigger than zero and smaller than "+(allRooms.size()+1)+" .");
-                        roomNum=UI.askNum("enter number of rooms you want");
+                        tmp=UI.askNum("Enter number of rooms you want");
+                        if(tmp==null)
+                            break;
+                        roomNum=Integer.parseInt(tmp);
                     }
                     UI.showString("Please choose what type of guest you are.");
                     guestType=UI.askOption("Regular Guest", "Gold Guest", "Platinum Guest");
@@ -355,22 +374,34 @@ public class Calendar implements Printable{
     }
 
     public void changeGuestNum(String name) {
-        
+        String tmp;
         UI.showString("Your current number of guests is: "+ bookMap.get(name).getNum_Guests()
         +".\nYour current number of children is: " + bookMap.get(name).getNum_Kids()+".");
 
-        int totNum = UI.askNum("Enter number of people staying.");
+        tmp=UI.askNum("Enter number of people staying.");
+        if(tmp==null)
+            break;
+        int totNum=Integer.parseInt(tmp);
         while(totNum<1)
         {
             UI.showString("Please enter a number bigger than zero.");
-            totNum=UI.askNum("Enter number of people staying.");
+            tmp=UI.askNum("Enter number of people staying.");
+            if(tmp==null)
+                break;
+            totNum=Integer.parseInt(tmp);
         }
         
-        int kidNum=UI.askNum("Please enter number of children.");
+        tmp=UI.askNum(UI.askNum("Please enter number of children.");
+        if(tmp==null)
+            break;
+        int kidNum=Integer.parseInt(tmp);
         while(kidNum<0)
         {
             UI.showString("Please enter zero or a number bigger than zero.");
-            kidNum=UI.askNum("Enter number of children staying.");
+            tmp=UI.askNum(UI.askNum("Please enter number of children.");
+            if(tmp==null)
+                break;
+            kidNum=Integer.parseInt(tmp);
         }
         bookMap.get(name).setNum_Guests(totNum);
         bookMap.get(name).setNum_Kids(kidNum);
