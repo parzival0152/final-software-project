@@ -373,38 +373,39 @@ public class Calendar implements Printable{
         bookMap.put(name, b);
     }
 
-    public void changeGuestNum(String name) {
+    public int changeGuestNum(String name) {
         String tmp;
         UI.showString("Your current number of guests is: "+ bookMap.get(name).getNum_Guests()
         +".\nYour current number of children is: " + bookMap.get(name).getNum_Kids()+".");
 
         tmp=UI.askNum("Enter number of people staying.");
         if(tmp==null)
-            break;
+            return -1;
         int totNum=Integer.parseInt(tmp);
         while(totNum<1)
         {
             UI.showString("Please enter a number bigger than zero.");
             tmp=UI.askNum("Enter number of people staying.");
             if(tmp==null)
-                break;
+                return -1;
             totNum=Integer.parseInt(tmp);
         }
         
-        tmp=UI.askNum(UI.askNum("Please enter number of children.");
+        tmp=UI.askNum(UI.askNum("Please enter number of children."));
         if(tmp==null)
-            break;
+            return -1;
         int kidNum=Integer.parseInt(tmp);
         while(kidNum<0)
         {
             UI.showString("Please enter zero or a number bigger than zero.");
-            tmp=UI.askNum(UI.askNum("Please enter number of children.");
+            tmp=UI.askNum(UI.askNum("Please enter number of children."));
             if(tmp==null)
-                break;
+                return -1;
             kidNum=Integer.parseInt(tmp);
         }
         bookMap.get(name).setNum_Guests(totNum);
         bookMap.get(name).setNum_Kids(kidNum);
+        return 0;
     }
 
     public void changeRooms(String name,int roomNum)
@@ -444,6 +445,7 @@ public class Calendar implements Printable{
         ArrayList<Integer> available = new ArrayList<Integer>();
         
         int room;
+        String tmp;
         boolean quit = false;
         while (!quit) {
             available = findRooms(bookMap.get(name).getArrival_date(), bookMap.get(name).getLeaving_date());
@@ -460,7 +462,10 @@ public class Calendar implements Printable{
                     bookMap.get(name).getRooms().remove(room-1);
                     break;
                 case 3:
-                    int roomNum=UI.askNum("Enter the number of rooms you want:");
+                    tmp=UI.askNum("Enter the number of rooms you want:");
+                    if(tmp==null)
+                        break;
+                    int roomNum=Integer.parseInt(tmp);
                     //check if number of selected rooms minus the number of rooms already owned is too much
                     if(available.size()<roomNum-bookMap.get(name).getRooms().size())
                     {

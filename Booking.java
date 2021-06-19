@@ -56,9 +56,9 @@ public class Booking {
     // returns the number of days the booking is for
     public int returnNumberDays() {
         int num_days;
-        double arrival = arrival_date.getMonth() + arrival_date.getDay() / 30;
-        double leave = leaving_date.getMonth() + leaving_date.getDay() / 30;
-        num_days = (int) (leave - arrival) * 30;
+        double arrival = arrival_date.getMonth()*30 + arrival_date.getDay();
+        double leave = leaving_date.getMonth()*30 + leaving_date.getDay();
+        num_days = (int) (leave - arrival);
         return num_days;
     }
 

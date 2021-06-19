@@ -24,6 +24,11 @@ public class MaContinental implements Printable {
 
 		this.room_service = new RoomService(this);
 		booking_Calendar = new Calendar();
+
+		BetterDate start = new BetterDate(1,1);
+		BetterDate finish = new BetterDate(1,2);
+		booking_Calendar.addBooking("or", start, finish, 1, 0, 1, 1);
+		checkIn("or");
 	}
 
     public void run() {
@@ -109,7 +114,7 @@ public class MaContinental implements Printable {
 			Room room = roomAr[row][column];
 			for (String[] product : room.getPurchaseList()) {
 				value = Double.parseDouble(product[1]) * Double.parseDouble(product[2]);
-				check = check.concat(product[0] + " x" + product[1] + " $" + Double.toString(value) + "\n");
+				check = check.concat(product[0] + " x" + product[1] + " = $" + Double.toString(value) + "\n");
 				sum += value;
 			}
 			int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
@@ -120,6 +125,7 @@ public class MaContinental implements Printable {
 			else
 				sum += 150 * stayTime;
 			check = check.concat("Room total = " + Double.toString(sum) + "\n\n");
+			UI.showString(check);
 			// clearing room for next guest
 			room.setAvailabe(true);
 			room.emptyPurchaseList();
@@ -220,11 +226,11 @@ public class MaContinental implements Printable {
 		{
 			for(Room room:roomArr)
 			{
-				if(room.getAvailabe())
+				if(!room.getAvailabe())
 					available.add(Integer.toString(room.getRoomId()));
 			}
 		}
-		return availableRooms();
+		return available;
 	}
 
     public boolean buyProduct(String name_product,int amount,int row,int column)

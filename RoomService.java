@@ -36,7 +36,7 @@ public class RoomService implements  Printable {
         String name,message;
         double price=-1;
          int amount=-1;
-         int level=-1,index;
+         int level=-1;
          int check,row,column;
          boolean flag;
 
@@ -146,26 +146,28 @@ public class RoomService implements  Printable {
                     break;
                     }
                     rooms=managment.availableRooms();
-                    option=UI.askOption(managment.availableRooms());
-                    row=Integer.parseInt(rooms.get(option))/100;
+                    option=UI.askOption(rooms);
+                    row=Integer.parseInt(rooms.get(option))/100 -1;
                     column=Integer.parseInt(rooms.get(option))%100;
-                    flag=managment.buyProduct(items_string.get(option-1), amount, row, column);
-                    amount=-1;
+                    flag=managment.buyProduct(items_string.get(option), amount, row, column);
                     if(flag==true)
-                       {
-                          UI.showString("Purchase successful.");
-                          items.get(option-1).setAmount(items.get(option).getAmount()-amount);
-                       }
+                        {
+                            UI.showString("Purchase successful.");
+                            items.get(option).setAmount(items.get(option).getAmount()-amount);
+                        }
                     else
                     UI.showString("Purchase failed, guest doesn't have access to this menu.");
                     }
                     catch(NullPointerException e)
                     {
                         price=-1;
-                         amount=-1;
-                         level=-1;
+                        amount=-1;
+                        level=-1;
                         break;        
                     }
+                        price=-1;
+                        amount=-1;
+                        level=-1;
                         break;
 
                     case 5:
