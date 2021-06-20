@@ -1,5 +1,15 @@
 import java.util.ArrayList;
 
+/*
+booking contain guests,which rooms are booked
+and the dates of the booking
+there are get and set functions and also a method for calculating 
+the numbers of days of staying in the hotel
+
+*/
+
+
+
 public class Booking {
     private Guests booking_Guest;
     private ArrayList<Integer> rooms;

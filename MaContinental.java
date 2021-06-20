@@ -1,10 +1,32 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/*
+the managment system:
+allow you to:
+check in
+check out
+acccess to the Calendar
+acccess to room service system
+showing rooms data
+room options
+
+
+*/ 
+
+
+
+
 public class MaContinental implements Printable {
 	private Room[][] roomAr;
 	private RoomService room_service;
 	private Calendar booking_Calendar;
+
+   /*
+   the constructor:
+    MaContinental contain calendar,roomService and Room[][] of rooms
+   */
+
 
 	public MaContinental() {
 
@@ -30,6 +52,12 @@ public class MaContinental implements Printable {
 		booking_Calendar.addBooking("or", start, finish, 1, 0, 0, 3);
 		checkIn("or");
 	}
+    /*
+	run method has switch case to all the main functions of the managmant system:
+	Check in, Check out, Calendar, Room service,Room status,Room options,Exit
+	*/
+
+
 
     public void run() {
 		String name,message;
@@ -40,12 +68,14 @@ public class MaContinental implements Printable {
             int option = UI.askOption("Check in", "Check out", "Calendar", "Room service","Room status","Room options","Exit");
             switch (option) {
                 case 1:
+				//check in
                 	name=UI.askString("Please enter guest name");
 					checkIn(name);
                     break;
                 case 2:
+				//check out
 				try{
-				
+				    //getting the room number from the guest who wants to check out
                     while(roomID%100 > 3 || roomID > 503 || roomID < 100)
 					{
 						
@@ -155,6 +185,13 @@ public class MaContinental implements Printable {
 			}
 		}
 	}
+	
+    /*
+	roomOptions allows you to buy and restock the mini-fridge
+	in suite rooms and watch the view in view rooms
+	
+	*/
+
 
 	public void roomOptions()
 	{
@@ -232,9 +269,15 @@ public class MaContinental implements Printable {
 		return available;
 	}
 
+	/*
+	from room service we got which room want to buy what
+	we send the information to the buy function in the room and add it there 
+	to their check
+	 */
     public boolean buyProduct(String name_product,int amount,int row,int column)
       {
 		   boolean check;
+		   //check is true if the purches was successful
            check= roomAr[row][column].buy(name_product,amount);
 
            return check;

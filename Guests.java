@@ -1,9 +1,21 @@
+
+/*
+Guests contain the name of the guest who booked
+the number of guest and the number of kids among them
+also the type of guest:regular,gold or platinum
+there are get and set methods 
+and one that return the discount according to the guest type
+
+*/
+
+
 public class Guests {
     private String name;
     private int totalnumber;
     private int numKids;
     private int type;
 
+    //constructor
     public Guests(String name, int totalnumber, int numKids, int type) {
         this.name = name;
         this.totalnumber = totalnumber;

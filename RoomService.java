@@ -5,6 +5,22 @@ import java.util.Iterator;
 
 
 
+/*
+RoomService allows rooms to order room service
+and manges the stock:
+Add product
+Remove product
+Product details
+Order room service
+Add to stock
+Sort by price
+Show stock
+Exit
+
+
+*/
+
+
 public class RoomService implements  Printable {
     private static ArrayList<Product> items = new ArrayList<Product>();
     private static ArrayList<String> items_string = new ArrayList<String>();
@@ -13,6 +29,11 @@ public class RoomService implements  Printable {
 
 
     MaContinental managment;
+
+    /*
+    the constructor we start with some product in stock.
+
+     */
     public RoomService(MaContinental managment1) {
         managment=managment1;
         addProduct("Water", 10, 30, 1);
@@ -30,6 +51,13 @@ public class RoomService implements  Printable {
         items_string.add("Champagne");
         items_string.add("Caviar");
     }
+
+   /*
+	run method has switch case to all the main functions of the Room service:
+	
+	*/
+
+
 
     public void run() {
 
@@ -55,7 +83,8 @@ public class RoomService implements  Printable {
                   
                 switch (option) {
                     case 1:
-                       
+                    //add product
+                       //getting information about the new product from the user
                         try{
                             name=UI.askString("Enter product name:");
                             if (name==null)
@@ -82,6 +111,7 @@ public class RoomService implements  Printable {
                                    throw new NullPointerException("demo");
                                       level=Integer.parseInt(message);
                                 }
+                                //creating new product
                                 check=addProduct( name,  price,  amount,  level);
                                 if (check==1)
                                 items_string.add(name);
@@ -98,6 +128,7 @@ public class RoomService implements  Printable {
                         }
                         break;
                     case 2:
+                    //Remove product
                     option=UI.askOption(items_string);
                     if(option!=-1)
                     {
@@ -107,6 +138,8 @@ public class RoomService implements  Printable {
                         
                         break;
                     case 3:
+                    //Product details
+                    //printing product information
                     option=UI.askOption(items_string);
                     if(option!=-1)
                     {
@@ -116,7 +149,8 @@ public class RoomService implements  Printable {
                     
                         break;
                     case 4:
-                    
+                    //Order room service
+                    //getting information from user
                     option=UI.askOption(items_string);
                     if(option==-1)
                     {
@@ -143,6 +177,7 @@ public class RoomService implements  Printable {
                     choice=UI.askOption(rooms);
                     row=Integer.parseInt(rooms.get(choice))/100 -1;
                     column=Integer.parseInt(rooms.get(choice))%100;
+                    //sending to the room through managment.checking if purchase was successful
                     flag=managment.buyProduct(items_string.get(option), amount, row, column);
                     if(flag==true)
                         {
@@ -165,6 +200,8 @@ public class RoomService implements  Printable {
                         break;
 
                     case 5:
+                    //Add to stock
+                    //re-stock products
                     try
                     {
 
@@ -191,10 +228,12 @@ public class RoomService implements  Printable {
                         
                         break;
                     case 6:
+                    //sort by price
                         sortPrice();
                         break;
 
                     case 7:
+                    //showing all stock details
                         showData();
                         break;
                    
@@ -208,14 +247,6 @@ public class RoomService implements  Printable {
     }
 
    
-
-
-
-
-
-
-
-
 
     // add new product to items list
     public int addProduct(String name, double price, int amount, int level) {
@@ -296,6 +327,7 @@ public class RoomService implements  Printable {
         return false;
     }
 
+    //changing the amount in stock
     public void reStock(String name_product, int amount) {
 
         for (int i = 0; i < items.size(); i++) {
@@ -320,6 +352,7 @@ public class RoomService implements  Printable {
     }
 
     @Override
+    //showing all detail of the stock
     public void showData()
     {
         Iterator<Product> itemIt = items.iterator();
