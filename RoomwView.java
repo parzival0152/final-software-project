@@ -6,6 +6,7 @@ public class RoomwView extends Room {
         super(roomId);
     }
 
+    // Check if item requested item is in menu of guest level
     public boolean checkMenu(String name) {
         if (!RoomService.ifExist(name, this.getOccupants().getType()+1)) {
             System.out.println("Item not in menu");

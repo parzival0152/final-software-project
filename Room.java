@@ -68,6 +68,6 @@ public abstract class Room {
         this.purchaseList.clear();
     }
 
-    public abstract boolean checkMenu(String name);
+    public abstract boolean checkMenu(String name); // Check if item requested item is in menu of guest level
 
 }
