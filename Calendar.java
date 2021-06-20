@@ -459,7 +459,7 @@ public class Calendar implements Printable{
                 case 2:
                     UI.showString("Please choose what room you want to remove.");
                     room=UI.askOption(getAvailable(bookMap.get(name).getRooms()));
-                    bookMap.get(name).getRooms().remove(room-1);
+                    removeRoom(name, room-1);
                     break;
                 case 3:
                     tmp=UI.askNum("Enter the number of rooms you want:");
@@ -522,6 +522,22 @@ public class Calendar implements Printable{
 
         }
         return buffer;
+    }
+
+    public void removeRoom(String name, int room_num)
+    {
+        if(room_num < 20)
+            bookMap.get(name).getRooms().remove(room_num);
+        else if(room_num >= 100)
+        {
+            for(int i = 0; i < bookMap.get(name).getRooms().size(); i++)
+            {
+                if(bookMap.get(name).getRooms().get(i).equals(room_num))
+                    bookMap.get(name).getRooms().remove(i); 
+            }
+        }
+        if(bookMap.get(name).getRooms().size() == 0)
+            deleteBooking(name);
     }
 
     @Override

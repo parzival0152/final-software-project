@@ -27,7 +27,7 @@ public class MaContinental implements Printable {
 
 		BetterDate start = new BetterDate(1,1);
 		BetterDate finish = new BetterDate(1,2);
-		booking_Calendar.addBooking("or", start, finish, 1, 0, 0, 1);
+		booking_Calendar.addBooking("or", start, finish, 1, 0, 0, 3);
 		checkIn("or");
 	}
 
@@ -49,7 +49,7 @@ public class MaContinental implements Printable {
                     while(roomID%100 > 3 || roomID > 503 || roomID < 100)
 					{
 						
-						message=UI.askNum("please enter one of the rooms ID");
+						message=UI.askNum("Please enter room Id you would like to check out of");
                         if (message==null)
                     throw new NullPointerException("demo");
                     roomID=Integer.parseInt(message);
@@ -57,15 +57,13 @@ public class MaContinental implements Printable {
 				}
 					catch(NullPointerException e)
                     {
-                        
                         break;        
                     }
 
 					if(roomAr[ roomID / 100 - 1][ roomID % 100].getAvailabe()==false)
 					  {
 						name=roomAr[roomID / 100 - 1][ roomID % 100].getOccupants().getName();
-						roomsList= booking_Calendar.findBooking(name).getRooms();
-						checkOut(roomsList);
+						checkOut(roomID);
 					  }
 					  else
 					  	UI.showString("Room was not booked.");
@@ -99,39 +97,38 @@ public class MaContinental implements Printable {
 
 	// makes a check string for every room in list. will eventually print.
 	// also sets room to available and clears the purchase list.
-	public void checkOut(ArrayList<Integer> rooms_num) {
+	public void checkOut(Integer room_num) {
 		Double sum = 0.0, value = 0.0;
 		String check = "";
-		// go over every room's purchase list and add the prices of the items.
-		for (int num : rooms_num) {
-			check = check.concat("Room " + Integer.toString(num) + ":\n"); // printing check for every room.
-			int row = num / 100 - 1;
-			int column = num % 100;
-			Room room = roomAr[row][column];
-			for (String[] product : room.getPurchaseList()) {
-				value = Double.parseDouble(product[1]) * Double.parseDouble(product[2]);
-				check = check.concat(product[0] + " x" + product[1] + " = $" + Double.toString(value) + "\n");
-				sum += value;
-			}
-			int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
-			int peopleCost = (room.getOccupants().getTotalnumber()-1-room.getOccupants().getNumKids())*20+room.getOccupants().getNumKids()*10;
-			Double itemValue = sum;
-			if (room instanceof SuiteRoom)
-				sum += 300 * stayTime;
-			else if (room instanceof RoomwView)
-				sum += 180 * stayTime;
-			else
-				sum += 150 * stayTime;
-			check = check.concat("Room cost = " + Double.toString(sum - itemValue) + "$\n");
-			check = check.concat("Added cost for number of people staying = " + Integer.toString(peopleCost)+"$\n");
-			sum = (sum + peopleCost) * room.getOccupants().discount();
-			check = check.concat("Including discount of "+ Double.toString(room.getOccupants().discount()) + "%\n");
-			check = check.concat("Room total = " + Double.toString(sum) + "$\n\n");
-			UI.showString(check);
-			// clearing room for next guest
-			room.setAvailabe(true);
-			room.emptyPurchaseList();
+		// go over the room's purchase list and add the prices of the items.
+		check = check.concat("Room " + Integer.toString(room_num) + ":\n"); // printing check for every room.
+		int row = room_num / 100 - 1;
+		int column = room_num % 100;
+		Room room = roomAr[row][column];
+		for (String[] product : room.getPurchaseList()) {
+			value = Double.parseDouble(product[1]) * Double.parseDouble(product[2]);
+			check = check.concat(product[0] + " x" + product[1] + " = $" + Double.toString(value) + "\n");
+			sum += value;
 		}
+		int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
+		int peopleCost = (room.getOccupants().getTotalnumber()-1-room.getOccupants().getNumKids())*20+room.getOccupants().getNumKids()*10;
+		Double itemValue = sum;
+		if (room instanceof SuiteRoom)
+			sum += 300 * stayTime;
+		else if (room instanceof RoomwView)
+			sum += 180 * stayTime;
+		else
+			sum += 150 * stayTime;
+		check = check.concat("Room cost = " + Double.toString(sum - itemValue) + "$\n");
+		check = check.concat("Added cost for number of people staying = " + Integer.toString(peopleCost)+"$\n");
+		sum = (sum + peopleCost) * room.getOccupants().discount();
+		check = check.concat("Including discount of "+ Double.toString(100 - 100 * room.getOccupants().discount()) + "%\n");
+		check = check.concat("Room total = " + Double.toString(sum) + "$\n\n");
+		UI.showString(check);
+		booking_Calendar.removeRoom(room.getOccupants().getName(), room_num);
+		// clearing room for next guest
+		room.setAvailabe(true);
+		room.emptyPurchaseList();
 	}
 
 	// changes room variables to match guest.
