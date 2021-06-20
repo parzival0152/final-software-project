@@ -27,7 +27,7 @@ public class MaContinental implements Printable {
 
 		BetterDate start = new BetterDate(1,1);
 		BetterDate finish = new BetterDate(1,2);
-		booking_Calendar.addBooking("or", start, finish, 1, 0, 1, 1);
+		booking_Calendar.addBooking("or", start, finish, 1, 0, 0, 1);
 		checkIn("or");
 	}
 
@@ -97,10 +97,6 @@ public class MaContinental implements Printable {
 
    
 
-
-
-
-
 	// makes a check string for every room in list. will eventually print.
 	// also sets room to available and clears the purchase list.
 	public void checkOut(ArrayList<Integer> rooms_num) {
@@ -118,13 +114,19 @@ public class MaContinental implements Printable {
 				sum += value;
 			}
 			int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
+			int peopleCost = (room.getOccupants().getTotalnumber()-1-room.getOccupants().getNumKids())*20+room.getOccupants().getNumKids()*10;
+			Double itemValue = sum;
 			if (room instanceof SuiteRoom)
 				sum += 300 * stayTime;
 			else if (room instanceof RoomwView)
 				sum += 180 * stayTime;
 			else
 				sum += 150 * stayTime;
-			check = check.concat("Room total = " + Double.toString(sum) + "\n\n");
+			check = check.concat("Room cost = " + Double.toString(sum - itemValue) + "$\n");
+			check = check.concat("Added cost for number of people staying = " + Integer.toString(peopleCost)+"$\n");
+			sum = (sum + peopleCost) * room.getOccupants().discount();
+			check = check.concat("Including discount of "+ Double.toString(room.getOccupants().discount()) + "%\n");
+			check = check.concat("Room total = " + Double.toString(sum) + "$\n\n");
 			UI.showString(check);
 			// clearing room for next guest
 			room.setAvailabe(true);

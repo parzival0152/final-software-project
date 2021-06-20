@@ -41,7 +41,7 @@ public class SuiteRoom extends Room {
     }
 
     public boolean checkMenu(String name) {
-        if (!RoomService.ifExist(name, 3)) {
+        if (!RoomService.ifExist(name, this.getOccupants().getType()+1)) {
             System.out.println("Item not in menu");
             return false;
         }

@@ -35,10 +35,10 @@ public class RoomService implements  Printable {
 
         String name,message;
         double price=-1;
-         int amount=-1;
-         int level=-1;
-         int check,row,column;
-         boolean flag;
+        int amount=-1;
+        int level=-1;
+        int check,row,column,choice;
+        boolean flag;
 
            
             boolean quit = false;
@@ -75,14 +75,12 @@ public class RoomService implements  Printable {
                                 amount=Integer.parseInt(message);
                                     
                                 }
-                                while(level<0)
+                                while(level<1 && level >3)
                                 {
                                     message=UI.askNum("Enter:\n 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
                                     if (message==null)
                                    throw new NullPointerException("demo");
                                       level=Integer.parseInt(message);
-                                 
-        
                                 }
                                 check=addProduct( name,  price,  amount,  level);
                                 if (check==1)
@@ -98,10 +96,6 @@ public class RoomService implements  Printable {
                              level=-1;
                             break;        
                         }
-                       
-                        
-        
-
                         break;
                     case 2:
                     option=UI.askOption(items_string);
@@ -146,9 +140,9 @@ public class RoomService implements  Printable {
                     break;
                     }
                     rooms=managment.availableRooms();
-                    option=UI.askOption(rooms);
-                    row=Integer.parseInt(rooms.get(option))/100 -1;
-                    column=Integer.parseInt(rooms.get(option))%100;
+                    choice=UI.askOption(rooms);
+                    row=Integer.parseInt(rooms.get(choice))/100 -1;
+                    column=Integer.parseInt(rooms.get(choice))%100;
                     flag=managment.buyProduct(items_string.get(option), amount, row, column);
                     if(flag==true)
                         {
@@ -184,10 +178,6 @@ public class RoomService implements  Printable {
                             reStock( items_string.get(option),  amount);
                             amount=-1;
                         }
-                    
-                    
-                       
-                       
                        
                     }
 
@@ -273,7 +263,7 @@ public class RoomService implements  Printable {
     // check if an item exists in stock
     public static boolean ifExist(String name, int level) {
         for (int i = 0; i < items.size(); i++) {
-            if (items.get(i).getName().equals(name) && items.get(i).getLevel() >= level
+            if (items.get(i).getName().equals(name) && items.get(i).getLevel() <= level
                     && items.get(i).getAmount() != 0) {
                 return true;
             }
