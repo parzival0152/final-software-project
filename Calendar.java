@@ -29,88 +29,98 @@ public class Calendar implements Printable{
             int option = UI.askOption("Add Booking", "Delete Booking", "Edit Booking", "Show all booking", "Exit");
             switch (option) {
                 case 1:
-                    name=UI.askString("Please enter guest name");
-                    while(bookMap.containsKey(name))
+                    BetterDate start= new BetterDate();
+                    BetterDate finish= new BetterDate();
+                    try
                     {
-                        UI.showString("This name already exists in our system.");
                         name=UI.askString("Please enter guest name");
-                    }
-                    try{
-                        if (name=="")
+                        if (name == "" || name == null)
+                            throw new NullPointerException("");
+                        while(bookMap.containsKey(name))
+                        {
+                            UI.showString("This name already exists in our system.");
+                            name=UI.askString("Please enter guest name");
+                            if (name == "" || name == null)
+                                throw new NullPointerException("");
+                        }
+                        stay=enterDate("Enter date of check in dd/mm");
+                        if(stay == null)
+                            throw new NullPointerException("");
+                        start.turnDate(stay);
+
+                        done=enterDate("Enter date of check out dd/mm");
+                        if(done == null)
+                            throw new NullPointerException("");
+                        finish.turnDate(done);
+
+                        //check if check out date comes before check in date
+                        if(!(finish.compareTo(start)>0))
+                        {
+                            boolean flag=false;
+                            while(!flag)
+                            {
+                                UI.showString("Your check out date can't be before or at the same day as check in date.");
+                                stay=enterDate("Enter date of check in dd/mm.");
+                                if(stay == null)
+                                    throw new NullPointerException("");
+                                start = new BetterDate();
+                                start.turnDate(stay);
+            
+                                done=enterDate("Enter date of check out dd/mm.");
+                                if(done == null)
+                                    throw new NullPointerException("");
+                                finish = new BetterDate();
+                                finish.turnDate(done);
+                                if(finish.compareTo(start)>0)
+                                    flag=true;
+                            }
+                            
+                        }
+                        tmp=UI.askNum("Enter number of people staying.");
+                        if(tmp==null)
+                            throw new NullPointerException("");
+                        totNum=Integer.parseInt(tmp);
+                        while(totNum<1)
+                        {
+                            UI.showString("Please enter a number bigger than zero.");
+                            tmp=UI.askNum("Enter number of people staying.");
+                            if(tmp==null)
+                                throw new NullPointerException("");
+                            totNum=Integer.parseInt(tmp);
+                        }
+                        tmp=UI.askNum("Enter number of children staying.");
+                        if(tmp==null)
+                            throw new NullPointerException("");
+                        kidNum=Integer.parseInt(tmp);
+                        while(kidNum<0)
+                        {
+                            UI.showString("Please enter zero or a number bigger than zero.");
+                            tmp=UI.askNum("Enter number of children staying.");
+                            if(tmp==null)
+                                throw new NullPointerException("");
+                            kidNum=Integer.parseInt(tmp);
+                        }
+                        tmp=UI.askNum("Enter number of rooms you want");
+                        if(tmp==null)
+                            throw new NullPointerException("");
+                        roomNum=Integer.parseInt(tmp);
+                        while(roomNum<1 || roomNum>allRooms.size())
+                        {
+                            UI.showString("Please enter a number bigger than zero and smaller than "+(allRooms.size()+1)+" .");
+                            tmp=UI.askNum("Enter number of rooms you want");
+                            if(tmp==null)
+                                throw new NullPointerException("");
+                            roomNum=Integer.parseInt(tmp);
+                        }
+                        UI.showString("Please choose what type of guest you are.");
+                        guestType=UI.askOption("Regular Guest", "Gold Guest", "Platinum Guest");
+                        if(guestType == -1)
                             throw new NullPointerException("");
                     }
                     catch(NullPointerException e)
                     {
                         break;        
                     }
-
-                    stay=enterDate("Enter date of check in dd/mm");
-                    BetterDate start= new BetterDate();
-                    start.turnDate(stay);
-
-                    done=enterDate("Enter date of check out dd/mm");
-                    BetterDate finish= new BetterDate();
-                    finish.turnDate(done);
-
-                    //check if check out date comes before check in date
-                    if(!(finish.compareTo(start)>0))
-                    {
-                        boolean flag=false;
-                        while(!flag)
-                        {
-                            UI.showString("Your check out date can't be before or at the same day as check in date.");
-                            stay=enterDate("Enter date of check in dd/mm.");
-                            start= new BetterDate();
-                            start.turnDate(stay);
-        
-                            done=enterDate("Enter date of check out dd/mm.");
-                            finish= new BetterDate();
-                            finish.turnDate(done);
-                            if(finish.compareTo(start)>0)
-                                flag=true;
-                        }
-                        
-                    }
-
-                    tmp=UI.askNum("Enter number of people staying.");
-                    if(tmp==null)
-                        break;
-                    totNum=Integer.parseInt(tmp);
-                    while(totNum<1)
-                    {
-                        UI.showString("Please enter a number bigger than zero.");
-                        tmp=UI.askNum("Enter number of people staying.");
-                        if(tmp==null)
-                            break;
-                        totNum=Integer.parseInt(tmp);
-                    }
-                    tmp=UI.askNum("Enter number of children staying.");
-                    if(tmp==null)
-                        break;
-                    kidNum=Integer.parseInt(tmp);
-                    while(kidNum<0)
-                    {
-                        UI.showString("Please enter zero or a number bigger than zero.");
-                        tmp=UI.askNum("Enter number of children staying.");
-                        if(tmp==null)
-                            break;
-                        kidNum=Integer.parseInt(tmp);
-                    }
-                    tmp=UI.askNum("Enter number of rooms you want");
-                    if(tmp==null)
-                        break;
-                    roomNum=Integer.parseInt(tmp);
-                    while(roomNum<1 || roomNum>allRooms.size())
-                    {
-                        UI.showString("Please enter a number bigger than zero and smaller than "+(allRooms.size()+1)+" .");
-                        tmp=UI.askNum("Enter number of rooms you want");
-                        if(tmp==null)
-                            break;
-                        roomNum=Integer.parseInt(tmp);
-                    }
-                    UI.showString("Please choose what type of guest you are.");
-                    guestType=UI.askOption("Regular Guest", "Gold Guest", "Platinum Guest");
-
                     addBooking(name, start, finish, totNum, kidNum, guestType, roomNum);
                     break;
                 case 2:
@@ -134,7 +144,15 @@ public class Calendar implements Printable{
                     deleteBooking(name);
                     break;
                 case 3:
-                    name=UI.askString("Please enter guest name.");
+                    try{
+                        name=UI.askString("Please enter guest name.");
+                        if(name == null)
+                            throw new NullPointerException("");
+                    }
+                    catch(NullPointerException e)
+                    {
+                        break;
+                    }
                     if(!bookMap.containsKey(name))
                     {
                         UI.showString("This name doesn't exist in our system.");
@@ -192,17 +210,38 @@ public class Calendar implements Printable{
             int option;
             //here we ask the user which rooms he wants and put it in selectRoom
             UI.showString("Please choose what room you want to stay in.");
-            for(int i=0; i< roomNum; i++)
+            try
             {
-                option=UI.askOption(getAvailable(available));
-                selectRoom.add(available.get(option));
-                available.remove(option);
+                for(int i=0; i< roomNum; i++)
+                {
+                    option=UI.askOption(getAvailable(available));
+                    if(option == -1)
+                        throw new NullPointerException("");
+                    selectRoom.add(available.get(option));
+                    available.remove(option);
+                }
+            }
+            catch(NullPointerException e)
+            {
+                return;
             }
             Collections.sort(selectRoom);
             //create booking
             Booking b = new Booking(g, selectRoom, start, finish);
             bookMap.put(name, b);
         }
+    }
+
+    // runs only on startup to start with booked rooms
+    public void bookingWithRooms(String name, BetterDate start, BetterDate finish, int totalnumber, int numKids, int guestType, ArrayList<Integer> roomNum)
+    {
+        ArrayList<Integer> selectRoom = new ArrayList<Integer>();
+        Guests g = new Guests(name, totalnumber, numKids, guestType);
+        for(int room:roomNum)
+            selectRoom.add(room);
+        Collections.sort(selectRoom);
+        Booking b = new Booking(g, selectRoom, start, finish);
+        bookMap.put(name, b);
     }
 
     public ArrayList<Integer> findRooms(BetterDate start, BetterDate finish) {
@@ -256,10 +295,8 @@ public class Calendar implements Printable{
                 case 3:
                     changeRoomNum(name);
                     break;
-                case 4:
-                    quit=true;
-                    break;
                 default:
+                    quit=true;
                     break;
             }
         }
@@ -271,18 +308,33 @@ public class Calendar implements Printable{
     }
 
     public void changeDate(String name) {
+        BetterDate start= new BetterDate();
+        BetterDate finish= new BetterDate();
 
         UI.showString("Your current check in date is: "+ bookMap.get(name).getArrival_date()
         +".\nYour current check out date is: " + bookMap.get(name).getLeaving_date()+".");
 
         //getting check in and check out date
         String stay = enterDate("Enter new date of check in dd/mm.");
-        BetterDate start= new BetterDate();
-        start.turnDate(stay);
-
+        try{
+            if(stay == null)
+                throw new NullPointerException("");
+        }
+        catch(NullPointerException e)
+        {
+            return;
+        }
         String done = enterDate("Enter new date of check out dd/mm.");
-        BetterDate finish= new BetterDate();
+        try{
+            if(done == null)
+                throw new NullPointerException("");
+        }
+        catch(NullPointerException e)
+        {
+            return;
+        }
         finish.turnDate(done);
+        start.turnDate(stay);
 
         //check if check out date comes before check in date
         if(!(finish.compareTo(start)>0))
@@ -290,16 +342,26 @@ public class Calendar implements Printable{
             boolean flag=false;
             while(!flag)
             {
+                try{
                 UI.showString("Your check out date can't be before or at the same day as check in date.");
                 stay=enterDate("Enter date of check in dd/mm.");
+                if(stay == null)
+                    throw new NullPointerException("");
                 start= new BetterDate();
                 start.turnDate(stay);
 
                 done=enterDate("Enter date of check out dd/mm.");
+                if(done == null)
+                    throw new NullPointerException("");
                 finish= new BetterDate();
                 finish.turnDate(done);
                 if(finish.compareTo(start)>0)
                     flag=true;
+                }
+                catch(NullPointerException e)
+                {
+                    return;
+                }
             }
         }
         
@@ -356,9 +418,11 @@ public class Calendar implements Printable{
                     //tell guest that the room is unavailable and need to pick another one
                     UI.showString("Room " + roomArr.get(i) +" is unavailable in new date. Please choose one of the following rooms.");
                     //send available list
-                    select = UI.askOption(getAvailable(available));;
-                    selectRoom.add(available.get(select-1));
-                    available.remove(select-1);
+                    select = UI.askOption(getAvailable(available));
+                    if(select == -1)
+                        return;
+                    selectRoom.add(available.get(select));
+                    available.remove(select);
                 }
                 //keep the room
                 else
@@ -391,14 +455,14 @@ public class Calendar implements Printable{
             totNum=Integer.parseInt(tmp);
         }
         
-        tmp=UI.askNum(UI.askNum("Please enter number of children."));
+        tmp=UI.askNum("Please enter number of children.");
         if(tmp==null)
             return -1;
         int kidNum=Integer.parseInt(tmp);
         while(kidNum<0)
         {
             UI.showString("Please enter zero or a number bigger than zero.");
-            tmp=UI.askNum(UI.askNum("Please enter number of children."));
+            tmp=UI.askNum("Please enter number of children.");
             if(tmp==null)
                 return -1;
             kidNum=Integer.parseInt(tmp);
@@ -431,8 +495,10 @@ public class Calendar implements Printable{
         for(int i=0; i< roomNum; i++)
         {
             option=UI.askOption(getAvailable(available));
-            selectRoom.add(available.get(option-1));
-            available.remove(option-1);
+            if(option == -1)
+                return;
+            selectRoom.add(available.get(option));
+            available.remove(option);
         }
 
         bookMap.get(name).setRooms(selectRoom);
@@ -443,23 +509,40 @@ public class Calendar implements Printable{
         UI.showString("Your current number of rooms are: "+ bookMap.get(name).getRooms().size()
         +".\nYour selected rooms are: " + bookMap.get(name).getRooms()+".");
         ArrayList<Integer> available = new ArrayList<Integer>();
-        
+        ArrayList<Integer> availableCopy = new ArrayList<Integer>();
         int room;
         String tmp;
         boolean quit = false;
         while (!quit) {
             available = findRooms(bookMap.get(name).getArrival_date(), bookMap.get(name).getLeaving_date());
+
             int option = UI.askOption("Add room", "Remove room" ,"Change number of rooms", "Exit");
             switch (option) {
                 case 1:
-                    UI.showString("Please choose what room you want to add.");
-                    room=UI.askOption(getAvailable(available));
-                    bookMap.get(name).getRooms().add(available.get(room-1));
+                    availableCopy = (ArrayList<Integer>) available.clone();
+                    availableCopy.removeAll(bookMap.get(name).getRooms());
+                    UI.showString("Please choose which room you want to add.");
+                    room=UI.askOption(getAvailable(availableCopy));
+                    if(room == -1)
+                        break;
+                    // adds room to booking in correct place 9rooms sorted in ascending order
+                    for(int i =bookMap.get(name).getRooms().size()-1; i >= 0 ; i--)
+                    {
+                        if(bookMap.get(name).getRooms().get(i) < available.get(room))
+                        {
+                            bookMap.get(name).getRooms().add(i+1,available.get(room));
+                            break;
+                        }
+                    }
+                    if(!bookMap.get(name).getRooms().contains(available.get(room)))
+                        bookMap.get(name).getRooms().add(0,available.get(room));
                     break;
                 case 2:
-                    UI.showString("Please choose what room you want to remove.");
+                    UI.showString("Please choose which room you want to remove.");
                     room=UI.askOption(getAvailable(bookMap.get(name).getRooms()));
-                    removeRoom(name, room-1);
+                    if(room == -1)
+                        break;
+                    removeRoom(name, room);
                     break;
                 case 3:
                     tmp=UI.askNum("Enter the number of rooms you want:");
@@ -474,10 +557,8 @@ public class Calendar implements Printable{
                     }
                     changeRooms(name, roomNum);
                     break;
-                case 4:
-                    quit=true;
-                    break;
                 default:
+                    quit=true;
                     break;
             }
         }
@@ -495,8 +576,16 @@ public class Calendar implements Printable{
         boolean flag=false;
         String buffer="";
         while(!flag)
-        {
-            buffer= UI.askString(message);
+        {   
+            try{
+                buffer= UI.askString(message);
+                if(buffer == null)
+                    throw new NullPointerException("");
+            }
+            catch(NullPointerException e)
+            {
+                break;
+            }
             if(buffer.contains("/"))
             {
                 int arr[]= new int[2];

@@ -3,11 +3,11 @@ import java.util.Iterator;
 
 /*
 the managment system:
-allow you to:
+allows you to:
 check in
 check out
-acccess to the Calendar
-acccess to room service system
+access to the Calendar
+access to room service system
 showing rooms data
 room options
 
@@ -49,7 +49,11 @@ public class MaContinental implements Printable {
 
 		BetterDate start = new BetterDate(1,1);
 		BetterDate finish = new BetterDate(1,2);
-		booking_Calendar.addBooking("or", start, finish, 1, 0, 0, 3);
+		ArrayList<Integer> bookedRooms = new ArrayList<>();
+		bookedRooms.add(102);
+		bookedRooms.add(200);
+		bookedRooms.add(503);
+		booking_Calendar.bookingWithRooms("or", start, finish, 1, 0, 0, bookedRooms);
 		checkIn("or");
 	}
     /*
@@ -61,7 +65,6 @@ public class MaContinental implements Printable {
 
     public void run() {
 		String name,message;
-		ArrayList<Integer> roomsList;
 		int roomID=0;
         boolean quit = false;
         while (!quit) {
@@ -70,25 +73,28 @@ public class MaContinental implements Printable {
                 case 1:
 				//check in
                 	name=UI.askString("Please enter guest name");
+					if(name == null)
+						break;
 					checkIn(name);
                     break;
                 case 2:
-				//check out
-				try{
-				    //getting the room number from the guest who wants to check out
-                    while(roomID%100 > 3 || roomID > 503 || roomID < 100)
+					//check out
+					try
 					{
-						
-						message=UI.askNum("Please enter room Id you would like to check out of");
-                        if (message==null)
-                    throw new NullPointerException("demo");
-                    roomID=Integer.parseInt(message);
+						//getting the room number from the guest who wants to check out
+						while(roomID%100 > 3 || roomID > 503 || roomID < 100)
+						{
+							
+							message=UI.askNum("Please enter room Id you would like to check out of");
+							if (message==null)
+						throw new NullPointerException("demo");
+						roomID=Integer.parseInt(message);
+						}
 					}
-				}
-					catch(NullPointerException e)
-                    {
-                        break;        
-                    }
+						catch(NullPointerException e)
+						{
+							break;        
+						}
 
 					if(roomAr[ roomID / 100 - 1][ roomID % 100].getAvailabe()==false)
 					  {
@@ -189,7 +195,6 @@ public class MaContinental implements Printable {
     /*
 	roomOptions allows you to buy and restock the mini-fridge
 	in suite rooms and watch the view in view rooms
-	
 	*/
 
 
@@ -211,7 +216,6 @@ public class MaContinental implements Printable {
 		}
 		catch(Exception e)
 		{
-			UI.showString("No occupied rooms.");
 			return;
 		}
 		
@@ -227,7 +231,14 @@ public class MaContinental implements Printable {
 					case 1:
 						ArrayList<String> fridge = suite.getFridge();
 						int drink = UI.askOption(fridge);
-						suite.drink(fridge.get(drink));
+						try
+						{
+							suite.drink(fridge.get(drink));
+						}
+						catch(Exception e)
+						{
+							break;
+						}
 						break;
 					case 2:
 						suite.restockFridge();

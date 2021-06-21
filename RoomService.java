@@ -146,7 +146,6 @@ public class RoomService implements  Printable {
                         message=items.get(option).toString();
                         UI.showString( message);
                     }
-                    
                         break;
                     case 4:
                     //Order room service
@@ -175,6 +174,8 @@ public class RoomService implements  Printable {
                     }
                     rooms=managment.availableRooms();
                     choice=UI.askOption(rooms);
+                    if(choice == -1)
+                        throw new NullPointerException("demo");
                     row=Integer.parseInt(rooms.get(choice))/100 -1;
                     column=Integer.parseInt(rooms.get(choice))%100;
                     //sending to the room through managment.checking if purchase was successful
