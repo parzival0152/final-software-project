@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
+//extending Room the suite has mini fridge
+
+
 public class SuiteRoom extends Room {
     private ArrayList<String> miniFridge = new ArrayList<String>();
     private String[] startingDrinks = {"Irish cream","vodka","gin","rum","liquer","whisky"};
@@ -10,11 +13,12 @@ public class SuiteRoom extends Room {
         restockFridge();
     }
 
+    //returns the frodge
     public ArrayList<String> getFridge()
     {
         return this.miniFridge;
     }
-
+    //removing a drink from fridge
     public void drink(String drink)
     {
         this.miniFridge.remove(drink);
@@ -30,7 +34,7 @@ public class SuiteRoom extends Room {
         }
         Collections.sort(miniFridge);
     }
-
+    //printing the fridge
     public void printFridge()
     {
         String message = "";

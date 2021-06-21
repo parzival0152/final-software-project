@@ -1,5 +1,5 @@
 
-
+//extending Room view rooms has the option to show the view
 public class RoomwView extends Room {
 
     public RoomwView(int roomId) {
@@ -15,6 +15,7 @@ public class RoomwView extends Room {
         return true;
     }
 
+    //showing the view from the room
     public void showView()
     {
         String path = "/Views/" + Integer.toString(this.getRoomId()) + ".jpg";

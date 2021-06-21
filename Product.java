@@ -1,3 +1,17 @@
+
+/*
+product has:
+name
+price
+amount
+level-of the guests who can buy
+set and get functions
+toString-create all the details to string so we can show through UI
+in room service
+*/
+
+
+
 public class Product {
     private String name;
     private double price;
@@ -35,12 +49,13 @@ public class Product {
     }
 
     @Override
+    //create all the details to string so we can show through UI in room service
     public String toString()
     {
         return("Product name - " + this.getName() + "\nProduct Price - " + Double.toString(this.getPrice()) + "\nIn stock - " + 
         Integer.toString(this.getAmount()));
     }
-
+   //constructor
     public Product(String name, double price, int amount, int level) {
         this.name = name;
         this.price = price;

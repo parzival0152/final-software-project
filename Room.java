@@ -1,6 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*
+Room contains room id,if available, guests and purches list
+there are get and set methods and also buy from room service
+
+*/
+
+
 public abstract class Room {
     private boolean availabe;
     private int roomId;
@@ -64,6 +72,8 @@ public abstract class Room {
         return false;
     }
 
+
+    //when the guest checks out we empty the purches list
     public void emptyPurchaseList() {
         this.purchaseList.clear();
     }
