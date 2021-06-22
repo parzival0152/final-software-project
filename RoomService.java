@@ -78,6 +78,7 @@ public class RoomService implements  Printable {
                 "Order room service",
                 "Add to stock",
                 "Sort by price",
+                "Sort by name",
                 "Show stock",
                 "Exit");
                   
@@ -104,7 +105,7 @@ public class RoomService implements  Printable {
                                 amount=Integer.parseInt(message);
                                     
                                 }
-                                while(level<1 && level >3)
+                                while(level<1 || level >3)
                                 {
                                     message=UI.askNum("Enter:\n 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
                                     if (message==null)
@@ -211,15 +212,23 @@ public class RoomService implements  Printable {
                         {
                             message=UI.askNum("Enter amount:");
                         if (message==null)
-                     throw new NullPointerException("demo");
-                            amount=Integer.parseInt(message);
-                            reStock( items_string.get(option),  amount);
-                            amount=-1;
+                            throw new NullPointerException("Null exception.");
+                        if(Integer.parseInt(message)<0)
+                            throw new NumberFormatException("Negative number.");
+
+                        amount=Integer.parseInt(message);
+                        reStock( items_string.get(option),  amount);
+                        amount=-1;
                         }
+
                        
                     }
-
-                      catch(NullPointerException e)
+                        catch(NumberFormatException e)
+                        {
+                            UI.showString("Can't enter negative number.");
+                        }
+                        
+                        catch(NullPointerException e)
                     {
                         price=-1;
                          amount=-1;
@@ -234,6 +243,11 @@ public class RoomService implements  Printable {
                         break;
 
                     case 7:
+                        //showing all stock details
+                        sortName();
+                        break;
+
+                    case 8:
                     //showing all stock details
                         showData();
                         break;
@@ -256,6 +270,7 @@ public class RoomService implements  Printable {
             items.add(p);
             return 1;
         }
+        UI.showString("Prodcut by this name already exists.");
         return 0;
     }
 
@@ -313,11 +328,6 @@ public class RoomService implements  Printable {
         return -1;
     }
 
-
-
-    
-
-
     // c check for dupes in the items list
     public boolean isDup(String name) {
         for (int i = 0; i < items.size(); i++) {
@@ -342,14 +352,20 @@ public class RoomService implements  Printable {
     // sorting
     public void sortName() {
         Collections.sort(items, new NameComperator());
-    }
-
-    public void sortAmount() {
-        Collections.sort(items, new AmountComperator());
+        items_string.clear();
+        for(Product p: items)
+        {
+            items_string.add(p.getName());
+        }
     }
 
     public void sortPrice() {
         Collections.sort(items, new PriceComperator());
+        items_string.clear();
+        for(Product p: items)
+        {
+            items_string.add(p.getName());
+        }
     }
 
     @Override
@@ -375,19 +391,6 @@ public class RoomService implements  Printable {
             return o1.getName().compareTo(o2.getName());
         }
 
-    }
-
-    class AmountComperator implements Comparator<Product> {
-
-        @Override
-        public int compare(Product o1, Product o2) {
-            if (o1.getAmount() > o2.getAmount())
-                return 1;
-            else if (o1.getAmount() == o2.getAmount())
-                return 0;
-            else
-                return -1;
-        }
     }
 
     class PriceComperator implements Comparator<Product> {

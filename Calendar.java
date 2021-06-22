@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class Calendar implements Printable{
 
+    //contains all the bookings with name as key
     private HashMap<String, Booking> bookMap;
     private static ArrayList<Integer> allRooms;
 
@@ -11,6 +12,7 @@ public class Calendar implements Printable{
         allRooms=new ArrayList<Integer>();
         bookMap=new HashMap<String, Booking>();
     
+        //containing all the rooms
         for (int i = 0; i < 5; i++)
         {
             for(int j = 0; j < 4; j++)
@@ -28,11 +30,13 @@ public class Calendar implements Printable{
         while (!quit) {
             int option = UI.askOption("Add Booking", "Delete Booking", "Edit Booking", "Show all booking", "Exit");
             switch (option) {
+                //add booking
                 case 1:
                     BetterDate start= new BetterDate();
                     BetterDate finish= new BetterDate();
                     try
                     {
+                        //name
                         name=UI.askString("Please enter guest name");
                         if (name == "" || name == null)
                             throw new NullPointerException("");
@@ -43,11 +47,14 @@ public class Calendar implements Printable{
                             if (name == "" || name == null)
                                 throw new NullPointerException("");
                         }
+
+                        //check in date
                         stay=enterDate("Enter date of check in dd/mm");
                         if(stay == null)
                             throw new NullPointerException("");
                         start.turnDate(stay);
 
+                        //check out date
                         done=enterDate("Enter date of check out dd/mm");
                         if(done == null)
                             throw new NullPointerException("");
@@ -76,6 +83,8 @@ public class Calendar implements Printable{
                             }
                             
                         }
+
+                        //people num
                         tmp=UI.askNum("Enter number of people staying.");
                         if(tmp==null)
                             throw new NullPointerException("");
@@ -88,6 +97,8 @@ public class Calendar implements Printable{
                                 throw new NullPointerException("");
                             totNum=Integer.parseInt(tmp);
                         }
+
+                        //children num
                         tmp=UI.askNum("Enter number of children staying.");
                         if(tmp==null)
                             throw new NullPointerException("");
@@ -100,6 +111,8 @@ public class Calendar implements Printable{
                                 throw new NullPointerException("");
                             kidNum=Integer.parseInt(tmp);
                         }
+
+                        //room num
                         tmp=UI.askNum("Enter number of rooms you want");
                         if(tmp==null)
                             throw new NullPointerException("");
@@ -112,6 +125,8 @@ public class Calendar implements Printable{
                                 throw new NullPointerException("");
                             roomNum=Integer.parseInt(tmp);
                         }
+
+                        //guest type
                         UI.showString("Please choose what type of guest you are.");
                         guestType=UI.askOption("Regular Guest", "Gold Guest", "Platinum Guest");
                         if(guestType == -1)
@@ -123,6 +138,8 @@ public class Calendar implements Printable{
                     }
                     addBooking(name, start, finish, totNum, kidNum, guestType, roomNum);
                     break;
+                
+                //Delete booking
                 case 2:
                     name=UI.askString("please enter guest name");
                     try{
@@ -143,6 +160,8 @@ public class Calendar implements Printable{
                     }
                     deleteBooking(name);
                     break;
+                
+                //edit booking
                 case 3:
                     try{
                         name=UI.askString("Please enter guest name.");
@@ -160,6 +179,7 @@ public class Calendar implements Printable{
                     }
                     editBooking(name);
                     break;
+                //Show all booking
                 case 4:
                     showData();
                     break;
@@ -172,6 +192,7 @@ public class Calendar implements Printable{
 
     }
 
+    //turn array list from int to string with notes
     public ArrayList<String> getAvailable(ArrayList<Integer> available)
     {
         ArrayList<String> availableRooms = new ArrayList<String>();
@@ -201,6 +222,7 @@ public class Calendar implements Printable{
         // this is the list of the rooms that are not available
         available = findRooms(start, finish);
 
+        //if number of rooms wanted are smaller than rooms available
         if(available.size()<roomNum)
         {
             UI.showString("There are not enough rooms available.");
@@ -244,14 +266,15 @@ public class Calendar implements Printable{
         bookMap.put(name, b);
     }
 
+    //find all available rooms in specific date
     public ArrayList<Integer> findRooms(BetterDate start, BetterDate finish) {
         boolean flag1=false, flag2=false;
         ArrayList<Integer> roomArr = new ArrayList<Integer>();
         ArrayList<Integer> available = new ArrayList<Integer>();
 
         for (HashMap.Entry<String, Booking> entry : bookMap.entrySet()) {
-            // go over all bookings in specific starting date
 
+            // go over all bookings
             BetterDate start2 = entry.getValue().getArrival_date();
             BetterDate finish2 = entry.getValue().getLeaving_date();
 
@@ -262,6 +285,7 @@ public class Calendar implements Printable{
 
             if(flag1&&flag2)
             {
+                //put in roomArr all rooms that are unavailable
                 for (int j = 0; j < entry.getValue().getRooms().size(); j++)
                     roomArr.add(entry.getValue().getRooms().get(j));
             }
@@ -269,6 +293,7 @@ public class Calendar implements Printable{
         }
 
         //available contains all the rooms that are available
+        //basically do available= allRooms-roomArr
         for (int i = 0; i < allRooms.size() ; i++)
         {
             if(!roomArr.contains(allRooms.get(i)))
@@ -303,10 +328,12 @@ public class Calendar implements Printable{
 
     }
 
+    //return number of days that a guest stays
     public int getStay(int a,Guests b){
         return bookMap.get(b.getName()).returnNumberDays();
     }
 
+    //chenge dates in booking
     public void changeDate(String name) {
         BetterDate start= new BetterDate();
         BetterDate finish= new BetterDate();
@@ -368,7 +395,6 @@ public class Calendar implements Printable{
         //turning to better date
         start.turnDate(stay);
         finish.turnDate(done);
-        
 
         ArrayList<Integer> available = new ArrayList<Integer>();
         ArrayList<Integer> roomArr = new ArrayList<Integer>();
@@ -437,6 +463,7 @@ public class Calendar implements Printable{
         bookMap.put(name, b);
     }
 
+    //change number of guests or kids
     public int changeGuestNum(String name) {
         String tmp;
         UI.showString("Your current number of guests is: "+ bookMap.get(name).getNum_Guests()
@@ -485,7 +512,7 @@ public class Calendar implements Printable{
         bookMap.get(name).setRooms(selectRoom);
 
 
-        // this is the list of the rooms that are not available
+        //this is the list of the rooms that are available
         available = findRooms(start, finish);
 
 
@@ -508,24 +535,24 @@ public class Calendar implements Printable{
     {
         UI.showString("Your current number of rooms are: "+ bookMap.get(name).getRooms().size()
         +".\nYour selected rooms are: " + bookMap.get(name).getRooms()+".");
+
         ArrayList<Integer> available = new ArrayList<Integer>();
-        ArrayList<Integer> availableCopy = new ArrayList<Integer>();
         int room;
         String tmp;
         boolean quit = false;
+
         while (!quit) {
             available = findRooms(bookMap.get(name).getArrival_date(), bookMap.get(name).getLeaving_date());
 
             int option = UI.askOption("Add room", "Remove room" ,"Change number of rooms", "Exit");
             switch (option) {
+                //add one room
                 case 1:
-                    availableCopy = (ArrayList<Integer>) available.clone();
-                    availableCopy.removeAll(bookMap.get(name).getRooms());
                     UI.showString("Please choose which room you want to add.");
-                    room=UI.askOption(getAvailable(availableCopy));
+                    room=UI.askOption(getAvailable(available));
                     if(room == -1)
                         break;
-                    // adds room to booking in correct place 9rooms sorted in ascending order
+                    // adds room to booking in correct place, rooms are sorted in ascending order
                     for(int i =bookMap.get(name).getRooms().size()-1; i >= 0 ; i--)
                     {
                         if(bookMap.get(name).getRooms().get(i) < available.get(room))
@@ -537,6 +564,8 @@ public class Calendar implements Printable{
                     if(!bookMap.get(name).getRooms().contains(available.get(room)))
                         bookMap.get(name).getRooms().add(0,available.get(room));
                     break;
+
+                //remove one room
                 case 2:
                     UI.showString("Please choose which room you want to remove.");
                     room=UI.askOption(getAvailable(bookMap.get(name).getRooms()));
@@ -544,6 +573,7 @@ public class Calendar implements Printable{
                         break;
                     removeRoom(name, room);
                     break;
+                //change num of rooms
                 case 3:
                     tmp=UI.askNum("Enter the number of rooms you want:");
                     if(tmp==null)
@@ -565,12 +595,12 @@ public class Calendar implements Printable{
 
     }
 
+    //return booking according to name
     public Booking findBooking(String name) {
-
         return bookMap.get(name);
-
     }
 
+    //enter date in the correct format
     public String enterDate(String message)
     {
         boolean flag=false;
@@ -586,14 +616,25 @@ public class Calendar implements Printable{
             {
                 break;
             }
+
+            //only proceed if contains "/" so day and month can be split
             if(buffer.contains("/"))
             {
+                //create array to put day and month in
                 int arr[]= new int[2];
                 int count=0;
-        
                 for (String s : buffer.split("/")) {
-                    arr[count]=(Integer.parseInt(s));
+                    //put in arr[0] day, and in arr[1] month
+                    try{
+                        arr[count]=(Integer.parseInt(s));
+                    }
+                    catch(NumberFormatException e)
+                    {
+                        break;
+                    }
+                    
                     count++;
+                    //if there are more than one "/", ignore and use only dd/mm part of string
                     if(count==2)
                     {
                         buffer=arr[0]+"/"+arr[1];
@@ -601,8 +642,11 @@ public class Calendar implements Printable{
                     }
                         
                 }
+                //make sure days and months are ok
                 if(!((arr[0]<1||arr[0]>31)||(arr[1]<1||arr[1]>12)))
                     flag=true;
+                else if(count<2)
+                    UI.showString("Your format is wrong.");
                 else
                     UI.showString("please enter a day 1-31 and a month 1-12");
             }
@@ -615,8 +659,11 @@ public class Calendar implements Printable{
 
     public void removeRoom(String name, int room_num)
     {
+        //if we got place in allRoom array
         if(room_num < 20)
             bookMap.get(name).getRooms().remove(room_num);
+    
+        //if we got room number
         else if(room_num >= 100)
         {
             for(int i = 0; i < bookMap.get(name).getRooms().size(); i++)

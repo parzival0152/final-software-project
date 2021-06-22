@@ -180,10 +180,14 @@ public class MaContinental implements Printable {
 		Iterator<Integer> roomNum = booking.getRooms().iterator();
 		int number;
 		while (roomNum.hasNext()) {
-			number = roomNum.next() - 100;
-			if(roomAr[number / 100][number % 100].getAvailabe()){
-				roomAr[number / 100][number % 100].setOccupants(booking.getBooking_Guest());
-				roomAr[number / 100][number % 100].setAvailabe(false);
+			number = roomNum.next();
+			if(roomAr[number / 100 -1][number % 100].getAvailabe()){
+				roomAr[number / 100 -1][number % 100].setOccupants(booking.getBooking_Guest());
+				roomAr[number / 100 -1][number % 100].setAvailabe(false);
+			}
+			else if(roomAr[number / 100 -1][number % 100].getOccupants().getName().equals(name))
+			{
+				UI.showString("You already checked in to room " + Integer.toString(number) + ".");
 			}
 			else
 			{
