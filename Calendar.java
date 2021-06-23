@@ -66,7 +66,7 @@ public class Calendar implements Printable{
                             boolean flag=false;
                             while(!flag)
                             {
-                                UI.showString("Your check out date can't be before or at the same day as check in date.");
+                                UI.showString("Your check out date can't be before or at the same day as the check in date.");
                                 stay=enterDate("Enter date of check in dd/mm.");
                                 if(stay == null)
                                     throw new NullPointerException("");
@@ -141,7 +141,7 @@ public class Calendar implements Printable{
                 
                 //Delete booking
                 case 2:
-                    name=UI.askString("please enter guest name");
+                    name=UI.askString("Please enter guest name");
                     try{
                         if (name==null)
                             throw new NullPointerException("");
@@ -152,13 +152,15 @@ public class Calendar implements Printable{
                     }
                     try{
                         if(!bookMap.containsKey(name))
-                            throw new NullPointerException("This name doesn't exist in our system.");
+                            throw new NullPointerException("There is no booking by this name.");
                     }
                     catch(NullPointerException e)
                     {
+                        UI.showString(e.getMessage());
                         break;        
                     }
                     deleteBooking(name);
+                    UI.showString("Booking deleted successfully.");
                     break;
                 
                 //edit booking
@@ -174,7 +176,7 @@ public class Calendar implements Printable{
                     }
                     if(!bookMap.containsKey(name))
                     {
-                        UI.showString("This name doesn't exist in our system.");
+                        UI.showString("There is no booking by this name.");
                         break;
                     }
                     editBooking(name);
@@ -442,7 +444,7 @@ public class Calendar implements Printable{
                 {   
                     int select;
                     //tell guest that the room is unavailable and need to pick another one
-                    UI.showString("Room " + roomArr.get(i) +" is unavailable in new date. Please choose one of the following rooms.");
+                    UI.showString("Room " + roomArr.get(i) +" is unavailable in the new date. Please choose one of the following rooms.");
                     //send available list
                     select = UI.askOption(getAvailable(available));
                     if(select == -1)
@@ -533,7 +535,7 @@ public class Calendar implements Printable{
 
     public void changeRoomNum(String name)
     {
-        UI.showString("Your current number of rooms are: "+ bookMap.get(name).getRooms().size()
+        UI.showString("Your current number of rooms is: "+ bookMap.get(name).getRooms().size()
         +".\nYour selected rooms are: " + bookMap.get(name).getRooms()+".");
 
         ArrayList<Integer> available = new ArrayList<Integer>();

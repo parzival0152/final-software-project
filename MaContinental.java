@@ -53,7 +53,7 @@ public class MaContinental implements Printable {
 		bookedRooms.add(102);
 		bookedRooms.add(200);
 		bookedRooms.add(503);
-		booking_Calendar.bookingWithRooms("or", start, finish, 1, 0, 0, bookedRooms);
+		booking_Calendar.bookingWithRooms("or", start, finish, 4, 2, 0, bookedRooms);
 		checkIn("or");
 	}
     /*
@@ -87,8 +87,10 @@ public class MaContinental implements Printable {
 							
 							message=UI.askNum("Please enter room Id you would like to check out of");
 							if (message==null)
-						throw new NullPointerException("demo");
-						roomID=Integer.parseInt(message);
+								throw new NullPointerException("demo");
+							roomID=Integer.parseInt(message);
+							if(roomID%100 > 3 || roomID > 503 || roomID < 100)
+								UI.showString("Please enter a valid room number");
 						}
 					}
 						catch(NullPointerException e)
@@ -147,7 +149,6 @@ public class MaContinental implements Printable {
 			sum += value;
 		}
 		int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
-		int peopleCost = (room.getOccupants().getTotalnumber()-1-room.getOccupants().getNumKids())*20+room.getOccupants().getNumKids()*10;
 		Double itemValue = sum;
 		if (room instanceof SuiteRoom)
 			sum += 300 * stayTime;
@@ -156,8 +157,12 @@ public class MaContinental implements Printable {
 		else
 			sum += 150 * stayTime;
 		check = check.concat("Room cost = " + Double.toString(sum - itemValue) + "$\n");
-		check = check.concat("Added cost for number of people staying = " + Integer.toString(peopleCost)+"$\n");
-		sum = (sum + peopleCost) * room.getOccupants().discount();
+		if(booking_Calendar.findBooking(room.getOccupants().getName()).getRooms().size() == 1)
+		{
+			int peopleCost = (room.getOccupants().getTotalnumber()-1-room.getOccupants().getNumKids())*20+room.getOccupants().getNumKids()*10;
+			check = check.concat("Added cost for number of people staying = " + Integer.toString(peopleCost)+"$\n");
+			sum = (sum + peopleCost) * room.getOccupants().discount();
+		}
 		check = check.concat("Including discount of "+ Double.toString(100 - 100 * room.getOccupants().discount()) + "%\n");
 		check = check.concat("Room total = " + Double.toString(sum) + "$\n\n");
 		UI.showString(check);
