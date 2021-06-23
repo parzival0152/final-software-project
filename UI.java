@@ -1,7 +1,10 @@
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 //class helper prints out menu
 public class UI {
@@ -78,7 +81,21 @@ public class UI {
     }
 
     public static void showString(String message) {
-        JOptionPane.showMessageDialog(null, message, "", JOptionPane.PLAIN_MESSAGE);
+        //check number of lines
+        int numLines = message.split("\n").length;
+        if(numLines<35)
+            JOptionPane.showMessageDialog(null, message, "", JOptionPane.PLAIN_MESSAGE);
+        //if number of lines is 35 or more create scroll option
+        else
+        {
+            JTextArea textArea = new JTextArea(message);
+            JScrollPane scrollPane = new JScrollPane(textArea);  
+            textArea.setLineWrap(true);
+            textArea.setWrapStyleWord(true);
+            scrollPane.setPreferredSize( new Dimension( 200, 500 ) );
+            JOptionPane.showMessageDialog(null, scrollPane, "" ,JOptionPane.PLAIN_MESSAGE);
+        }
+
     }
 
     public static void displayImage(String path) {
