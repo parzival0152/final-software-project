@@ -52,6 +52,8 @@ public class MaContinental implements Printable {
 		ArrayList<Integer> bookedRooms = new ArrayList<>();
 		bookedRooms.add(102);
 		bookedRooms.add(200);
+		bookedRooms.add(300);
+		bookedRooms.add(303);
 		bookedRooms.add(503);
 		booking_Calendar.bookingWithRooms("or", start, finish, 4, 2, 0, bookedRooms);
 		checkIn("or");
