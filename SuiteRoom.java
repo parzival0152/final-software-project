@@ -1,9 +1,14 @@
+/*****************************
+ Grop 4
+ Omri Baron 314838210
+ Ilay Tzuberi 211873286
+ Or Reginiano 315995845
+ Eliya Bronshtein 207379348
+ *****************************/
 import java.util.ArrayList;
 import java.util.Collections;
 
-//extending Room the suite has mini fridge
-
-
+// Extends Room. Suite has an alchohol fridge
 public class SuiteRoom extends Room {
     private ArrayList<String> miniFridge = new ArrayList<String>();
     private String[] startingDrinks = {"Irish cream","vodka","gin","rum","liquer","whisky"};

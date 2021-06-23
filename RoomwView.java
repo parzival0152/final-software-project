@@ -1,5 +1,12 @@
+/*****************************
+ Grop 4
+ Omri Baron 314838210
+ Ilay Tzuberi 211873286
+ Or Reginiano 315995845
+ Eliya Bronshtein 207379348
+ *****************************/
 
-//extending Room view rooms has the option to show the view
+//extending Room. view rooms have the option to show the view
 public class RoomwView extends Room {
 
     public RoomwView(int roomId) {

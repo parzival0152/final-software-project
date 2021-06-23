@@ -1,3 +1,11 @@
+/*****************************
+ Grop 4
+ Omri Baron 314838210
+ Ilay Tzuberi 211873286
+ Or Reginiano 315995845
+ Eliya Bronshtein 207379348
+ *****************************/
+
 import java.awt.Dimension;
 import java.util.ArrayList;
 
@@ -9,7 +17,7 @@ import javax.swing.JTextArea;
 //class helper prints out menu
 public class UI {
 
-    // creates drop down menu with string options. returns position (starting at 1) op picked choice
+    // creates drop down menu with string options. returns position (starting at 1).
     public static int askOption(String... options) {
         if(options.length < 5)
         {
@@ -83,6 +91,7 @@ public class UI {
 
     }
 
+    // Get image from path and display
     public static void displayImage(String path) {
         ImageIcon view;
         try {
