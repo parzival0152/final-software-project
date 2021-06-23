@@ -107,7 +107,7 @@ public class RoomService implements  Printable {
                                 }
                                 while(level<1 || level >3)
                                 {
-                                    message=UI.askNum("Enter:\n 1-for regular menue\n 2-for gold menue\n3-for platinum menue:");
+                                    message=UI.askNum("Enter:\n 1-for regular menu\n 2-for gold menu\n3-for platinum menu:");
                                     if (message==null)
                                    throw new NullPointerException("demo");
                                       level=Integer.parseInt(message);
@@ -162,9 +162,10 @@ public class RoomService implements  Printable {
                     {
                         message=UI.askNum("Enter amount:");
                         if (message==null)
-                    throw new NullPointerException("demo");
-                    amount=Integer.parseInt(message);
-                        
+                            throw new NullPointerException("demo");
+                        amount=Integer.parseInt(message);
+                        if(amount < 0)
+                        UI.showString("Please enter a positive amount.");
                     }
                 
                      if(items.get(option).getAmount()<amount)
