@@ -89,7 +89,7 @@ public class RoomService implements  Printable {
                   
                 switch (option) {
                     case 1:
-                    //add product
+                    	//add product
                        //getting information about the new product from the user
                         try{
                             name=UI.askString("Enter product name:");
@@ -134,122 +134,184 @@ public class RoomService implements  Printable {
                         }
                         break;
                     case 2:
-                    //Remove product
-                    option=UI.askOption(items_string);
-                    if(option!=-1)
-                    {
-                        removeProduct(items.get(option).getName());
-                    }
+	                    //Remove product
+	                    try
+	                    {
+	                        if(items.isEmpty())
+	                            throw new NullPointerException("No products.");
+	                    }
+	                    catch(NullPointerException e)
+	                    {
+	                        UI.showString(e.getMessage());
+	                        break;
+	                    }
+	                    option=UI.askOption(items_string);
+	                    if(option!=-1)
+	                    {
+	                        removeProduct(items.get(option).getName());
+	                    }
                         
                         
                         break;
                     case 3:
-                    //Product details
-                    //printing product information
-                    option=UI.askOption(items_string);
-                    if(option!=-1)
-                    {
-                        message=items.get(option).toString();
-                        UI.showString( message);
-                    }
+	                    //Product details
+	                    //printing product information
+	                    try
+	                    {
+	                        if(items.isEmpty())
+	                            throw new NullPointerException("No products.");
+	                    }
+	                    catch(NullPointerException e)
+	                    {
+	                        UI.showString(e.getMessage());
+	                        break;
+	                    }	
+	                    option=UI.askOption(items_string);
+	                    if(option!=-1)
+	                    {
+	                        message=items.get(option).toString();
+	                        UI.showString( message);
+	                    }
                         break;
                     case 4:
-                    //Order room service
-                    //getting information from user
-                    option=UI.askOption(items_string);
-                    if(option==-1)
-                    {
-                        break;
-                    }
-                    
-                    try{
-                    while(amount<0)
-                    {
-                        message=UI.askNum("Enter amount:");
-                        if (message==null)
-                            throw new NullPointerException("demo");
-                        amount=Integer.parseInt(message);
-                        if(amount < 0)
-                        UI.showString("Please enter a positive amount.");
-                    }
-                
-                     if(items.get(option).getAmount()<amount)
-                    {
-                     UI.showString("Not enough in stock.");
-                     amount=-1;
-                    break;
-                    }
-                    rooms=managment.availableRooms();
-                    choice=UI.askOption(rooms);
-                    if(choice == -1)
-                        throw new NullPointerException("demo");
-                    row=Integer.parseInt(rooms.get(choice))/100 -1;
-                    column=Integer.parseInt(rooms.get(choice))%100;
-                    //sending to the room through managment.checking if purchase was successful
-                    flag=managment.buyProduct(items_string.get(option), amount, row, column);
-                    if(flag==true)
-                        {
-                            UI.showString("Purchase successful.");
-                            items.get(option).setAmount(items.get(option).getAmount()-amount);
-                        }
-                    else
-                    UI.showString("Purchase failed, guest doesn't have access to this menu.");
-                    }
-                    catch(NullPointerException e)
-                    {
-                        price=-1;
-                        amount=-1;
-                        level=-1;
-                        break;        
-                    }
-                        price=-1;
-                        amount=-1;
-                        level=-1;
-                        break;
+	                    //Order room service
+	                    //getting information from user
+	                    try
+	                    {
+	                        if(items.isEmpty())
+	                            throw new NullPointerException("No products.");
+	                    }
+	                    catch(NullPointerException e)
+	                    {
+	                        UI.showString(e.getMessage());
+	                        break;
+	                    }
+	                    option=UI.askOption(items_string);
+	                    if(option==-1)
+	                    {
+	                        break;
+	                    }
+	                    
+	                    try{
+	                    while(amount<0)
+	                    {
+	                        message=UI.askNum("Enter amount:");
+	                        if (message==null)
+	                            throw new NullPointerException("demo");
+	                        amount=Integer.parseInt(message);
+	                        if(amount < 0)
+	                        UI.showString("Please enter a positive amount.");
+	                    }
+	                
+	                     if(items.get(option).getAmount()<amount)
+	                    {
+	                     UI.showString("Not enough in stock.");
+	                     amount=-1;
+	                    break;
+	                    }
+	                    rooms=managment.availableRooms();
+	                    choice=UI.askOption(rooms);
+	                    if(choice == -1)
+	                        throw new NullPointerException("demo");
+	                    row=Integer.parseInt(rooms.get(choice))/100 -1;
+	                    column=Integer.parseInt(rooms.get(choice))%100;
+	                    //sending to the room through managment.checking if purchase was successful
+	                    flag=managment.buyProduct(items_string.get(option), amount, row, column);
+	                    if(flag==true)
+	                        {
+	                            UI.showString("Purchase successful.");
+	                            items.get(option).setAmount(items.get(option).getAmount()-amount);
+	                        }
+	                    else
+	                    UI.showString("Purchase failed, guest doesn't have access to this menu.");
+	                    }
+	                    catch(NullPointerException e)
+	                    {
+	                        price=-1;
+	                        amount=-1;
+	                        level=-1;
+	                        break;        
+	                    }
+	                        price=-1;
+	                        amount=-1;
+	                        level=-1;
+	                        break;
 
                     case 5:
-                    //Add to stock
-                    //re-stock products
-                    try
-                    {
-
-                        option=UI.askOption(items_string);
-                        if(option!=-1)
-                        {
-                            message=UI.askNum("Enter amount:");
-                        if (message==null)
-                            throw new NullPointerException("Null exception.");
-                        if(Integer.parseInt(message)<0)
-                            throw new NumberFormatException("Negative number.");
-
-                        amount=Integer.parseInt(message);
-                        reStock( items_string.get(option),  amount);
-                        amount=-1;
-                        }
-
-                       
-                    }
-                        catch(NumberFormatException e)
-                        {
-                            UI.showString("Can't enter negative number.");
-                        }
-                        
-                        catch(NullPointerException e)
-                    {
-                        price=-1;
-                         amount=-1;
-                         level=-1;
-                        break;        
-                    }
+	                    //Add to stock
+	                    //re-stock products
+	                    	
+	                    try
+	                    {
+	                        if(items.isEmpty())
+	                            throw new NullPointerException("No products.");
+	                    }
+	                    catch(NullPointerException e)
+	                    {
+	                        UI.showString(e.getMessage());
+	                        break;
+	                    }
+	                    
+	                    try
+	                    {
+	                    	
+	                        option=UI.askOption(items_string);
+	                        if(option!=-1)
+	                        {
+	                            message=UI.askNum("Enter amount:");
+	                        if (message==null)
+	                            throw new NullPointerException("Null exception.");
+	                        if(Integer.parseInt(message)<0)
+	                            throw new NumberFormatException("Negative number.");
+	
+	                        amount=Integer.parseInt(message);
+	                        reStock( items_string.get(option),  amount);
+	                        amount=-1;
+	                        }
+	
+	                       
+	                    }
+	                        catch(NumberFormatException e)
+	                        {
+	                            UI.showString("Can't enter negative number.");
+	                        }
+	                        
+	                        catch(NullPointerException e)
+	                    {
+	                        price=-1;
+	                         amount=-1;
+	                         level=-1;
+	                        break;        
+	                    }
                         
                         break;
                     case 6:
                     //sort by price
+                        try
+                        {
+                            if(items.isEmpty())
+                                throw new NullPointerException("No products.");
+                        }
+                        catch(NullPointerException e)
+                        {
+                            UI.showString(e.getMessage());
+                            break;
+                        }
                         sortPrice();
                         break;
 
                     case 7:
                         //showing all stock details
+                        try
+                        {
+                            if(items.isEmpty())
+                                throw new NullPointerException("No products.");
+                        }
+                        catch(NullPointerException e)
+                        {
+                            UI.showString(e.getMessage());
+                            break;
+                        }
                         sortName();
                         break;
 

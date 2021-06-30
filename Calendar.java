@@ -16,7 +16,10 @@ public class Calendar implements Printable{
     private HashMap<String, Booking> bookMap;
     private static ArrayList<Integer> allRooms;
 
-    public Calendar() {
+    MaContinental managment;
+
+    public Calendar(MaContinental managment1) {
+        managment=managment1;
         allRooms=new ArrayList<Integer>();
         bookMap=new HashMap<String, Booking>();
     
@@ -111,9 +114,12 @@ public class Calendar implements Printable{
                         if(tmp==null)
                             throw new NullPointerException("");
                         kidNum=Integer.parseInt(tmp);
-                        while(kidNum<0)
+                        while(kidNum<0 ||totNum<=kidNum)
                         {
-                            UI.showString("Please enter zero or a number bigger than zero.");
+                            if(kidNum<0)
+                                UI.showString("Please enter zero or a number bigger than zero.");
+                            else if (totNum<=kidNum)
+                                UI.showString("The total number of guests is smaller than number of children, there must be an adult.");
                             tmp=UI.askNum("Enter number of children staying.");
                             if(tmp==null)
                                 throw new NullPointerException("");
@@ -168,7 +174,6 @@ public class Calendar implements Printable{
                         break;        
                     }
                     deleteBooking(name);
-                    UI.showString("Booking deleted successfully.");
                     break;
                 
                 //edit booking
@@ -185,6 +190,11 @@ public class Calendar implements Printable{
                     if(!bookMap.containsKey(name))
                     {
                         UI.showString("There is no booking by this name.");
+                        break;
+                    }
+                    if(managment.isCheckIn(name))
+                    {
+                        UI.showString("Guest is checked in, can't edit booking.");
                         break;
                     }
                     editBooking(name);
@@ -313,7 +323,13 @@ public class Calendar implements Printable{
     }
 
     public void deleteBooking(String name) {
-        bookMap.remove(name);
+        if(!managment.isCheckIn(name))
+        {
+            bookMap.remove(name);
+            UI.showString("Booking deleted successfully.");
+        }
+        else
+            UI.showString("Guest is checked in, can't delete booking.");
     }
 
     public void editBooking(String name) {
@@ -329,6 +345,9 @@ public class Calendar implements Printable{
                     break;
                 case 3:
                     changeRoomNum(name);
+                    //if booking got deleted
+                    if(!bookMap.containsKey(name))
+                        quit=true;
                     break;
                 default:
                     quit=true;
@@ -440,9 +459,7 @@ public class Calendar implements Printable{
         //if all the rooms are available just change the date without changing anything else
         if(flag)
         {
-            b.setRooms(roomArr);
-            b.setArrival_date(start);
-            b.setLeaving_date(finish);
+            selectRoom=roomArr;
         }
         else
         {
@@ -582,6 +599,10 @@ public class Calendar implements Printable{
                     if(room == -1)
                         break;
                     removeRoom(name, room);
+
+                    //if booking got removed
+                    if(!bookMap.containsKey(name))
+                        quit=true;
                     break;
                 //change num of rooms
                 case 3:

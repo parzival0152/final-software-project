@@ -25,6 +25,7 @@ public class MaContinental implements Printable {
 	private Room[][] roomAr;
 	private RoomService room_service;
 	private Calendar booking_Calendar;
+	private ArrayList<String> CheckedIn;
 
    /*
    the constructor:
@@ -48,19 +49,26 @@ public class MaContinental implements Printable {
 			}
 		}
 
+		this.CheckedIn= new ArrayList<String>();
 		this.room_service = new RoomService(this);
-		booking_Calendar = new Calendar();
+		booking_Calendar = new Calendar(this);
 
 		BetterDate start = new BetterDate(1,1);
 		BetterDate finish = new BetterDate(1,2);
 		ArrayList<Integer> bookedRooms = new ArrayList<>();
 		bookedRooms.add(102);
 		bookedRooms.add(200);
-		bookedRooms.add(300);
-		bookedRooms.add(303);
 		bookedRooms.add(503);
 		booking_Calendar.bookingWithRooms("or", start, finish, 4, 2, 0, bookedRooms);
+		bookedRooms.clear();
+		bookedRooms.add(100);
+		booking_Calendar.bookingWithRooms("a", start, finish, 1, 0, 1, bookedRooms);
+		bookedRooms.clear();
+		bookedRooms.add(101);
+		booking_Calendar.bookingWithRooms("b", start, finish, 1, 0, 2, bookedRooms);
 		checkIn("or");
+		checkIn("a");
+		checkIn("b");
 	}
     /*
 	run method has switch case to all the main functions of the managmant system:
@@ -149,6 +157,8 @@ public class MaContinental implements Printable {
 		int row = room_num / 100 - 1;
 		int column = room_num % 100;
 		Room room = roomAr[row][column];
+
+		//summing purchase list
 		for (String[] product : room.getPurchaseList()) {
 			value = Double.parseDouble(product[1]) * Double.parseDouble(product[2]);
 			check = check.concat(product[0] + " x" + product[1] + " = $" + Double.toString(value) + "\n");
@@ -156,6 +166,8 @@ public class MaContinental implements Printable {
 		}
 		int stayTime = booking_Calendar.getStay(room.getRoomId(), room.getOccupants());
 		Double itemValue = sum;
+
+		//checking stay time and adding to sum
 		if (room instanceof SuiteRoom)
 			sum += 300 * stayTime;
 		else if (room instanceof RoomwView)
@@ -163,12 +175,21 @@ public class MaContinental implements Printable {
 		else
 			sum += 150 * stayTime;
 		check = check.concat("Room cost = " + Double.toString(sum - itemValue) + "$\n");
+
+		//adding people costs only to last room that checks out
 		if(booking_Calendar.findBooking(room.getOccupants().getName()).getRooms().size() == 1)
 		{
 			int peopleCost = (room.getOccupants().getTotalnumber()-1-room.getOccupants().getNumKids())*20+room.getOccupants().getNumKids()*10;
 			check = check.concat("Added cost for number of people staying = " + Integer.toString(peopleCost)+"$\n");
 			sum = (sum + peopleCost) * room.getOccupants().discount();
+			for(int i=0; i<CheckedIn.size();i++)
+			{
+				if(CheckedIn.get(i).equals(room.getOccupants().getName()))
+					CheckedIn.remove(i);
+					
+			}	
 		}
+
 		check = check.concat("Including discount of "+ Double.toString(100 - 100 * room.getOccupants().discount()) + "%\n");
 		check = check.concat("Room total = " + Double.toString(sum) + "$\n\n");
 		UI.showString(check);
@@ -195,6 +216,8 @@ public class MaContinental implements Printable {
 			if(roomAr[number / 100 -1][number % 100].getAvailabe()){
 				roomAr[number / 100 -1][number % 100].setOccupants(booking.getBooking_Guest());
 				roomAr[number / 100 -1][number % 100].setAvailabe(false);
+				if(!CheckedIn.contains(name))
+					CheckedIn.add(name);
 			}
 			else if(roomAr[number / 100 -1][number % 100].getOccupants().getName().equals(name))
 			{
@@ -245,15 +268,23 @@ public class MaContinental implements Printable {
 				{
 					case 1:
 						ArrayList<String> fridge = suite.getFridge();
-						int drink = UI.askOption(fridge);
 						try
 						{
+							if(fridge.isEmpty())
+								throw new NullPointerException("Empty fridge.");
+							int drink = UI.askOption(fridge);
 							suite.drink(fridge.get(drink));
+						}
+						catch(NullPointerException e)
+						{
+							UI.showString(e.getMessage());
+							break;
 						}
 						catch(Exception e)
 						{
 							break;
 						}
+
 						break;
 					case 2:
 						suite.restockFridge();
@@ -293,6 +324,13 @@ public class MaContinental implements Printable {
 			}
 		}
 		return available;
+	}
+
+	public boolean isCheckIn(String name)
+	{
+		if(CheckedIn.contains(name))
+			return true;
+		return false;
 	}
 
 	/*
